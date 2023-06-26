@@ -10,5 +10,4 @@ public class CarmaintanenceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CarmaintanenceApplication.class, args);
 	}
-
 }
