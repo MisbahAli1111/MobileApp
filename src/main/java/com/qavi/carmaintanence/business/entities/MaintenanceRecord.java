@@ -18,6 +18,7 @@ public class MaintenanceRecord {
     User maintainedBy;
     double kilometerDriven;
     String service;
+    Integer Vid;
     @OneToMany
     List<VehicleMedia> vehicleMedia;
     String maintanenceDetail;
