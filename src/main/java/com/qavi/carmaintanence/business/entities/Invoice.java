@@ -2,10 +2,9 @@ package com.qavi.carmaintanence.business.entities;
 
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import lombok.Data;
-import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -24,20 +23,20 @@ public class Invoice {
 
     private Long maintainedById;
 
-    private Long vehicleId;
+    private LocalDate invoiceDue;
 
-    private DateTime date;
-
-    private DateTime invoiceDue;
-
-    private Long subTotal;
 
     private boolean status;
+
+
+
+    private Long vehicleId;
+    private LocalDate date;
 
     private String description;
     private double rate;
     private double qty;
-    private Long amount;
+    private Long amountWithOutDis;
 
     private String taxName;
     private double taxRate;
@@ -45,7 +44,7 @@ public class Invoice {
     private String discountName;
     private double discountRate;
 
-    private Long balance;
+    private Long amountWithDis;
 
 }
 
