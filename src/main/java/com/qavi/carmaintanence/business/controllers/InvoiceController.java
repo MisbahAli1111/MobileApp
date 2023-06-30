@@ -1,7 +1,6 @@
 package com.qavi.carmaintanence.business.controllers;
 
 import com.qavi.carmaintanence.business.entities.Invoice;
-import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import com.qavi.carmaintanence.business.services.InvoiceService;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class InvoiceController {
@@ -52,33 +50,29 @@ public class InvoiceController {
                 .message("Invoice Details Found Successfully")
                 .data(new Object())
                 .build();
-        Optional<Invoice> inv =invoiceService.getInvoice(invoiceId);
-        if(!inv.isPresent())
+        List<Invoice> invoices=invoiceService.getInvoice(invoiceId);
+        if(invoices.size()>0)
         {
-            responseModel.setStatus(HttpStatus.NOT_FOUND);
-            responseModel.setMessage("Failed to Fetch Invoice Detail");
-
+            responseModel.setData(invoices);
         }
         else {
-            responseModel.setData(invoiceId);
+            responseModel.setStatus(HttpStatus.NOT_FOUND);
+            responseModel.setMessage("Failed to Fetch Invoice Detail");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
-    @PostMapping("/create-invoice/{id}")
+    @PostMapping("/create-invoice")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    public ResponseEntity<ResponseModel> createInvoice(@RequestBody Invoice invoice , @PathVariable Long id ){
-
+    public ResponseEntity<ResponseModel> createInvoice(@RequestBody Invoice invoice){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Invoice Created Successfully")
                 .data(new Object())
                 .build();
-
-        if(!invoiceService.addInvoice(invoice,id))
+        if(!invoiceService.addInvoice(invoice))
         {
-
             responseModel.setMessage("Failed To Create Invoice");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
         }
