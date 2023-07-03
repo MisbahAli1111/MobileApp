@@ -24,7 +24,7 @@ public class InvoiceController {
     InvoiceService invoiceService;
     @PostMapping("/get-invoice")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    public ResponseEntity<ResponseModel> getAllInvoices(@PathVariable Invoice invoice){
+    public ResponseEntity<ResponseModel> getAllInvoice(@PathVariable Invoice invoice){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Invoice Created Successfully")
@@ -80,15 +80,15 @@ public class InvoiceController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
-    @PostMapping("/edit-invoice/{Id}")
+    @PostMapping("/edit-invoice")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    public ResponseEntity<ResponseModel> editInvoice(@RequestBody Invoice invoice,@PathVariable Long invoiceId){
+    public ResponseEntity<ResponseModel> editInvoice(@RequestBody Invoice invoice){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Invoice Created Successfully")
                 .data(new Object())
                 .build();
-        if(!invoiceService.editInvoice(invoice,invoiceId))
+        if(!invoiceService.editInvoice(invoice))
         {
             responseModel.setMessage("Failed To Edit Invoice");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
