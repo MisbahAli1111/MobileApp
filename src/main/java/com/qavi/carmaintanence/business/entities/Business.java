@@ -25,7 +25,7 @@ public class Business {
     private String businessEmail;
     private String businessCountry;
     private String businessCity;
-    private LocalDateTime businessRegisteredAt;
+    //private LocalDateTime businessRegisteredAt;
     private boolean enabled;
     @JsonIgnore
     @ManyToMany
