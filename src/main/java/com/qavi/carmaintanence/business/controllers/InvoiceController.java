@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Queue;
 
 @Controller
 public class InvoiceController {
@@ -20,7 +22,6 @@ public class InvoiceController {
 
     @Autowired
     InvoiceService invoiceService;
-
     @PostMapping("/get-invoice")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
     public ResponseEntity<ResponseModel> getAllInvoice(@PathVariable Invoice invoice){
@@ -50,8 +51,8 @@ public class InvoiceController {
                 .message("Invoice Details Found Successfully")
                 .data(new Object())
                 .build();
-        List<Invoice> invoices=invoiceService.getInvoice(invoiceId);
-        if(invoices.size()>0)
+        Optional<Invoice> invoices=invoiceService.getInvoice(invoiceId);
+        if(invoices.isPresent())
         {
             responseModel.setData(invoices);
         }
@@ -63,15 +64,15 @@ public class InvoiceController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
-    @PostMapping("/create-invoice")
+    @PostMapping("/create-invoice/{id}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    public ResponseEntity<ResponseModel> createInvoice(@RequestBody Invoice invoice){
+    public ResponseEntity<ResponseModel> createInvoice(@RequestBody Invoice invoice, @PathVariable Long id ){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Invoice Created Successfully")
                 .data(new Object())
                 .build();
-        if(!invoiceService.addInvoice(invoice))
+        if(!invoiceService.addInvoice(invoice,id))
         {
             responseModel.setMessage("Failed To Create Invoice");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);

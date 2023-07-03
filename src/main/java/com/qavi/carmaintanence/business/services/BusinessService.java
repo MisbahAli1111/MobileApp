@@ -40,7 +40,7 @@ public class BusinessService {
                     business.setOwner(owner.get());
                 }
                 business.setEnabled(true);
-                business.setBusinessRegisteredAt(LocalDateTime.now());
+               // business.setBusinessRegisteredAt(LocalDateTime.now());
                 businessRepository.save(business);
                 return true;
             } else {
