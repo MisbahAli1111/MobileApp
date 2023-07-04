@@ -17,6 +17,7 @@ import java.util.Optional;
 public class VehicleController {
     @Autowired
     VehicleService vehicleService;
+    
     @PostMapping("/{businessId}/add-vehicle")
     public ResponseEntity<ResponseModel> addVehicle(@PathVariable Long businessId, @RequestBody VehicleModel vehicle)
     {
@@ -69,4 +70,30 @@ public class VehicleController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
+    @GetMapping("/{vehicle_id}")
+    public ResponseEntity<ResponseModel> edit_details(@PathVariable Long id )
+    {
+        ResponseModel responseModel= ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("vehicle updated")
+                .data(new Object())
+                .build();
+        Optional<Vehicle> fetchedVehicle=vehicleService.edit_details(id);
+        if(fetchedVehicle.isEmpty()){
+
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+            responseModel.setMessage("Failed to fetch vehicle detail");
+        }
+        else{
+            responseModel.setData(fetchedVehicle.get());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+
+    }
+@PostMapping("/{businessId}/{vehicle_id}/update-vehicle")
+    public  void updateVehicle(@PathVariable Long businessId, @PathVariable Long vehicle_id,@RequestBody VehicleModel vehicleModel)
+{
+
+    vehicleService.updateVehicle(businessId,vehicle_id,vehicleModel);
+}
 }

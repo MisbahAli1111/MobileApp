@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -57,5 +59,60 @@ public class BusinessService {
     public List<Business> getMyBusinesses(String id) {
         List<Business> fetchedBusiness=businessRepository.findAllByOwnerId(Long.valueOf(id));
         return fetchedBusiness;
+    }
+    public List<Business> getAllBusiness(Business business) {
+        List <Business> businesses=businessRepository.findAll();
+        return businesses;
+    }
+
+
+    public boolean editBusiness(Business business, Long id) {
+        Business foundBusinessRecord =businessRepository.findById(id).get();
+        //Service
+        if(Objects.nonNull(foundBusinessRecord.getBusinessCity()) &&
+                !"".equals(foundBusinessRecord.getBusinessCity()))
+        {
+            foundBusinessRecord.setBusinessCity(foundBusinessRecord.getBusinessCity());
+        }
+
+        if(Objects.nonNull(foundBusinessRecord.getBusinessAddress()) &&
+                !"".equals(foundBusinessRecord.getBusinessAddress()))
+        {
+            foundBusinessRecord.setBusinessAddress(foundBusinessRecord.getBusinessAddress());
+        }
+
+        if(Objects.nonNull(foundBusinessRecord.getBusinessCountry()) &&
+                !"".equals(foundBusinessRecord.getBusinessCountry()))
+        {
+            foundBusinessRecord.setBusinessCountry(foundBusinessRecord.getBusinessCountry());
+        }
+
+        if(Objects.nonNull(foundBusinessRecord.getBusinessEmail()) &&
+                !"".equals(foundBusinessRecord.getBusinessEmail()))
+        {
+            foundBusinessRecord.setBusinessEmail(foundBusinessRecord.getBusinessEmail());
+        }
+
+        if(Objects.nonNull(foundBusinessRecord.getBusinessName()) &&
+                !"".equals(foundBusinessRecord.getBusinessName()))
+        {
+            foundBusinessRecord.setBusinessName(foundBusinessRecord.getBusinessName());
+        }
+        if(Objects.nonNull(foundBusinessRecord.getBusinessPhoneNumber()) &&
+                !"".equals(foundBusinessRecord.getBusinessPhoneNumber()))
+        {
+            foundBusinessRecord.setBusinessPhoneNumber(foundBusinessRecord.getBusinessPhoneNumber());
+        }
+
+        if(foundBusinessRecord != null)
+        {
+            businessRepository.save(foundBusinessRecord);
+            return true;
+        }
+        else {
+            return false;
+        }
+
+
     }
 }

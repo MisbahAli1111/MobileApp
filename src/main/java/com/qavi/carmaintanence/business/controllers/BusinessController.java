@@ -53,4 +53,42 @@ public class BusinessController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
+    @GetMapping("/get-business")
+    @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
+    public ResponseEntity<ResponseModel> getAllBusiness(@PathVariable Business business){
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Business Found Successfully")
+                .data(new Object())
+                .build();
+        List<Business> myBusinesses=businessService.getAllBusiness(business);
+        if(myBusinesses.size()>0)
+        {
+            responseModel.setData(myBusinesses);
+        }
+        else {
+            responseModel.setStatus(HttpStatus.NOT_FOUND);
+            responseModel.setMessage("business not found");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
+
+    @PutMapping("/edit-business")
+    @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
+    public ResponseEntity<ResponseModel> editBusiness(@RequestBody Business business, @PathVariable Long id){
+        ResponseModel responseModel=ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Business Edited Successfully")
+                .data(new Object())
+                .build();
+        if(!businessService.editBusiness(business,id)){
+            responseModel.setMessage("Failed To Edit Business");
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
+
 }

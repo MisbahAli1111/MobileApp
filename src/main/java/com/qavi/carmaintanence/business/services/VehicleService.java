@@ -23,17 +23,15 @@ public class VehicleService {
 
     @Autowired
     UserRepository userRepository;
-    public boolean addVehicle(Long businessId, VehicleModel vehicleModel)
-    {
-        try
-        {
-            Vehicle vehicle=new Vehicle();
+
+    public boolean addVehicle(Long businessId, VehicleModel vehicleModel) {
+        try {
+            Vehicle vehicle = new Vehicle();
             Optional<Business> business = businessRepository.findById(businessId);
             if (business.isPresent()) {
                 vehicle.setAssociatedToBusiness(List.of(business.get()));
-                Optional<User> owner=userRepository.findById(vehicleModel.getOwnerId());
-                if(owner.isPresent())
-                {
+                Optional<User> owner = userRepository.findById(vehicleModel.getOwnerId());
+                if (owner.isPresent()) {
                     vehicle.setCarOwner(owner.get());
                     vehicle.setMake(vehicleModel.getMake());
                     vehicle.setColor(vehicleModel.getColor());
@@ -44,30 +42,66 @@ public class VehicleService {
                     vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
                     vehicleRepository.save(vehicle);
                     return true;
-                }
-                else
-                {
+                } else {
                     throw new RecordNotFoundException("User not found");
                 }
-            }
-            else{
+            } else {
                 throw new RecordNotFoundException("Business not found");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
             return false;
         }
     }
 
-    public List<Vehicle> getAllVehiclesOfBusiness(Long businessId)
-    {
+    public List<Vehicle> getAllVehiclesOfBusiness(Long businessId) {
         return vehicleRepository.findAllByAssociatedToBusinessId(businessId);
     }
 
-    public Optional<Vehicle> getVehicle(Long id)
-    {
+    public Optional<Vehicle> getVehicle(Long id) {
         return vehicleRepository.findById(id);
     }
+
+
+    public Optional<Vehicle> edit_details(Long id) {
+        Optional<Vehicle> foundVehicle = vehicleRepository.findById(id);
+        return foundVehicle;
+    }
+
+    public boolean updateVehicle(Long businessId, Long vehicleId, VehicleModel vehicleModel) {
+
+        try {
+            Optional<Business> business = businessRepository.findById(businessId);
+            if (business.isPresent()) {
+                Optional<User> owner = userRepository.findById(vehicleModel.getOwnerId());
+                if (owner.isPresent()) {
+
+                    Vehicle updatableVehicle = vehicleRepository.findById(vehicleId).get();
+                    if (updatableVehicle != null) {
+                        updatableVehicle.setColor(vehicleModel.getColor());
+                        updatableVehicle.setModel(vehicleModel.getModel());
+                        updatableVehicle.setYear(vehicleModel.getYear());
+                        updatableVehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
+                        updatableVehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
+                        updatableVehicle.setType(vehicleModel.getType());
+                        updatableVehicle.setMake(vehicleModel.getMake());
+                        vehicleRepository.save(updatableVehicle);
+                        return true;
+                    } else {
+                        throw new RecordNotFoundException("Vehicle not found");
+                    }
+                } else {
+                    throw new RecordNotFoundException("User not found");
+
+                }
+            } else {
+                throw new RecordNotFoundException("Business not found");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
 }
