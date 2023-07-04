@@ -3,6 +3,7 @@ package com.qavi.carmaintanence.usermanagement.controllers.role;
 import com.qavi.carmaintanence.usermanagement.entities.role.Role;
 import com.qavi.carmaintanence.usermanagement.models.PermissionBitsModel;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
+import com.qavi.carmaintanence.usermanagement.models.RoleModel;
 import com.qavi.carmaintanence.usermanagement.services.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,4 +44,35 @@ public class RoleController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
+    @PostMapping("/{roleId}/delete-role")
+    public ResponseEntity<ResponseModel> deleteRoles(@PathVariable Long roleId)
+    {
+        ResponseModel responseModel=ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Role has been Deleted Successfully")
+                .data(new Object())
+                .build();
+        if(!roleService.deleteRoles(roleId))
+        {
+            responseModel.setMessage("Failed To Delete Role");
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+@PostMapping("/{Role_ID}/update_role")
+public  ResponseEntity<ResponseModel> update_role(@PathVariable Long Role_id  , @RequestBody RoleModel roleModel) {
+    ResponseModel responseModel = ResponseModel.builder()
+            .status(HttpStatus.OK)
+            .message("Role Updated Successfully")
+            .data(new Object())
+            .build();
+    if (!roleService.update_role(Role_id, roleModel)) {
+        responseModel.setMessage("Role Updation Failed");
+        responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+    }
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+
+
+}
 }

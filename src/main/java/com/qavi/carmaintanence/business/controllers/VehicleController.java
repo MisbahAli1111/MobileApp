@@ -2,6 +2,7 @@ package com.qavi.carmaintanence.business.controllers;
 
 import com.qavi.carmaintanence.business.entities.Vehicle;
 import com.qavi.carmaintanence.business.models.VehicleModel;
+import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.services.VehicleService;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class VehicleController {
     @Autowired
     VehicleService vehicleService;
+    @Autowired
+    VehicleRepository vehiclerepository;
     
     @PostMapping("/{businessId}/add-vehicle")
     public ResponseEntity<ResponseModel> addVehicle(@PathVariable Long businessId, @RequestBody VehicleModel vehicle)
@@ -75,7 +78,7 @@ public class VehicleController {
     {
         ResponseModel responseModel= ResponseModel.builder()
                 .status(HttpStatus.OK)
-                .message("vehicle updated")
+                .message("Edit Your vehicle")
                 .data(new Object())
                 .build();
         Optional<Vehicle> fetchedVehicle=vehicleService.edit_details(id);
@@ -91,9 +94,27 @@ public class VehicleController {
 
     }
 @PostMapping("/{businessId}/{vehicle_id}/update-vehicle")
-    public  void updateVehicle(@PathVariable Long businessId, @PathVariable Long vehicle_id,@RequestBody VehicleModel vehicleModel)
+    public  ResponseEntity<ResponseModel> updateVehicle(@PathVariable Long businessId, @PathVariable Long vehicle_id,@RequestBody VehicleModel vehicleModel)
 {
+    ResponseModel responseModel= ResponseModel.builder()
+            .status(HttpStatus.OK)
+            .message("Vehicle Updated Successfully")
+            .data(new Object())
+            .build();
 
-    vehicleService.updateVehicle(businessId,vehicle_id,vehicleModel);
+
+    if(!vehicleService.updateVehicle(businessId,vehicle_id,vehicleModel))
+    {
+
+        responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+        responseModel.setMessage("Failed to update vehicle detail");
+    }
+    else{
+        Vehicle fetchedVehicle=vehiclerepository.findById(vehicle_id).get();
+
+        responseModel.setData(fetchedVehicle);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+
 }
 }

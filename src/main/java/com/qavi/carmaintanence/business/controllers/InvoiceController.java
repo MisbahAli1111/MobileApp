@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 
-@Controller
+@RestController
+@RequestMapping("api/invoice")
 public class InvoiceController {
 
 
