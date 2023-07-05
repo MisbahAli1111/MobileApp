@@ -44,7 +44,7 @@ public class RoleController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
-    @PostMapping("/{roleId}/delete-role")
+    @DeleteMapping("/{roleId}/delete-role")
     public ResponseEntity<ResponseModel> deleteRoles(@PathVariable Long roleId)
     {
         ResponseModel responseModel=ResponseModel.builder()
