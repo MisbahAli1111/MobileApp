@@ -91,4 +91,20 @@ public class BusinessController {
     }
 
 
+    @DeleteMapping("/{Id}/delete-business")
+    public ResponseEntity<ResponseModel> deleteBusinesses(@PathVariable Long Id)
+    {
+        ResponseModel responseModel=ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Business has been Deleted Successfully")
+                .data(new Object())
+                .build();
+        if(!businessService.deleteBusiness(Id))
+        {
+            responseModel.setMessage("Failed To Delete Business");
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
 }

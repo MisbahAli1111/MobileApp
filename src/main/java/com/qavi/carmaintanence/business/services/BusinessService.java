@@ -1,6 +1,7 @@
 package com.qavi.carmaintanence.business.services;
 
 import com.qavi.carmaintanence.business.entities.Business;
+import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import com.qavi.carmaintanence.business.repositories.BusinessRepository;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import com.qavi.carmaintanence.usermanagement.entities.role.Role;
@@ -114,5 +115,22 @@ public class BusinessService {
         }
 
 
+    }
+
+    public boolean deleteBusiness(Long id) {
+        try {
+            Optional<Business> business = businessRepository.findById(id);
+            if (business.isPresent()) {
+                businessRepository.deleteById(id);
+                return true;
+            } else {
+                throw new RecordNotFoundException("Record not found");
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
     }
 }

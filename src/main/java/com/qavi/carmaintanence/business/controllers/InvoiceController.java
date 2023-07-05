@@ -95,5 +95,21 @@ public class InvoiceController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
+    @DeleteMapping("/{Id}/delete-invoice")
+    public ResponseEntity<ResponseModel> deleteInvoices(@PathVariable Long Id)
+    {
+        ResponseModel responseModel=ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Invoice has been Deleted Successfully")
+                .data(new Object())
+                .build();
+        if(!invoiceService.deleteInvoice(Id))
+        {
+            responseModel.setMessage("Failed To Delete Invoice");
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
 
 }

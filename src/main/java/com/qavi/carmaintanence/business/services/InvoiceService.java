@@ -4,6 +4,7 @@ import com.qavi.carmaintanence.business.entities.Invoice;
 import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
 import com.qavi.carmaintanence.business.repositories.invoiceRepository;
+import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -121,5 +122,22 @@ invoiceRepository invoicerepository ;
         List<Invoice> invoices = invoicerepository.findAll();
 
         return invoices;
+    }
+
+    public boolean deleteInvoice(Long id) {
+        try {
+            Optional<Invoice> invoice = invoicerepository.findById(id);
+            if (invoice.isPresent()) {
+                invoicerepository.deleteById(id);
+                return true;
+            } else {
+                throw new RecordNotFoundException("Record not found");
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
     }
 }
