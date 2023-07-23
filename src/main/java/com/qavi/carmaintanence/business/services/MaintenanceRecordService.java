@@ -2,7 +2,9 @@ package com.qavi.carmaintanence.business.services;
 
 import com.qavi.carmaintanence.business.entities.Invoice;
 import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
+import com.qavi.carmaintanence.business.entities.Vehicle;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
+import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,5 +79,22 @@ public class MaintenanceRecordService {
             return false;
         }
 
+    }
+
+    public boolean deleteRecord(Long id) {
+        try {
+            Optional<MaintenanceRecord> record = maintenanceRecordRepository.findById(id);
+            if (record.isPresent()) {
+                maintenanceRecordRepository.deleteById(id);
+                return true;
+            } else {
+                throw new RecordNotFoundException("Record not found");
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
     }
 }

@@ -117,4 +117,22 @@ public class VehicleController {
     return ResponseEntity.status(HttpStatus.OK).body(responseModel);
 
 }
+
+    @DeleteMapping("/{businessId}/{vehicleId}/delete-vehicle")
+    public ResponseEntity<ResponseModel> deleteVehicle(@PathVariable Long businessId,Long vehicleId)
+    {
+        ResponseModel responseModel=ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Vehicle has been Deleted Successfully")
+                .data(new Object())
+                .build();
+        if(!vehicleService.deleteVehicle(businessId,vehicleId))
+        {
+            responseModel.setMessage("Failed To Delete Vehicle");
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
+
 }

@@ -106,4 +106,25 @@ public class VehicleService {
         }
     }
 
+    public boolean deleteVehicle(Long businessId, Long vehicleId) {
+        try {
+            Optional<Business> business = businessRepository.findById(businessId);
+            if (business.isPresent()) {
+                Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
+                if (vehicle.isPresent()) {
+                    vehicleRepository.deleteById(vehicleId);
+                    return true;
+                } else {
+                    throw new RecordNotFoundException("Vehicle not found");
+                }
+            } else {
+                throw new RecordNotFoundException("Business not found");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+
 }

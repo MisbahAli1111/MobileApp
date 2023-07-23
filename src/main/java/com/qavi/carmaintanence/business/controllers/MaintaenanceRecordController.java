@@ -115,4 +115,20 @@ public class MaintaenanceRecordController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
+    @DeleteMapping("/{Id}/delete-records")
+    public ResponseEntity<ResponseModel> deleteRecord(@PathVariable Long Id)
+    {
+        ResponseModel responseModel=ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Record has been Deleted Successfully")
+                .data(new Object())
+                .build();
+        if(!mrs.deleteRecord(Id))
+        {
+            responseModel.setMessage("Failed To Delete Record");
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
 }
