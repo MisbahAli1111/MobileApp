@@ -6,6 +6,7 @@ import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,7 +20,9 @@ public class MaintenanceRecordService {
 
     public boolean addRecord(MaintenanceRecord maintenanceRecord)
     {
+        maintenanceRecord.setMaintanenceDateTime(LocalDateTime.now());
         maintenanceRecordRepository.save(maintenanceRecord);
+
 
         return true;
     }
@@ -41,14 +44,20 @@ public class MaintenanceRecordService {
         if(Objects.nonNull(maintenanceRecord.getService()) &&
                 !"".equals(maintenanceRecord.getService()))
         {
-            maintenanceRecord.setService(maintenanceRecord.getService());
+            foundRecord.setService(maintenanceRecord.getService());
         }
+        if(Objects.nonNull(maintenanceRecord.getMaintanenceDateTime()) &&
+                !"".equals(maintenanceRecord.getMaintanenceDateTime()))
+        {
+            foundRecord.setMaintanenceDateTime(maintenanceRecord.getMaintanenceDateTime());
+        }
+
 
         //Kilometers
         if(Objects.nonNull(maintenanceRecord.getKilometerDriven()) &&
                 !"".equals(maintenanceRecord.getKilometerDriven()))
         {
-            maintenanceRecord.setKilometerDriven(maintenanceRecord.getKilometerDriven());
+            foundRecord.setKilometerDriven(maintenanceRecord.getKilometerDriven());
         }
 
 
@@ -56,12 +65,12 @@ public class MaintenanceRecordService {
         if(Objects.nonNull(maintenanceRecord.getMaintanenceDetail()) &&
                 !"".equals(maintenanceRecord.getMaintanenceDetail()))
         {
-            maintenanceRecord.setMaintanenceDetail(maintenanceRecord.getMaintanenceDetail());
+            foundRecord.setMaintanenceDetail(maintenanceRecord.getMaintanenceDetail());
         }
 
         if(foundRecord != null)
         {
-            maintenanceRecordRepository.save(maintenanceRecord);
+            maintenanceRecordRepository.save(foundRecord);
             return true;
         }
         else {

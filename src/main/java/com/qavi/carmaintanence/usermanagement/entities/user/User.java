@@ -1,6 +1,7 @@
 package com.qavi.carmaintanence.usermanagement.entities.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.qavi.carmaintanence.business.entities.Business;
 import com.qavi.carmaintanence.usermanagement.entities.role.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(orphanRemoval = true)
-    private ProfileImage profileImage;
     private String firstName;
     private String lastName;
     @Column(unique = true)
     private String email;
-    @JsonIgnore
     private String password;
+    @OneToOne(orphanRemoval = true)
+    private ProfileImage profileImage;
+
+    @JsonIgnore
+
     private String authType;
     private boolean enabled;
     private String country;
@@ -51,12 +54,13 @@ public class User {
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
+                    name = "role_id", referencedColumnName = "id")
+    )
     private Set<Role> role;
 
 
-//    @OneToMany
-//    List<Business> ownBusiness;
+    @OneToMany
+    List<Business> ownBusiness;
 
     public User(String firstName, String lastName, String email)
     {

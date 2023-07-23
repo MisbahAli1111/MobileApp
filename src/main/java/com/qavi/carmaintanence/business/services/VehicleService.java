@@ -30,7 +30,9 @@ public class VehicleService {
             Optional<Business> business = businessRepository.findById(businessId);
             if (business.isPresent()) {
                 vehicle.setAssociatedToBusiness(List.of(business.get()));
+
                 Optional<User> owner = userRepository.findById(vehicleModel.getOwnerId());
+
                 if (owner.isPresent()) {
                     vehicle.setCarOwner(owner.get());
                     vehicle.setMake(vehicleModel.getMake());

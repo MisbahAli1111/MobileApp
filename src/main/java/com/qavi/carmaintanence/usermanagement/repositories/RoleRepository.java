@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    @Query(value = "Select * from role where name=?1", nativeQuery = true)
+    @Query(value = "Select * from role where name=?1 limit 1" , nativeQuery = true)
     Role searchByName(String name);
 
 

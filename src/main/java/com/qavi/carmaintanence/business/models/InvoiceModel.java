@@ -1,33 +1,22 @@
-package com.qavi.carmaintanence.business.entities;
+package com.qavi.carmaintanence.business.models;
 
-import com.qavi.carmaintanence.usermanagement.entities.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-
-@Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Invoice {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class InvoiceModel {
     Long id;
 
 
-    @OneToOne
-    private MaintenanceRecord maintenanceRecord;
-
-    @ManyToMany
-
-    private List<User> user;
 
     private Long maintainedById;
 
@@ -56,4 +45,3 @@ public class Invoice {
     private  Long total;
 
 }
-

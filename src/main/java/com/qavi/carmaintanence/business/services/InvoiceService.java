@@ -25,7 +25,9 @@ invoiceRepository invoicerepository ;
        MaintenanceRecord foundRecord =maintenancerecordrepository.findById(id).get();
        if(foundRecord !=null )
        {
+
            invoicerepository.save(invoice);
+           System.out.println(foundRecord.getId());
         return true;
        }
        else {
@@ -35,73 +37,74 @@ invoiceRepository invoicerepository ;
     }
 
     public boolean editInvoice(Invoice invoice, Long invoiceId) {
-            MaintenanceRecord maintenanceRecord = maintenancerecordrepository.findById(invoiceId).get();
+           // MaintenanceRecord maintenanceRecord = maintenancerecordrepository.findById(invoiceId).get();
+            Invoice invoice1=invoicerepository.findById(invoiceId).get();
             //InvoiceDue
             if(Objects.nonNull(invoice.getInvoiceDue()) &&
                     !"".equals(invoice.getInvoiceDue()))
             {
-                invoice.setInvoiceDue(invoice.getInvoiceDue());
+                invoice1.setInvoiceDue(invoice.getInvoiceDue());
             }
             //VehicleId
             if(Objects.nonNull(invoice.getVehicleId()) &&
                     !"".equals(invoice.getVehicleId()))
             {
-                invoice.setVehicleId(invoice.getVehicleId());
+                invoice1.setVehicleId(invoice.getVehicleId());
             }
             //Date
             if(Objects.nonNull(invoice.getDate()) &&
                     !"".equals(invoice.getDate()))
             {
-                invoice.setDate(invoice.getDate());
+                invoice1.setDate(invoice.getDate());
             }
             //Description
             if(Objects.nonNull(invoice.getDescription()) &&
                     !"".equals(invoice.getDescription()))
             {
-                invoice.setDescription(invoice.getDescription());
+                invoice1.setDescription(invoice.getDescription());
             }
             //Quantity
             if(Objects.nonNull(invoice.getQty()) &&
                     !"".equals(invoice.getQty()))
             {
-                invoice.setQty(invoice.getQty());
+                invoice1.setQty(invoice.getQty());
             }
             //Rate
             if(Objects.nonNull(invoice.getRate()) &&
                     !"".equals(invoice.getRate()))
             {
-                invoice.setRate(invoice.getRate());
+                invoice1.setRate(invoice.getRate());
             }
             //DiscountName
             if(Objects.nonNull(invoice.getDiscountName()) &&
                     !"".equals(invoice.getDiscountName()))
             {
-                invoice.setDiscountName(invoice.getDiscountName());
+                invoice1.setDiscountName(invoice.getDiscountName());
             }
             //DiscountRate
             if(Objects.nonNull(invoice.getDiscountRate()) &&
                     !"".equals(invoice.getDiscountRate()))
             {
-                invoice.setDiscountRate(invoice.getDiscountRate());
+                invoice1.setDiscountRate(invoice.getDiscountRate());
             }
             //TaxName
             if(Objects.nonNull(invoice.getTaxName()) &&
                     !"".equals(invoice.getTaxName()))
             {
-                invoice.setTaxName(invoice.getTaxName());
+                invoice1.setTaxName(invoice.getTaxName());
             }
             //TaxRate
             if(Objects.nonNull(invoice.getTaxRate()) &&
                     !"".equals(invoice.getTaxRate()))
             {
-                invoice.setTaxRate(invoice.getTaxRate());
+                invoice1.setTaxRate(invoice.getTaxRate());
             }
 
             //Unchangable entities not confirmed:  status, Maintained by id and user.
 
-            if(maintenanceRecord !=null )
+            if(invoice1 !=null )
             {
-                invoicerepository.save(invoice);
+                invoicerepository.save(invoice1);
                 return true;
             }
             else {
@@ -117,7 +120,7 @@ invoiceRepository invoicerepository ;
         return invoice;
     }
 
-    public List<Invoice> getAllInvoices(Invoice invoice) {
+    public List<Invoice> getAllInvoices() {
         List<Invoice> invoices = invoicerepository.findAll();
 
         return invoices;

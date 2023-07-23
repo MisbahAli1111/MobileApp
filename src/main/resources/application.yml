@@ -1,5 +1,6 @@
 spring:
   main:
+
     allow-circular-references: true
     lazy-initialization: false
   application:
