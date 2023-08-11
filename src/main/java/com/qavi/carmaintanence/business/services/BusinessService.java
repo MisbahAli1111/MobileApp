@@ -61,7 +61,7 @@ public class BusinessService {
         List<Business> fetchedBusiness=businessRepository.findAllByOwnerId(Long.valueOf(id));
         return fetchedBusiness;
     }
-    public List<Business> getAllBusiness(Business business) {
+    public List<Business> getAllBusiness() {
         List <Business> businesses=businessRepository.findAll();
         return businesses;
     }

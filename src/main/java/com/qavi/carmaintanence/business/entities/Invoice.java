@@ -26,7 +26,6 @@ public class Invoice {
     private MaintenanceRecord maintenanceRecord;
 
     @ManyToMany
-
     private List<User> user;
 
     private Long maintainedById;

@@ -1,7 +1,12 @@
 package com.qavi.carmaintanence.business.controllers;
 
 import com.qavi.carmaintanence.business.entities.Business;
+import com.qavi.carmaintanence.business.entities.Invoice;
+import com.qavi.carmaintanence.business.models.BusinessModel;
+import com.qavi.carmaintanence.business.models.InvoiceModel;
 import com.qavi.carmaintanence.business.services.BusinessService;
+import com.qavi.carmaintanence.business.utils.BusinessConverter;
+import com.qavi.carmaintanence.business.utils.InvoiceConverter;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,33 +41,38 @@ public class BusinessController {
     }
     @GetMapping("/get-my-businesses")
     @PreAuthorize("hasRole('OWNER')")
-    public ResponseEntity<ResponseModel> getBusinesses(@AuthenticationPrincipal String id)
-    {
+    public ResponseEntity<ResponseModel> getBusinesses(@AuthenticationPrincipal String id) {
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Businesses Fetched Successfully")
-                .data(new Object())
+                .data(new ArrayList<>()) // Initialize an empty ArrayList
                 .build();
-        List<Business> myBusinesses=businessService.getMyBusinesses(id);
-        if(myBusinesses.isEmpty() || myBusinesses==null)
-        {
+
+        List<Business> myBusinesses = businessService.getMyBusinesses(id);
+        List<BusinessModel> convertedList = new ArrayList<>();
+
+        if (myBusinesses.size() > 0) {
+            for (Business business : myBusinesses) {
+                convertedList.add(BusinessConverter.convertBusinessToBusinessModel(business));
+            }
+            responseModel.setData(convertedList);
+        } else {
             responseModel.setStatus(HttpStatus.NOT_FOUND);
-            responseModel.setMessage("No Bussiness Found");
+            responseModel.setMessage("No Business Found");
         }
-        else {
-            responseModel.setData(myBusinesses);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+        return ResponseEntity.status(responseModel.getStatus()).body(responseModel);
     }
+
+
     @GetMapping("/get-business")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    public ResponseEntity<ResponseModel> getAllBusiness(@PathVariable Business business){
+    public ResponseEntity<ResponseModel> getAllBusiness(){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Business Found Successfully")
                 .data(new Object())
                 .build();
-        List<Business> myBusinesses=businessService.getAllBusiness(business);
+        List<Business> myBusinesses=businessService.getAllBusiness();
         if(myBusinesses.size()>0)
         {
             responseModel.setData(myBusinesses);

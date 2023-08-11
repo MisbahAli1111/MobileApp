@@ -53,7 +53,6 @@ public class MaintaenanceRecordController {
         {
                        responseModel.setStatus(HttpStatus.NOT_FOUND);
 
-
                  responseModel.setMessage("No record Found");
             return new ResponseEntity<>(convertedList, HttpStatus.NOT_FOUND);
         }
