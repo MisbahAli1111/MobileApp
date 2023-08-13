@@ -10,6 +10,8 @@ public class ConverterModels {
         userDataModel.setFirstName(user.getFirstName());
         userDataModel.setLastName(user.getLastName());
         userDataModel.setEmail(user.getEmail());
+        userDataModel.setEmail(user.getCnicNumber());
+
         userDataModel.setId(user.getId());
         userDataModel.setRoles(user.getRole());
         userDataModel.setAuthType(user.getAuthType());
