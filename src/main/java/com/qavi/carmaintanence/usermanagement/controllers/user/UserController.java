@@ -51,6 +51,12 @@ public class UserController {
                 .message("User created successfully")
                 .data(new Object())
                 .build();
+
+        if (userService.existsByEmail(user.getEmail())) {
+            responseModel.setStatus(HttpStatus.BAD_REQUEST);
+            responseModel.setMessage("Email already in use");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseModel);
+        }
         if(!userService.createUser(user,type))
         {
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);

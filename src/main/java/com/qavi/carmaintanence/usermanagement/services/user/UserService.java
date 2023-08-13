@@ -169,4 +169,8 @@ public class UserService implements UserDetailsService {
         user.setProfileImage(savedImg);
         userRepository.save(user);
     }
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
 }
