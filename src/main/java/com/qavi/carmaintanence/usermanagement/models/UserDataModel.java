@@ -17,6 +17,7 @@ public class UserDataModel {
     private String lastName;
     private String email;
     private String cnicNumber;
+    private String phone_number;
     private Set<Role> roles;
     private String authType;
     private boolean enabled;

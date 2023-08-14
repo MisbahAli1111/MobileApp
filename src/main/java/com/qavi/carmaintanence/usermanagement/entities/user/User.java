@@ -31,13 +31,13 @@ public class User {
     private String password;
     @OneToOne(orphanRemoval = true)
     private ProfileImage profileImage;
-
+    private String phoneNumber;
     @JsonIgnore
 
     private String authType;
     private boolean enabled;
     private String country;
-    private String phoneNumber;
+
     private String deviceId;
     private String address;
     private String fcmToken;

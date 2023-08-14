@@ -130,6 +130,9 @@ public class UserService implements UserDetailsService {
             User user = userRepository.findById(id).get();
             user.setFirstName(userDataModel.getFirstName());
             user.setLastName(userDataModel.getLastName());
+            user.setEmail(userDataModel.getEmail());
+            user.setCnicNumber(userDataModel.getCnicNumber());
+            user.setPhoneNumber(userDataModel.getPhone_number());
             userRepository.save(user);
         } catch (Exception e) {
             return false;
