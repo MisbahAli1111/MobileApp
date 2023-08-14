@@ -1,9 +1,12 @@
 package com.qavi.carmaintanence.usermanagement.services.user;
 
+import com.qavi.carmaintanence.business.entities.Business;
+import com.qavi.carmaintanence.business.repositories.BusinessRepository;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import com.qavi.carmaintanence.usermanagement.constants.UserConstants;
 import com.qavi.carmaintanence.usermanagement.entities.permission.PermissionAssigned;
 import com.qavi.carmaintanence.usermanagement.entities.role.Role;
+import com.qavi.carmaintanence.usermanagement.entities.user.PasswordUpdate;
 import com.qavi.carmaintanence.usermanagement.entities.user.ProfileImage;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.models.RoleModel;
@@ -32,6 +35,9 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
+
+
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -124,6 +130,36 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public boolean createEmployee(User user, String type, String businessId) {
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRegisteredAt(LocalDateTime.now());
+            user.setAuthType(UserConstants.LOCAL);
+            user.setEnabled(false);
+
+            if (type.equalsIgnoreCase("employee")) {
+                user.setRole(Set.of(roleRepository.searchByName("ROLE_EMPLOYEE"), roleRepository.searchByName("ROLE_CUSTOMER")));
+            }
+
+            user.setEmailNotificationEnabled(true);
+
+            User savedUser = userRepository.save(user);
+
+            Long userId = savedUser.getId();
+
+            Long businessIdLong = Long.parseLong(businessId);
+
+            userRepository.insertEmployeeIntoBusiness(businessIdLong, userId);
+
+            return true;
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+
     //UpdateUser
     public Boolean updateUser(UserDataModel userDataModel, Long id) {
         try {
@@ -131,6 +167,7 @@ public class UserService implements UserDetailsService {
             user.setFirstName(userDataModel.getFirstName());
             user.setLastName(userDataModel.getLastName());
             user.setEmail(userDataModel.getEmail());
+            user.setCountryCode(userDataModel.getCountryCode());
             user.setCnicNumber(userDataModel.getCnicNumber());
             user.setPhoneNumber(userDataModel.getPhone_number());
             userRepository.save(user);
@@ -175,5 +212,25 @@ public class UserService implements UserDetailsService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+
+
+
+
+
+    public boolean updatePassword(PasswordUpdate passwordUpdate, Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user != null && passwordEncoder.matches(passwordUpdate.getOldPassword(), user.getPassword())) {
+            String newEncodedPassword = passwordEncoder.encode(passwordUpdate.getNewPassword());
+            user.setPassword(newEncodedPassword);
+            userRepository.save(user);
+            return true;
+        }
+
+        return false;
+    }
+
+
 
 }

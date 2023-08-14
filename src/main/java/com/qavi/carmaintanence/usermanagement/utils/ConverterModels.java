@@ -12,6 +12,7 @@ public class ConverterModels {
         userDataModel.setEmail(user.getEmail());
         userDataModel.setCnicNumber(user.getCnicNumber());
         userDataModel.setPhone_number(user.getPhoneNumber());
+        userDataModel.setCountryCode(user.getCountryCode());
 
         userDataModel.setId(user.getId());
         userDataModel.setRoles(user.getRole());

@@ -35,4 +35,6 @@ public class Business {
     @JsonIgnore
     @OneToMany
     private List<User> employee;
+
+
 }

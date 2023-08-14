@@ -26,6 +26,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String cnicNumber;
+    private String countryCode;
     @Column(unique = true)
     private String email;
     private String password;

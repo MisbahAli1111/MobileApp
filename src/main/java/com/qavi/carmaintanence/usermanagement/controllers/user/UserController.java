@@ -1,5 +1,6 @@
 package com.qavi.carmaintanence.usermanagement.controllers.user;
 
+import com.qavi.carmaintanence.usermanagement.entities.user.PasswordUpdate;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
 import com.qavi.carmaintanence.usermanagement.models.UserDataModel;
@@ -65,6 +66,25 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
+    @PostMapping("/register/{type}/{business_id}")
+    public  ResponseEntity<ResponseModel> createUserEmployee(@RequestBody User user,@PathVariable String type,@PathVariable String business_id){
+
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("User created successfully")
+                .data(new Object())
+                .build();
+
+        if(!userService.createEmployee(user,type,business_id))
+        {
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+            responseModel.setMessage("Failed to create user");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
+
     //Update User
     @PutMapping("/update-user/{id}")
     public ResponseEntity<ResponseModel> updateUser(@RequestBody UserDataModel userDataModel, @PathVariable Long id) {
@@ -87,6 +107,26 @@ public class UserController {
         Boolean deletedUser = userService.deleteUser(id);
         return new ResponseEntity<>(deletedUser, HttpStatus.OK);
     }
+
+
+    // Change Password
+    @PutMapping("/update-password/{id}")
+    public ResponseEntity<ResponseModel> editPassword(@RequestBody PasswordUpdate passwordUpdate, @PathVariable Long id) {
+
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Password updated successfully")
+                .data(new Object())
+                .build();
+
+        if (!userService.updatePassword(passwordUpdate, id)) {
+            responseModel.setMessage("Failed to update password");
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
 
 
 }

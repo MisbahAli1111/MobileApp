@@ -2,7 +2,9 @@ package com.qavi.carmaintanence.usermanagement.repositories;
 
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -20,5 +22,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     boolean existsByEmail(String email);
+
+    @Modifying
+    @Query(value = "INSERT INTO business_employee (business_id, employee_id) VALUES (:businessId, :userId)", nativeQuery = true)
+    void insertEmployeeIntoBusiness(@Param("businessId") Long businessId, @Param("userId") Long userId);
+
+
+
 }
 
