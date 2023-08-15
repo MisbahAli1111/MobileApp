@@ -15,6 +15,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "Select * from users where email=?1", nativeQuery = true)
     User getUser(String email);
 
+
+    @Query(value = "SELECT COUNT(*) FROM business_employee WHERE business_id = ?1", nativeQuery = true)
+    int getEmployeeCount(Long businessId);
+
     @Query(value = "select * from users where email=?1 and auth_type=?2", nativeQuery = true)
     Optional<User> findByEmail(String email, String authType);
 

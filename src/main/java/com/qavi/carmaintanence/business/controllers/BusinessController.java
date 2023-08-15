@@ -86,6 +86,8 @@ public class BusinessController {
     }
 
 
+
+
     @PutMapping("/edit-business")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
     public ResponseEntity<ResponseModel> editBusiness(@RequestBody Business business, @PathVariable Long id){

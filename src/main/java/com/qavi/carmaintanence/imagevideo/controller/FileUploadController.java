@@ -105,6 +105,7 @@ public class FileUploadController {
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
     @GetMapping("{filekey:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable String filekey) {
         Resource file = fileUploadService.loadByFileKey(filekey);

@@ -43,8 +43,47 @@ public class UserController {
         return new ResponseEntity<UserDataModel>(userDataModel, HttpStatus.OK);
     }
 
-    //PostUser
+//    @PostMapping("/set-profile-image/{image_id}/{user_id}")
+//    public ResponseEntity<ResponseModel> setUserProfileImage(
+//            @PathVariable Long image_id,
+//            @PathVariable Long user_id) {
+//
+//        ResponseModel responseModel = ResponseModel.builder()
+//                .status(HttpStatus.OK)
+//                .message("Profile Image Set Successfully")
+//                .data(new Object())
+//                .build();
+//
+//        if (!userService.saveProfileImage(image_id, user_id)) {
+//            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+//            responseModel.setMessage("Failed to set Profile Image");
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+//    }
 
+
+    @GetMapping("/get-employees/{business_id}")
+    public ResponseEntity<ResponseModel> getEmployees(@PathVariable Long business_id) {
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Employee count retrieved successfully")
+                .data(userService.getEmployeeCount(business_id))
+                .build();
+
+        if (responseModel.getData() == null || (int) responseModel.getData() == 0) {
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+            responseModel.setMessage("No employees found");
+        }
+
+        return ResponseEntity.status(responseModel.getStatus()).body(responseModel);
+    }
+
+
+
+
+
+    //Create User
     @PostMapping("/register/{type}")
     public ResponseEntity<ResponseModel> createUser(@RequestBody User user,@PathVariable String type) {
         ResponseModel responseModel = ResponseModel.builder()

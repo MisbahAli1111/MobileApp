@@ -30,6 +30,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.hibernate.criterion.Projections.count;
+
 @Service("userDetailsService")
 @Transactional
 public class UserService implements UserDetailsService {
@@ -102,6 +104,8 @@ public class UserService implements UserDetailsService {
         return users;
     }
 
+
+
     //Create User
     public boolean createUser(User user,String type) {
         try{
@@ -130,6 +134,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    // Create User Employee
     public boolean createEmployee(User user, String type, String businessId) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -209,6 +214,7 @@ public class UserService implements UserDetailsService {
         user.setProfileImage(savedImg);
         userRepository.save(user);
     }
+
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
@@ -233,4 +239,8 @@ public class UserService implements UserDetailsService {
 
 
 
+
+    public Object getEmployeeCount(Long businessId) {
+        return userRepository.getEmployeeCount(businessId);
+    }
 }
