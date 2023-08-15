@@ -11,5 +11,5 @@ public class VehicleModel {
     String registrationNumber;
     String color;
     double kilometerDriven;
-    Long ownerId;
+    String ownerId;
 }

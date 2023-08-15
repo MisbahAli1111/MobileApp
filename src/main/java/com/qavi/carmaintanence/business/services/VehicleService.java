@@ -31,9 +31,9 @@ public class VehicleService {
             if (business.isPresent()) {
                 vehicle.setAssociatedToBusiness(List.of(business.get()));
 
-                Optional<User> owner = userRepository.findById(vehicleModel.getOwnerId());
-
-                if (owner.isPresent()) {
+                Optional<User> owner = userRepository.findIdByFirstName(vehicleModel.getOwnerId());
+                if (!owner.isPresent()) {
+                    userRepository.insertVehicleCustomers(vehicleModel.getOwnerId());
                     vehicle.setCarOwner(owner.get());
                     vehicle.setMake(vehicleModel.getMake());
                     vehicle.setColor(vehicleModel.getColor());
@@ -46,6 +46,7 @@ public class VehicleService {
                     return true;
                 } else {
                     throw new RecordNotFoundException("User not found");
+
                 }
             } else {
                 throw new RecordNotFoundException("Business not found");
@@ -75,7 +76,7 @@ public class VehicleService {
         try {
             Optional<Business> business = businessRepository.findById(businessId);
             if (business.isPresent()) {
-                Optional<User> owner = userRepository.findById(vehicleModel.getOwnerId());
+                Optional<User> owner = userRepository.findIdByFirstName(vehicleModel.getOwnerId());
                 if (owner.isPresent()) {
 
                     Vehicle updatableVehicle = vehicleRepository.findById(vehicleId).get();

@@ -25,6 +25,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Long id);
 
 
+    @Query(value = "select * from users where first_name = ?1", nativeQuery = true)
+    Optional<User> findIdByFirstName(String firstName);
+
+
+    @Query(value = "insert into users(first_name) VALUES(:name)",nativeQuery = true)
+    void insertVehicleCustomers(@Param("name") String name);
+
     boolean existsByEmail(String email);
 
     @Modifying
