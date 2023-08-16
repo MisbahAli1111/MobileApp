@@ -29,7 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findIdByFirstName(String firstName);
 
 
-    @Query(value = "insert into users(first_name) VALUES(:name)",nativeQuery = true)
+    @Query(value = "insert into users(first_name,email_notification_enabled,enabled) VALUES(:name,false,true)",nativeQuery = true)
     void insertVehicleCustomers(@Param("name") String name);
 
     boolean existsByEmail(String email);

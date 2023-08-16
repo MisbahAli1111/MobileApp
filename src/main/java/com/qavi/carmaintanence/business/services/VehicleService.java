@@ -32,7 +32,7 @@ public class VehicleService {
                 vehicle.setAssociatedToBusiness(List.of(business.get()));
 
                 Optional<User> owner = userRepository.findIdByFirstName(vehicleModel.getOwnerId());
-                if (!owner.isPresent()) {
+                if (owner.isPresent()) {
                     userRepository.insertVehicleCustomers(vehicleModel.getOwnerId());
                     vehicle.setCarOwner(owner.get());
                     vehicle.setMake(vehicleModel.getMake());
@@ -46,6 +46,7 @@ public class VehicleService {
                     return true;
                 } else {
                     throw new RecordNotFoundException("User not found");
+                    
 
                 }
             } else {
