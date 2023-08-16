@@ -43,26 +43,8 @@ public class UserController {
         return new ResponseEntity<UserDataModel>(userDataModel, HttpStatus.OK);
     }
 
-//    @PostMapping("/set-profile-image/{image_id}/{user_id}")
-//    public ResponseEntity<ResponseModel> setUserProfileImage(
-//            @PathVariable Long image_id,
-//            @PathVariable Long user_id) {
-//
-//        ResponseModel responseModel = ResponseModel.builder()
-//                .status(HttpStatus.OK)
-//                .message("Profile Image Set Successfully")
-//                .data(new Object())
-//                .build();
-//
-//        if (!userService.saveProfileImage(image_id, user_id)) {
-//            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
-//            responseModel.setMessage("Failed to set Profile Image");
-//        }
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
-//    }
 
-
+    // get total employees count
     @GetMapping("/get-employees/{business_id}")
     public ResponseEntity<ResponseModel> getEmployees(@PathVariable Long business_id) {
         ResponseModel responseModel = ResponseModel.builder()

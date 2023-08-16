@@ -21,6 +21,7 @@ public class Vehicle {
     @Column(unique = true)
     String registrationNumber;
     String color;
+
     @ManyToOne
     User carOwner;
     @ManyToMany(fetch = FetchType.EAGER)

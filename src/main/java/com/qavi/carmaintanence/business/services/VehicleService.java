@@ -31,9 +31,8 @@ public class VehicleService {
             if (business.isPresent()) {
                 vehicle.setAssociatedToBusiness(List.of(business.get()));
 
-                Optional<User> owner = userRepository.findIdByFirstName(vehicleModel.getOwnerId());
+                Optional<User> owner = userRepository.findById(vehicleModel.getOwnerId());
                 if (owner.isPresent()) {
-                    userRepository.insertVehicleCustomers(vehicleModel.getOwnerId());
                     vehicle.setCarOwner(owner.get());
                     vehicle.setMake(vehicleModel.getMake());
                     vehicle.setColor(vehicleModel.getColor());
@@ -44,10 +43,21 @@ public class VehicleService {
                     vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
                     vehicleRepository.save(vehicle);
                     return true;
-                } else {
-                    throw new RecordNotFoundException("User not found");
-                    
-
+                }
+                else {
+//                  userRepository.insertVehicleCustomers(vehicleModel.getOwnerId());
+//                    Optional<User> owner1 = userRepository.findById(vehicleModel.getOwnerId());
+//
+//                    vehicle.setCarOwner(owner1.get());
+//                    vehicle.setMake(vehicleModel.getMake());
+//                    vehicle.setColor(vehicleModel.getColor());
+//                    vehicle.setModel(vehicleModel.getModel());
+//                    vehicle.setYear(vehicleModel.getYear());
+//                    vehicle.setType(vehicleModel.getType());
+//                    vehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
+//                    vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
+//                    vehicleRepository.save(vehicle);
+                    return true;
                 }
             } else {
                 throw new RecordNotFoundException("Business not found");
@@ -77,7 +87,7 @@ public class VehicleService {
         try {
             Optional<Business> business = businessRepository.findById(businessId);
             if (business.isPresent()) {
-                Optional<User> owner = userRepository.findIdByFirstName(vehicleModel.getOwnerId());
+                Optional<User> owner = userRepository.findById(vehicleModel.getOwnerId());
                 if (owner.isPresent()) {
 
                     Vehicle updatableVehicle = vehicleRepository.findById(vehicleId).get();
