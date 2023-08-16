@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/users")
@@ -35,13 +36,10 @@ public class UserController {
     }
 
     @GetMapping("/customer")
-    public ResponseEntity<List<UserDataModel>> findCustomer() {
-        List<User> users = userService.findCustomer();
-        List<UserDataModel> convertedList = new ArrayList<>();
-        for (User user : users) {
-            convertedList.add(ConverterModels.convertUserToUserDataModel(user));
-        }
-        return new ResponseEntity<List<UserDataModel>>(convertedList, HttpStatus.OK);
+    public ResponseEntity<List<Map<String,Object>>> findCustomer() {
+        var users = userService.findCustomer();
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 

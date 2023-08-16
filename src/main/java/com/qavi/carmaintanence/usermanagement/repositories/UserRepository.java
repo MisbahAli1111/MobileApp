@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -27,7 +28,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query(value = "SELECT u.id, u.first_name, u.last_name  FROM users u INNER JOIN role_assigned ra ON u.id = ra.user_id WHERE ra.role_id = 2; ", nativeQuery = true)
-    List<User> findCustomers();
+    List<Map<String,Object>> findCustomers();
 
 
     @Query(value = "insert into users(first_name,email_notification_enabled,enabled) VALUES(:name,false,true)",nativeQuery = true)

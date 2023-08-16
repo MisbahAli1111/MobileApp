@@ -4,12 +4,18 @@ import com.qavi.carmaintanence.business.entities.Vehicle;
 import com.qavi.carmaintanence.business.models.VehicleModel;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.services.VehicleService;
+import com.qavi.carmaintanence.business.utils.BusinessConverter;
+import com.qavi.carmaintanence.business.utils.VehicleConverter;
+import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
+import com.qavi.carmaintanence.usermanagement.models.UserDataModel;
+import com.qavi.carmaintanence.usermanagement.utils.ConverterModels;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,24 +43,29 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
     @GetMapping("/{businessId}/get-all-vehicles")
-    public ResponseEntity<ResponseModel> getAllVehicles(@PathVariable Long businessId)
-    {
+    public ResponseEntity<ResponseModel> getAllVehicles(@PathVariable Long businessId) {
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Vehicles Fetched Successfully")
                 .data(new Object())
                 .build();
-        List<Vehicle> vehicles=vehicleService.getAllVehiclesOfBusiness(businessId);
-        if(vehicles.size()>0)
-        {
-            responseModel.setData(vehicles);
-        }
-        else {
+
+        List<Vehicle> vehicles = vehicleService.getAllVehiclesOfBusiness(businessId);
+        List<VehicleModel> convertedList = new ArrayList<>();
+
+        if (!vehicles.isEmpty()) {
+            for (Vehicle vehicle : vehicles) {
+                convertedList.add(VehicleConverter.convertVehicleToVehicleModel(vehicle));
+            }
+            responseModel.setData(convertedList);
+        } else {
             responseModel.setStatus(HttpStatus.NOT_FOUND);
             responseModel.setMessage("Vehicles not found");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+
+        return ResponseEntity.status(responseModel.getStatus()).body(responseModel);
     }
+
     @GetMapping("/{vehicleId}")
     public ResponseEntity<ResponseModel> getOneVehicle(@PathVariable Long vehicleId)
     {
@@ -91,7 +102,6 @@ public class VehicleController {
             responseModel.setData(fetchedVehicle.get());
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
-
     }
 @PostMapping("/{businessId}/{vehicle_id}/update-vehicle")
     public  ResponseEntity<ResponseModel> updateVehicle(@PathVariable Long businessId, @PathVariable Long vehicle_id,@RequestBody VehicleModel vehicleModel)

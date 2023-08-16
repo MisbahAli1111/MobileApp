@@ -105,9 +105,9 @@ public class UserService implements UserDetailsService {
     }
 
     //get customers
-    public List<User> findCustomer()
+    public List<Map<String,Object>> findCustomer()
     {
-        List<User> users = userRepository.findCustomers();
+         var users = userRepository.findCustomers();
         return users;
     }
 
