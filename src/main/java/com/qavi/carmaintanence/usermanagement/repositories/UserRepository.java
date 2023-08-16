@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,8 +26,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Long id);
 
 
-    @Query(value = "select * from users where first_name = ?1", nativeQuery = true)
-    Optional<User> findIdByFirstName(String firstName);
+    @Query(value = "SELECT u.id, u.first_name, u.last_name  FROM users u INNER JOIN role_assigned ra ON u.id = ra.user_id WHERE ra.role_id = 2; ", nativeQuery = true)
+    List<User> findCustomers();
 
 
     @Query(value = "insert into users(first_name,email_notification_enabled,enabled) VALUES(:name,false,true)",nativeQuery = true)

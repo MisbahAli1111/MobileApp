@@ -104,6 +104,12 @@ public class UserService implements UserDetailsService {
         return users;
     }
 
+    //get customers
+    public List<User> findCustomer()
+    {
+        List<User> users = userRepository.findCustomers();
+        return users;
+    }
 
 
     //Create User

@@ -34,6 +34,16 @@ public class UserController {
         return new ResponseEntity<List<UserDataModel>>(convertedList, HttpStatus.OK);
     }
 
+    @GetMapping("/customer")
+    public ResponseEntity<List<UserDataModel>> findCustomer() {
+        List<User> users = userService.findCustomer();
+        List<UserDataModel> convertedList = new ArrayList<>();
+        for (User user : users) {
+            convertedList.add(ConverterModels.convertUserToUserDataModel(user));
+        }
+        return new ResponseEntity<List<UserDataModel>>(convertedList, HttpStatus.OK);
+    }
+
 
     //Get User By Id
     @GetMapping("/{id}")
