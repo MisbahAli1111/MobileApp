@@ -14,9 +14,14 @@ public class VehicleConverter {
         vehicleModel.setYear(vehicle.getYear());
         vehicleModel.setKilometerDriven(vehicle.getKilometerDriven());
         vehicleModel.setRegistrationNumber(vehicle.getRegistrationNumber());
-        vehicleModel.setOwnerId(vehicle.getId());
-//        businessModel.setTotal(business.getTotal());
-//        businessModel.setDescription(business.getDescription());
+        vehicleModel.setId(vehicle.getId());
+        vehicleModel.setFirstName(vehicle.getCarOwner().getFirstName());
+        vehicleModel.setLastName(vehicle.getCarOwner().getLastName());
+        vehicleModel.setPhoneNumber(vehicle.getCarOwner().getPhoneNumber());
+        vehicleModel.setOwnerId(vehicle.getCarOwner().getId());
+
+
+        //        businessModel.setDescription(business.getDescription());
 //        businessModel.setDiscountName(business.getDiscountName());
 //        businessModel.setTaxName(business.getTaxName());
 //        businessModel.setTaxRate(business.getTaxRate());
