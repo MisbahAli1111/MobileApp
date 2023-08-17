@@ -27,12 +27,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Long id);
 
 
-    @Query(value = "SELECT u.id, u.first_name, u.last_name  FROM users u INNER JOIN role_assigned ra ON u.id = ra.user_id WHERE ra.role_id = 2; ", nativeQuery = true)
-    List<Map<String,Object>> findCustomers();
+    @Query(value = "SELECT u.id, u.first_name, u.last_name FROM users u INNER JOIN business_customer b ON u.id = b.customer_id WHERE b.business_id = ?1", nativeQuery = true)
+    List<Map<String, Object>> findCustomers(Long businessId);
 
 
-    @Query(value = "insert into users(first_name,email_notification_enabled,enabled) VALUES(:name,false,true)",nativeQuery = true)
-    void insertVehicleCustomers(@Param("name") String name);
+
+//    @Query(value = "insert into users(first_name,email_notification_enabled,enabled) VALUES(:name,false,true)",nativeQuery = true)
+//    void insertVehicleCustomers(@Param("name") String name);
 
     boolean existsByEmail(String email);
 
@@ -41,6 +42,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void insertEmployeeIntoBusiness(@Param("businessId") Long businessId, @Param("userId") Long userId);
 
 
+    @Modifying
+    @Query(value = "INSERT INTO business_customer(business_id, customer_id) VALUES (:businessId, :userId)", nativeQuery = true)
+    void insertCustomerIntoBusiness(@Param("businessId") Long businessId, @Param("userId") Long userId);
 
 }
 

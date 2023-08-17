@@ -105,9 +105,9 @@ public class UserService implements UserDetailsService {
     }
 
     //get customers
-    public List<Map<String,Object>> findCustomer()
+    public List<Map<String,Object>> findCustomer(Long businessId)
     {
-         var users = userRepository.findCustomers();
+         var users = userRepository.findCustomers(businessId);
         return users;
     }
 
@@ -170,6 +170,35 @@ public class UserService implements UserDetailsService {
         }
     }
 
+//    create user Customer
+    public boolean createCustomer(User user, String type, String businessId) {
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRegisteredAt(LocalDateTime.now());
+            user.setAuthType(UserConstants.LOCAL);
+            user.setEnabled(false);
+
+            if (type.equalsIgnoreCase("customer")) {
+                user.setRole(Set.of(roleRepository.searchByName("ROLE_CUSTOMER")));
+            }
+
+            user.setEmailNotificationEnabled(true);
+
+            User savedUser = userRepository.save(user);
+
+            Long userId = savedUser.getId();
+
+            Long businessIdLong = Long.parseLong(businessId);
+
+            userRepository.insertCustomerIntoBusiness(businessIdLong, userId);
+
+            return true;
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
 
     //UpdateUser
     public Boolean updateUser(UserDataModel userDataModel, Long id) {

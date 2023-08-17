@@ -35,9 +35,9 @@ public class UserController {
         return new ResponseEntity<List<UserDataModel>>(convertedList, HttpStatus.OK);
     }
 
-    @GetMapping("/customer")
-    public ResponseEntity<List<Map<String,Object>>> findCustomer() {
-        var users = userService.findCustomer();
+    @GetMapping("/get-customer/{businessId}")
+    public ResponseEntity<List<Map<String,Object>>> findCustomer(@PathVariable Long businessId) {
+        var users = userService.findCustomer(businessId);
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -96,7 +96,7 @@ public class UserController {
     }
 
     @PostMapping("/register/{type}/{business_id}")
-    public  ResponseEntity<ResponseModel> createUserEmployee(@RequestBody User user,@PathVariable String type,@PathVariable String business_id){
+    public  ResponseEntity<ResponseModel> createUserEmployeeOrCustomer(@RequestBody User user,@PathVariable String type,@PathVariable String business_id){
 
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
@@ -104,14 +104,40 @@ public class UserController {
                 .data(new Object())
                 .build();
 
-        if(!userService.createEmployee(user,type,business_id))
-        {
-            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
-            responseModel.setMessage("Failed to create user");
+        if(type.equalsIgnoreCase("employee")) {
+            if (!userService.createEmployee(user, type, business_id)) {
+                responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+                responseModel.setMessage("Failed to create user");
+            }
+        }
+        else {
+            if (!userService.createCustomer(user, type, business_id)) {
+                responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+                responseModel.setMessage("Failed to create user");
+            }
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
+
+    //create customer
+//    @PostMapping("/register/{type}/{business_id}")
+//    public  ResponseEntity<ResponseModel> createUserCustomer(@RequestBody User user,@PathVariable String type,@PathVariable String business_id){
+//
+//        ResponseModel responseModel = ResponseModel.builder()
+//                .status(HttpStatus.OK)
+//                .message("User created successfully")
+//                .data(new Object())
+//                .build();
+//
+//        if(!userService.createCustomer(user,type,business_id))
+//        {
+//            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+//            responseModel.setMessage("Failed to create user");
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+//    }
 
 
     //Update User

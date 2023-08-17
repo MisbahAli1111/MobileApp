@@ -26,7 +26,7 @@ public class VehicleController {
     VehicleService vehicleService;
     @Autowired
     VehicleRepository vehiclerepository;
-    
+
     @PostMapping("/{businessId}/add-vehicle")
     public ResponseEntity<ResponseModel> addVehicle(@PathVariable Long businessId, @RequestBody VehicleModel vehicle)
     {
@@ -67,66 +67,63 @@ public class VehicleController {
     }
 
     @GetMapping("/{vehicleId}")
-    public ResponseEntity<ResponseModel> getOneVehicle(@PathVariable Long vehicleId)
+    public ResponseEntity<VehicleModel> getOneVehicle(@PathVariable Long vehicleId)
     {
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Vehicle Fetched Successfully")
                 .data(new Object())
                 .build();
-        Optional<Vehicle> fetchedVehicle=vehicleService.getVehicle(vehicleId);
-        if(fetchedVehicle.isEmpty()){
-            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
-            responseModel.setMessage("Failed to fetch vehicle detail");
-        }
-        else{
-            responseModel.setData(fetchedVehicle.get());
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+        Vehicle vehicle =vehicleService.getVehicle(vehicleId);
+        //List<VehicleModel> convertedList = new ArrayList<>()
+//            responseModel.setData(vehicle.get());
+        VehicleModel vehicleModel = VehicleConverter.convertVehicleToVehicleModel(vehicle);
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleModel);
     }
-    @GetMapping("/{vehicle_id}")
-    public ResponseEntity<ResponseModel> edit_details(@PathVariable Long id )
+
+    //    @GetMapping("/{vehicle_id}")
+//    public ResponseEntity<ResponseModel> edit_details(@PathVariable Long id )
+//    {
+//        ResponseModel responseModel= ResponseModel.builder()
+//                .status(HttpStatus.OK)
+//                .message("Edit Your vehicle")
+//                .data(new Object())
+//                .build();
+//        Optional<Vehicle> fetchedVehicle=vehicleService.edit_details(id);
+//        if(fetchedVehicle.isEmpty()){
+//
+//            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+//            responseModel.setMessage("Failed to fetch vehicle detail");
+//        }
+//        else{
+//            responseModel.setData(fetchedVehicle.get());
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+//    }
+    @PostMapping("/{businessId}/{vehicle_id}/update-vehicle")
+    public  ResponseEntity<ResponseModel> updateVehicle(@PathVariable Long businessId, @PathVariable Long vehicle_id,@RequestBody VehicleModel vehicleModel)
     {
         ResponseModel responseModel= ResponseModel.builder()
                 .status(HttpStatus.OK)
-                .message("Edit Your vehicle")
+                .message("Vehicle Updated Successfully")
                 .data(new Object())
                 .build();
-        Optional<Vehicle> fetchedVehicle=vehicleService.edit_details(id);
-        if(fetchedVehicle.isEmpty()){
+
+
+        if(!vehicleService.updateVehicle(businessId,vehicle_id,vehicleModel))
+        {
 
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
-            responseModel.setMessage("Failed to fetch vehicle detail");
+            responseModel.setMessage("Failed to update vehicle detail");
         }
         else{
-            responseModel.setData(fetchedVehicle.get());
+            Vehicle fetchedVehicle=vehiclerepository.findById(vehicle_id).get();
+
+            responseModel.setData(fetchedVehicle);
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+
     }
-@PostMapping("/{businessId}/{vehicle_id}/update-vehicle")
-    public  ResponseEntity<ResponseModel> updateVehicle(@PathVariable Long businessId, @PathVariable Long vehicle_id,@RequestBody VehicleModel vehicleModel)
-{
-    ResponseModel responseModel= ResponseModel.builder()
-            .status(HttpStatus.OK)
-            .message("Vehicle Updated Successfully")
-            .data(new Object())
-            .build();
-
-
-    if(!vehicleService.updateVehicle(businessId,vehicle_id,vehicleModel))
-    {
-
-        responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
-        responseModel.setMessage("Failed to update vehicle detail");
-    }
-    else{
-        Vehicle fetchedVehicle=vehiclerepository.findById(vehicle_id).get();
-
-        responseModel.setData(fetchedVehicle);
-    }
-    return ResponseEntity.status(HttpStatus.OK).body(responseModel);
-
-}
 
     @DeleteMapping("/{businessId}/{vehicleId}/delete-vehicle")
     public ResponseEntity<ResponseModel> deleteVehicle(@PathVariable Long businessId,Long vehicleId)

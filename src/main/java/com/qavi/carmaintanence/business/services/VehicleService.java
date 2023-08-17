@@ -72,8 +72,8 @@ public class VehicleService {
         return vehicleRepository.findAllByAssociatedToBusinessId(businessId);
     }
 
-    public Optional<Vehicle> getVehicle(Long id) {
-        return vehicleRepository.findById(id);
+    public Vehicle getVehicle(Long id) {
+        return vehicleRepository.findById(id).get();
     }
 
 
