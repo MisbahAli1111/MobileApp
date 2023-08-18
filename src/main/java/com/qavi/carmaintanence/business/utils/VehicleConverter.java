@@ -19,7 +19,7 @@ public class VehicleConverter {
         vehicleModel.setLastName(vehicle.getCarOwner().getLastName());
         vehicleModel.setPhoneNumber(vehicle.getCarOwner().getPhoneNumber());
         vehicleModel.setOwnerId(vehicle.getCarOwner().getId());
-
+        vehicleModel.setDateCreated(vehicle.getDateCreated());
 
         //        businessModel.setDescription(business.getDescription());
 //        businessModel.setDiscountName(business.getDiscountName());

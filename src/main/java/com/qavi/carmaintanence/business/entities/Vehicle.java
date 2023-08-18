@@ -6,6 +6,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class Vehicle {
     @Column(unique = true)
     String registrationNumber;
     String color;
-
+    LocalDateTime dateCreated;
     @ManyToOne
     User carOwner;
     @ManyToMany(fetch = FetchType.EAGER)

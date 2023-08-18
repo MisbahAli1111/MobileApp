@@ -3,6 +3,8 @@ package com.qavi.carmaintanence.business.models;
 import com.qavi.carmaintanence.business.entities.Vehicle;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class VehicleModel {
     Long id;
@@ -13,6 +15,7 @@ public class VehicleModel {
     String registrationNumber;
     String color;
     double kilometerDriven;
+    LocalDateTime dateCreated;
     Long ownerId;
     String firstName;
     String lastName;

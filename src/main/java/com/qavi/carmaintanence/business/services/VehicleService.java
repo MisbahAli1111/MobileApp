@@ -39,6 +39,7 @@ public class VehicleService {
                     vehicle.setModel(vehicleModel.getModel());
                     vehicle.setYear(vehicleModel.getYear());
                     vehicle.setType(vehicleModel.getType());
+                    vehicle.setDateCreated(vehicleModel.getDateCreated());
                     vehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
                     vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
                     vehicleRepository.save(vehicle);
