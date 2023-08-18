@@ -20,5 +20,5 @@ public class MaintanenceRecordModel {
     String vehicleId;
     String maintainedById;
     String maintanenceDetail;
-
+    String registrationNumber;
 }

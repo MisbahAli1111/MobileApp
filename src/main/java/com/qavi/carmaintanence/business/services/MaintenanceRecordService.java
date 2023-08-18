@@ -33,36 +33,22 @@ public class MaintenanceRecordService {
     public boolean addRecord(MaintanenceRecordModel maintanenceRecordModel,Long userId)
     {
 
-//        maintenanceRecord.setMaintanenceDateTime(LocalDateTime.now());
-        Optional<User> owner = userRepository.findById(userId);
-//        Optional<Vehicle> vehicle = vehicleRepository.findByRegistrationNumber(maintanenceRecordModel.);
+        Optional<Vehicle> vehicle = vehicleRepository.findByRegistrationNumber(maintanenceRecordModel.getRegistrationNumber());
+        if (vehicle.isPresent()) {
+            Optional<User> owner = userRepository.findById(userId);
             MaintenanceRecord maintanenceRecord = new MaintenanceRecord();
             maintanenceRecord.setService(maintanenceRecordModel.getService());
             maintanenceRecord.setMaintanenceDetail(maintanenceRecordModel.getMaintanenceDetail());
             maintanenceRecord.setKilometerDriven(maintanenceRecordModel.getKilometerDriven());
             maintanenceRecord.setMaintanenceDateTime(LocalDateTime.now());
             maintanenceRecord.setMaintainedBy(owner.get());
+            maintanenceRecord.setVehicle(vehicle.get());
+            maintenanceRecordRepository.save(maintanenceRecord);
+            return true;
+        }else {
+            throw new RecordNotFoundException("Vehicle not found");
 
-            
-
-//            maintanenceRecord.setVehicle();
-
-//            vehicle.setMake(vehicleModel.getMake());
-//            vehicle.setColor(vehicleModel.getColor());
-//            vehicle.setModel(vehicleModel.getModel());
-//            vehicle.setYear(vehicleModel.getYear());
-//            vehicle.setType(vehicleModel.getType());
-//            vehicle.setDateCreated(vehicleModel.getDateCreated());
-//            vehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
-//            vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
-//            vehicleRepository.save(vehicle);
-
-
-
-        maintenanceRecordRepository.save(maintanenceRecord);
-
-
-        return true;
+        }
     }
 
     public List<MaintenanceRecord> getallrecords() {
