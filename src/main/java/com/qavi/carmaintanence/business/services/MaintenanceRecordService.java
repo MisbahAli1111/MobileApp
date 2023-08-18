@@ -3,8 +3,12 @@ package com.qavi.carmaintanence.business.services;
 import com.qavi.carmaintanence.business.entities.Invoice;
 import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import com.qavi.carmaintanence.business.entities.Vehicle;
+import com.qavi.carmaintanence.business.models.MaintanenceRecordModel;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
+import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
+import com.qavi.carmaintanence.usermanagement.entities.user.User;
+import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +24,42 @@ public class MaintenanceRecordService {
     @Autowired
     MaintenanceRecordRepository maintenanceRecordRepository;
 
-    public boolean addRecord(MaintenanceRecord maintenanceRecord)
+    @Autowired
+    VehicleRepository vehicleRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    public boolean addRecord(MaintanenceRecordModel maintanenceRecordModel,Long userId)
     {
-        maintenanceRecord.setMaintanenceDateTime(LocalDateTime.now());
-        maintenanceRecordRepository.save(maintenanceRecord);
+
+//        maintenanceRecord.setMaintanenceDateTime(LocalDateTime.now());
+        Optional<User> owner = userRepository.findById(userId);
+//        Optional<Vehicle> vehicle = vehicleRepository.findByRegistrationNumber(maintanenceRecordModel.);
+            MaintenanceRecord maintanenceRecord = new MaintenanceRecord();
+            maintanenceRecord.setService(maintanenceRecordModel.getService());
+            maintanenceRecord.setMaintanenceDetail(maintanenceRecordModel.getMaintanenceDetail());
+            maintanenceRecord.setKilometerDriven(maintanenceRecordModel.getKilometerDriven());
+            maintanenceRecord.setMaintanenceDateTime(LocalDateTime.now());
+            maintanenceRecord.setMaintainedBy(owner.get());
+
+            
+
+//            maintanenceRecord.setVehicle();
+
+//            vehicle.setMake(vehicleModel.getMake());
+//            vehicle.setColor(vehicleModel.getColor());
+//            vehicle.setModel(vehicleModel.getModel());
+//            vehicle.setYear(vehicleModel.getYear());
+//            vehicle.setType(vehicleModel.getType());
+//            vehicle.setDateCreated(vehicleModel.getDateCreated());
+//            vehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
+//            vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
+//            vehicleRepository.save(vehicle);
+
+
+
+        maintenanceRecordRepository.save(maintanenceRecord);
 
 
         return true;
