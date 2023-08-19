@@ -27,7 +27,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Long id);
 
 
-    @Query(value = "SELECT u.id, u.first_name, u.last_name FROM users u INNER JOIN business_customer b ON u.id = b.customer_id WHERE b.business_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT u.id, CONCAT(u.first_name, ' ', u.last_name) as name FROM users u INNER JOIN business_customer b ON u.id = b.customer_id WHERE b.business_id = ?1", nativeQuery = true)
     List<Map<String, Object>> findCustomers(Long businessId);
 
 
