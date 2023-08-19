@@ -32,7 +32,6 @@ public class MaintenanceRecordService {
 
     public boolean addRecord(MaintanenceRecordModel maintanenceRecordModel,Long userId)
     {
-
         Optional<Vehicle> vehicle = vehicleRepository.findByRegistrationNumber(maintanenceRecordModel.getRegistrationNumber());
         if (vehicle.isPresent()) {
             Optional<User> owner = userRepository.findById(userId);
