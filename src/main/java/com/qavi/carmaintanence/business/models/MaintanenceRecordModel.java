@@ -21,5 +21,6 @@ public class MaintanenceRecordModel {
     Long maintainedById;
     String maintanenceDetail;
     String registrationNumber;
-
+    String firstName;
+    String LastName;
 }
