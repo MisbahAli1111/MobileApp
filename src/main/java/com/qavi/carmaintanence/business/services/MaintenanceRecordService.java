@@ -39,7 +39,7 @@ public class MaintenanceRecordService {
             maintanenceRecord.setService(maintanenceRecordModel.getService());
             maintanenceRecord.setMaintanenceDetail(maintanenceRecordModel.getMaintanenceDetail());
             maintanenceRecord.setKilometerDriven(maintanenceRecordModel.getKilometerDriven());
-            maintanenceRecord.setMaintanenceDateTime(LocalDateTime.now());
+            maintanenceRecord.setMaintanenceDateTime(maintanenceRecordModel.getMaintanenceDateTime());
             maintanenceRecord.setMaintainedBy(owner.get());
             maintanenceRecord.setVehicle(vehicle.get());
             maintenanceRecordRepository.save(maintanenceRecord);

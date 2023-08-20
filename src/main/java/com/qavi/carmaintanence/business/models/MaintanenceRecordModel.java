@@ -17,8 +17,9 @@ public class MaintanenceRecordModel {
     LocalDateTime maintanenceDateTime;
     double kilometerDriven;
     String service;
-    String vehicleId;
-    String maintainedById;
+    Long vehicleId;
+    Long maintainedById;
     String maintanenceDetail;
     String registrationNumber;
+
 }
