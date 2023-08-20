@@ -23,4 +23,5 @@ public class MaintanenceRecordModel {
     String registrationNumber;
     String firstName;
     String LastName;
+    String name;
 }
