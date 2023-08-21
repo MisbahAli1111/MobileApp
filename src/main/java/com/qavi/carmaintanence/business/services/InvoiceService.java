@@ -59,47 +59,47 @@ invoiceRepository invoicerepository ;
                 invoice1.setDate(invoice.getDate());
             }
             //Description
-            if(Objects.nonNull(invoice.getDescription()) &&
-                    !"".equals(invoice.getDescription()))
-            {
-                invoice1.setDescription(invoice.getDescription());
-            }
-            //Quantity
-            if(Objects.nonNull(invoice.getQty()) &&
-                    !"".equals(invoice.getQty()))
-            {
-                invoice1.setQty(invoice.getQty());
-            }
-            //Rate
-            if(Objects.nonNull(invoice.getRate()) &&
-                    !"".equals(invoice.getRate()))
-            {
-                invoice1.setRate(invoice.getRate());
-            }
-            //DiscountName
-            if(Objects.nonNull(invoice.getDiscountName()) &&
-                    !"".equals(invoice.getDiscountName()))
-            {
-                invoice1.setDiscountName(invoice.getDiscountName());
-            }
-            //DiscountRate
-            if(Objects.nonNull(invoice.getDiscountRate()) &&
-                    !"".equals(invoice.getDiscountRate()))
-            {
-                invoice1.setDiscountRate(invoice.getDiscountRate());
-            }
-            //TaxName
-            if(Objects.nonNull(invoice.getTaxName()) &&
-                    !"".equals(invoice.getTaxName()))
-            {
-                invoice1.setTaxName(invoice.getTaxName());
-            }
-            //TaxRate
-            if(Objects.nonNull(invoice.getTaxRate()) &&
-                    !"".equals(invoice.getTaxRate()))
-            {
-                invoice1.setTaxRate(invoice.getTaxRate());
-            }
+//            if(Objects.nonNull(invoice.getDescription()) &&
+//                    !"".equals(invoice.getDescription()))
+//            {
+//                invoice1.setDescription(invoice.getDescription());
+//            }
+//            //Quantity
+//            if(Objects.nonNull(invoice.getQty()) &&
+//                    !"".equals(invoice.getQty()))
+//            {
+//                invoice1.setQty(invoice.getQty());
+//            }
+//            //Rate
+//            if(Objects.nonNull(invoice.getRate()) &&
+//                    !"".equals(invoice.getRate()))
+//            {
+//                invoice1.setRate(invoice.getRate());
+//            }
+//            //DiscountName
+//            if(Objects.nonNull(invoice.getDiscountName()) &&
+//                    !"".equals(invoice.getDiscountName()))
+//            {
+//                invoice1.setDiscountName(invoice.getDiscountName());
+//            }
+//            //DiscountRate
+//            if(Objects.nonNull(invoice.getDiscountRate()) &&
+//                    !"".equals(invoice.getDiscountRate()))
+//            {
+//                invoice1.setDiscountRate(invoice.getDiscountRate());
+//            }
+//            //TaxName
+//            if(Objects.nonNull(invoice.getTaxName()) &&
+//                    !"".equals(invoice.getTaxName()))
+//            {
+//                invoice1.setTaxName(invoice.getTaxName());
+//            }
+//            //TaxRate
+//            if(Objects.nonNull(invoice.getTaxRate()) &&
+//                    !"".equals(invoice.getTaxRate()))
+//            {
+//                invoice1.setTaxRate(invoice.getTaxRate());
+//            }
 
             //Unchangable entities not confirmed:  status, Maintained by id and user.
 

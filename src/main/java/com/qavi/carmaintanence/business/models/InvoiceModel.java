@@ -28,20 +28,9 @@ public class InvoiceModel {
 
 
     private Long vehicleId;
+
     private LocalDateTime date;
 
-    private String description;
-    private double rate;
-    private double qty;
-    private Long amountWithOutDis;
-
-    private String taxName;
-    private double taxRate;
-
-    private String discountName;
-    private double discountRate;
-
-    private Long amountWithDis;
     private  Long total;
 
 }

@@ -11,16 +11,17 @@ public class InvoiceConverter {
         invoiceModel.setId(invoice.getId());
         invoiceModel.setDate(invoice.getDate());
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
-        invoiceModel.setDescription(invoice.getDescription());
-        invoiceModel.setQty(invoice.getQty());
-        invoiceModel.setRate(invoice.getRate());
-        invoiceModel.setAmountWithDis(invoice.getAmountWithDis());
-        invoiceModel.setDiscountRate(invoice.getDiscountRate());
-        invoiceModel.setTotal(invoice.getTotal());
-        invoiceModel.setDescription(invoice.getDescription());
-        invoiceModel.setDiscountName(invoice.getDiscountName());
-        invoiceModel.setTaxName(invoice.getTaxName());
-        invoiceModel.setTaxRate(invoice.getTaxRate());
+//        invoiceModel.setDescription(invoice.getDescription());
+//        invoiceModel.setQty(invoice.getQty());
+//        invoiceModel.setRate(invoice.getRate());
+//        invoiceModel.setAmountWithDis(invoice.getAmountWithDis());
+//        invoiceModel.setDiscountRate(invoice.getDiscountRate());
+//        invoiceModel.setTotal(invoice.getTotal());
+//        invoiceModel.setDescription(invoice.getDescription());
+//        invoiceModel.setDiscountName(invoice.getDiscountName());
+//        invoiceModel.setTaxName(invoice.getTaxName());
+//        invoiceModel.setTaxRate(invoice.getTaxRate());
+
 
 
         return invoiceModel;
