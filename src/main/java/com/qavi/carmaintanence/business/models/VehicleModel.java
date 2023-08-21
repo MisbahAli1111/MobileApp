@@ -17,8 +17,7 @@ public class VehicleModel {
     double kilometerDriven;
     LocalDateTime dateCreated;
     Long ownerId;
-    String firstName;
-    String lastName;
+String name;
     String phoneNumber;
 
 

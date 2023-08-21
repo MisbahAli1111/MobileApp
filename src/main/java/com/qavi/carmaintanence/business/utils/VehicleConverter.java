@@ -15,18 +15,11 @@ public class VehicleConverter {
         vehicleModel.setKilometerDriven(vehicle.getKilometerDriven());
         vehicleModel.setRegistrationNumber(vehicle.getRegistrationNumber());
         vehicleModel.setId(vehicle.getId());
-        vehicleModel.setFirstName(vehicle.getCarOwner().getFirstName());
-        vehicleModel.setLastName(vehicle.getCarOwner().getLastName());
         vehicleModel.setPhoneNumber(vehicle.getCarOwner().getPhoneNumber());
         vehicleModel.setOwnerId(vehicle.getCarOwner().getId());
         vehicleModel.setDateCreated(vehicle.getDateCreated());
-
-        //        businessModel.setDescription(business.getDescription());
-//        businessModel.setDiscountName(business.getDiscountName());
-//        businessModel.setTaxName(business.getTaxName());
-//        businessModel.setTaxRate(business.getTaxRate());
-
-
+        String fullName = vehicle.getCarOwner().getFirstName() + " " + vehicle.getCarOwner().getLastName();
+        vehicleModel.setName(fullName);
         return vehicleModel;
     }
 }
