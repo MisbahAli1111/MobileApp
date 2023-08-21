@@ -17,7 +17,7 @@ public class InvoiceDiscount {
 
     private String discountName;
 
-    private String discountRate;
+    private Double discountRate;
 
     @ManyToOne
     private Invoice invoice;

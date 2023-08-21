@@ -17,7 +17,7 @@ public class InvoiceTax {
 
     private String taxName;
 
-    private String taxRate;
+    private Double taxRate;
 
     @ManyToOne
     private Invoice invoice;
