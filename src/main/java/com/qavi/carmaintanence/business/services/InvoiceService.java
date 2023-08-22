@@ -1,10 +1,8 @@
 package com.qavi.carmaintanence.business.services;
 
-import com.qavi.carmaintanence.business.entities.Invoice;
-import com.qavi.carmaintanence.business.entities.InvoiceDescription;
+import com.qavi.carmaintanence.business.entities.*;
 import com.qavi.carmaintanence.business.models.DescriptionModel;
 
-import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import com.qavi.carmaintanence.business.models.DescriptionModel;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
 import com.qavi.carmaintanence.business.repositories.invoiceRepository;
@@ -37,19 +35,41 @@ invoiceRepository invoicerepository ;
             invoiceModel.setTotal(invoice.getTotal());
 
             List<InvoiceDescription> descriptions = new ArrayList<>();
-            for (DescriptionModel descriptionModel : invoice.getDescriptions()) {
+            for (InvoiceDescription descriptionModel : invoice.getDescriptions()) {
                 InvoiceDescription description = new InvoiceDescription();
-                description.setItem(descriptionDTO.getItem());
-                description.setRate(descriptionDTO.getRate());
-                description.setQuantity(descriptionDTO.getQuantity());
-                description.setAmount(descriptionDTO.getAmount());
+                description.setItem(descriptionModel.getItem());
+                description.setRate(descriptionModel.getRate());
+                description.setQuantity(descriptionModel.getQuantity());
+                description.setAmount(descriptionModel.getAmount());
                 description.setInvoice(invoiceModel);
                 descriptions.add(description);
             }
             invoiceModel.setDescriptions(descriptions);
 
-            invoiceModel.setMaintenanceRecord(foundRecord);
 
+            List<InvoiceDiscount> discounts = new ArrayList<>();
+            for (InvoiceDiscount discountModel : invoice.getDiscounts()) {
+                InvoiceDiscount discount = new InvoiceDiscount();
+                discount.setDiscountName(discountModel.getDiscountName());
+                discount.setDiscountRate(discountModel.getDiscountRate());
+                discount.setInvoice(invoiceModel);
+                discounts.add(discount);
+            }
+            invoiceModel.setDiscounts(discounts);
+
+
+            List<InvoiceTax> taxes = new ArrayList<>();
+            for (InvoiceTax taxModel : invoice.getTaxes()) {
+                InvoiceTax tax = new InvoiceTax();
+                tax.setTaxName(taxModel.getTaxName());
+                tax.setTaxRate(taxModel.getTaxRate());
+                tax.setInvoice(invoiceModel);
+                taxes.add(tax);
+            }
+            invoiceModel.setTaxes(taxes);
+
+
+           invoiceModel.setMaintenanceRecord(foundRecord);
             invoicerepository.save(invoiceModel);
             System.out.println(foundRecord.getId());
             return true;

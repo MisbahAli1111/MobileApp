@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -25,16 +26,14 @@ public class Invoice {
     @OneToOne
     private MaintenanceRecord maintenanceRecord;
 
-    @ManyToMany    /// not necessary
-    private List<User> user;
 
-    @OneToMany
+    @OneToMany (cascade=CascadeType.ALL)
     private List<InvoiceDescription> descriptions;
 
-    @OneToMany
+    @OneToMany (cascade=CascadeType.ALL)
     private List<InvoiceTax> taxes;
 
-    @OneToMany
+    @OneToMany (cascade=CascadeType.ALL)
     private List<InvoiceDiscount> discounts;
 
     private Long maintainedById;

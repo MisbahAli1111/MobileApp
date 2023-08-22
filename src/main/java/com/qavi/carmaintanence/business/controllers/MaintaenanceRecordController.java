@@ -98,7 +98,7 @@ public class MaintaenanceRecordController {
                 .status(HttpStatus.OK)
                 .message("Record Founded successfully")
                 .data(new Object())
-   -             .build();
+               .build();
 
 
         Optional<User> userOptional = vehicleRepository.getUserNameFromRegistrationNumber(registration_number);
