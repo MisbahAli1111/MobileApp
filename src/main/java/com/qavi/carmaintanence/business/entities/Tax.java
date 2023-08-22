@@ -10,15 +10,14 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InvoiceDiscount {
+public class Tax {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    private String discountName;
+    private String taxName;
 
-    private Double discountRate;
+    private Double taxRate;
 
-    @ManyToOne
-    private Invoice invoice;
+
 }

@@ -4,16 +4,15 @@ import com.qavi.carmaintanence.business.entities.*;
 import com.qavi.carmaintanence.business.models.DescriptionModel;
 
 import com.qavi.carmaintanence.business.models.DescriptionModel;
+import com.qavi.carmaintanence.business.models.InvoiceModel;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
 import com.qavi.carmaintanence.business.repositories.invoiceRepository;
+import com.qavi.carmaintanence.business.utils.InvoiceConverter;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class InvoiceService {
@@ -24,54 +23,22 @@ invoiceRepository invoicerepository ;
 
 
 
-    public boolean addInvoice(Invoice invoice, Long id) {
+    public boolean addInvoice(InvoiceModel invoiceModel, Long id) {
         MaintenanceRecord foundRecord = maintenancerecordrepository.findById(id).orElse(null);
 
         if (foundRecord != null) {
-            Invoice invoiceModel = new Invoice();
-            invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
-            invoiceModel.setDate(invoice.getDate());
-            invoiceModel.setVehicleId(invoice.getVehicleId());
-            invoiceModel.setTotal(invoice.getTotal());
+            Invoice invoice = new Invoice();
 
-            List<InvoiceDescription> descriptions = new ArrayList<>();
-            for (InvoiceDescription descriptionModel : invoice.getDescriptions()) {
-                InvoiceDescription description = new InvoiceDescription();
-                description.setItem(descriptionModel.getItem());
-                description.setRate(descriptionModel.getRate());
-                description.setQuantity(descriptionModel.getQuantity());
-                description.setAmount(descriptionModel.getAmount());
-                description.setInvoice(invoiceModel);
-                descriptions.add(description);
-            }
-            invoiceModel.setDescriptions(descriptions);
+            invoice= InvoiceConverter.convertInvoiceModelToInvoice(invoiceModel);
 
+            invoice.setInvoiceDue(invoiceModel.getInvoiceDue());
+            invoice.setDate(invoiceModel.getDate());
+            invoice.setVehicleId(invoiceModel.getVehicleId());
+            invoice.setTotal(invoiceModel.getTotal());
 
-            List<InvoiceDiscount> discounts = new ArrayList<>();
-            for (InvoiceDiscount discountModel : invoice.getDiscounts()) {
-                InvoiceDiscount discount = new InvoiceDiscount();
-                discount.setDiscountName(discountModel.getDiscountName());
-                discount.setDiscountRate(discountModel.getDiscountRate());
-                discount.setInvoice(invoiceModel);
-                discounts.add(discount);
-            }
-            invoiceModel.setDiscounts(discounts);
-
-
-            List<InvoiceTax> taxes = new ArrayList<>();
-            for (InvoiceTax taxModel : invoice.getTaxes()) {
-                InvoiceTax tax = new InvoiceTax();
-                tax.setTaxName(taxModel.getTaxName());
-                tax.setTaxRate(taxModel.getTaxRate());
-                tax.setInvoice(invoiceModel);
-                taxes.add(tax);
-            }
-            invoiceModel.setTaxes(taxes);
-
-
-           invoiceModel.setMaintenanceRecord(foundRecord);
-            invoicerepository.save(invoiceModel);
-            System.out.println(foundRecord.getId());
+            invoice.setMaintenanceRecord(foundRecord);
+            invoicerepository.save(invoice);
+//            System.out.println(foundRecord.getId());
             return true;
         } else {
             return false;

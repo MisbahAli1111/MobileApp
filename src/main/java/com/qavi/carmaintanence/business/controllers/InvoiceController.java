@@ -87,13 +87,13 @@ public class InvoiceController {
 
     @PostMapping("/create-invoice/{id}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    public ResponseEntity<ResponseModel> createInvoice(@RequestBody Invoice invoice, @PathVariable Long id ){
+    public ResponseEntity<ResponseModel> createInvoice(@RequestBody InvoiceModel invoiceModel, @PathVariable Long id ){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Invoice Created Successfully")
                 .data(new Object())
                 .build();
-        if(!invoiceService.addInvoice(invoice,id))
+        if(!invoiceService.addInvoice(invoiceModel,id))
         {
             responseModel.setMessage("Failed To Create Invoice");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);

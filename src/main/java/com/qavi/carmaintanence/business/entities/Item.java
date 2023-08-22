@@ -10,15 +10,18 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InvoiceTax {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    private String taxName;
+    private String item;
 
-    private Double taxRate;
+    private double rate;
 
-    @ManyToOne
-    private Invoice invoice;
+    private double quantity;
+
+    private double amount;
+
+
 }

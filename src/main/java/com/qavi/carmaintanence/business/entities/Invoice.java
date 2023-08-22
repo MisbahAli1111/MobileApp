@@ -1,12 +1,8 @@
 package com.qavi.carmaintanence.business.entities;
 
-import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,13 +24,13 @@ public class Invoice {
 
 
     @OneToMany (cascade=CascadeType.ALL)
-    private List<InvoiceDescription> descriptions;
+    private List<Item> descriptions;
 
     @OneToMany (cascade=CascadeType.ALL)
-    private List<InvoiceTax> taxes;
+    private List<Tax> taxes;
 
     @OneToMany (cascade=CascadeType.ALL)
-    private List<InvoiceDiscount> discounts;
+    private List<Discount> discounts;
 
     private Long maintainedById;
 
