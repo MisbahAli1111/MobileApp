@@ -1,7 +1,11 @@
 package com.qavi.carmaintanence.business.services;
 
 import com.qavi.carmaintanence.business.entities.Invoice;
+import com.qavi.carmaintanence.business.entities.InvoiceDescription;
+import com.qavi.carmaintanence.business.models.DescriptionModel;
+
 import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
+import com.qavi.carmaintanence.business.models.DescriptionModel;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
 import com.qavi.carmaintanence.business.repositories.invoiceRepository;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
@@ -22,20 +26,38 @@ invoiceRepository invoicerepository ;
 
 
 
-    public boolean addInvoice(Invoice invoice,Long id) {
-       MaintenanceRecord foundRecord =maintenancerecordrepository.findById(id).get();
-       if(foundRecord !=null )
-       {
+    public boolean addInvoice(Invoice invoice, Long id) {
+        MaintenanceRecord foundRecord = maintenancerecordrepository.findById(id).orElse(null);
 
-           invoicerepository.save(invoice);
-           System.out.println(foundRecord.getId());
-        return true;
-       }
-       else {
-        return false;
-       }
+        if (foundRecord != null) {
+            Invoice invoiceModel = new Invoice();
+            invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
+            invoiceModel.setDate(invoice.getDate());
+            invoiceModel.setVehicleId(invoice.getVehicleId());
+            invoiceModel.setTotal(invoice.getTotal());
 
+            List<InvoiceDescription> descriptions = new ArrayList<>();
+            for (DescriptionModel descriptionModel : invoice.getDescriptions()) {
+                InvoiceDescription description = new InvoiceDescription();
+                description.setItem(descriptionDTO.getItem());
+                description.setRate(descriptionDTO.getRate());
+                description.setQuantity(descriptionDTO.getQuantity());
+                description.setAmount(descriptionDTO.getAmount());
+                description.setInvoice(invoiceModel);
+                descriptions.add(description);
+            }
+            invoiceModel.setDescriptions(descriptions);
+
+            invoiceModel.setMaintenanceRecord(foundRecord);
+
+            invoicerepository.save(invoiceModel);
+            System.out.println(foundRecord.getId());
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     public boolean editInvoice(Invoice invoice, Long invoiceId) {
            // MaintenanceRecord maintenanceRecord = maintenancerecordrepository.findById(invoiceId).get();

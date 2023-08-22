@@ -98,7 +98,7 @@ public class MaintaenanceRecordController {
                 .status(HttpStatus.OK)
                 .message("Record Founded successfully")
                 .data(new Object())
-                .build();
+   -             .build();
 
 
         Optional<User> userOptional = vehicleRepository.getUserNameFromRegistrationNumber(registration_number);
@@ -108,7 +108,6 @@ public class MaintaenanceRecordController {
             User user=userOptional.get();
             UserDataModel userDataModel = ConverterModels.convertUserToUserDataModel(user);
             convertedList.add(userDataModel);
-
         }
 
         else {

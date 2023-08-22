@@ -25,7 +25,7 @@ public class Invoice {
     @OneToOne
     private MaintenanceRecord maintenanceRecord;
 
-    @ManyToMany
+    @ManyToMany    /// not necessary
     private List<User> user;
 
     @OneToMany
