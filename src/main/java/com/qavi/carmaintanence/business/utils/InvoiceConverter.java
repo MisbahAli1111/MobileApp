@@ -18,7 +18,7 @@ public class InvoiceConverter {
         invoiceModel.setDate(invoice.getDate());
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
         invoiceModel.setMaintainedById(invoice.getMaintainedById());
-        invoiceModel.setTotal(invoice);
+        invoiceModel.setTotal(invoice.getTotal());
         List<Item> descriptions = invoice.getDescriptions();
         List<Map<String, Object>> descriptionDataList = new ArrayList<>();
         for (Item description : descriptions) {

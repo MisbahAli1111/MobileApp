@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -119,6 +120,14 @@ public class MaintaenanceRecordController {
         }
         return new ResponseEntity<List<MaintanenceRecordModel>>(convertedList, HttpStatus.OK);
     }
+
+    @GetMapping("/get-customer/{businessId}")
+    public ResponseEntity<List<Map<String,Object>>> findCustomer(@PathVariable Long businessId) {
+        var users = vehicleRepository.getRegistrationNumber(businessId);
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
 
 
 
