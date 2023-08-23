@@ -2,6 +2,7 @@ package com.qavi.carmaintanence.business.controllers;
 
 import com.qavi.carmaintanence.business.entities.Invoice;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
+import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.services.InvoiceService;
 import com.qavi.carmaintanence.business.utils.InvoiceConverter;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
@@ -28,6 +29,8 @@ public class InvoiceController {
 
 
     @Autowired
+    VehicleRepository vehicleRepository;
+    @Autowired
     InvoiceService invoiceService;
     @GetMapping("/get-invoice")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
@@ -45,7 +48,7 @@ public class InvoiceController {
         {
             responseModel.setData(invoices);
             for (Invoice invoice : invoices) {
-                convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice));
+                convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice,vehicleRepository));
             }
             return new ResponseEntity<List<InvoiceModel>>(convertedList, HttpStatus.OK);
 
@@ -68,7 +71,7 @@ public class InvoiceController {
         List<InvoiceModel> convertedList = null;
         if (invoiceOptional.isPresent()) {
             Invoice invoice = invoiceOptional.get();
-            InvoiceModel invoiceModel = InvoiceConverter.convertInvoiceToInvoiceModel(invoice);
+            InvoiceModel invoiceModel = InvoiceConverter.convertInvoiceToInvoiceModel(invoice,vehicleRepository);
             convertedList = new ArrayList<>();
             convertedList.add(invoiceModel);
 

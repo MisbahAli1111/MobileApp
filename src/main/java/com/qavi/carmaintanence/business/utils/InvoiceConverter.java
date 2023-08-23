@@ -12,14 +12,19 @@ public class InvoiceConverter {
     @Autowired
     VehicleRepository vehicleRepository;
 
-    public static InvoiceModel convertInvoiceToInvoiceModel(Invoice invoice) {
+    public static InvoiceModel convertInvoiceToInvoiceModel(Invoice invoice, VehicleRepository vehicleRepository) {
+
+
+        String registrationNumber = vehicleRepository.getRegistrationNumberFromId(invoice.getVehicleId());
+
+
 
         InvoiceModel invoiceModel= new InvoiceModel();
         invoiceModel.setId(invoice.getId());
         invoiceModel.setDate(invoice.getDate());
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
         invoiceModel.setMaintainedById(invoice.getMaintainedById());
-//        invoiceModel.setRegistrationNumber(registrationNumber);
+        invoiceModel.setRegistrationNumber(registrationNumber);
         invoiceModel.setTotal(invoice.getTotal());
         List<Item> descriptions = invoice.getDescriptions();
         List<Map<String, Object>> descriptionDataList = new ArrayList<>();
