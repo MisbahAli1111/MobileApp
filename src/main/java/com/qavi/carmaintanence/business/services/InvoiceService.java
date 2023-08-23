@@ -2,7 +2,7 @@ package com.qavi.carmaintanence.business.services;
 
 import com.qavi.carmaintanence.business.entities.*;
 import com.qavi.carmaintanence.business.models.DescriptionModel;
-
+import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.models.DescriptionModel;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
@@ -21,24 +21,25 @@ public class InvoiceService {
 @Autowired
 invoiceRepository invoicerepository ;
 
+@Autowired
+VehicleRepository vehicleRepository;
 
 
-    public boolean addInvoice(InvoiceModel invoiceModel, Long id) {
+    public boolean addInvoice(InvoiceModel invoiceModel, Long id,Long userId) {
         MaintenanceRecord foundRecord = maintenancerecordrepository.findById(id).orElse(null);
+        Optional<Long> optionalId = vehicleRepository.getVehicleIdByRegistrationNumber(invoiceModel.getRegistrationNumber());
 
         if (foundRecord != null) {
             Invoice invoice = new Invoice();
-
             invoice= InvoiceConverter.convertInvoiceModelToInvoice(invoiceModel);
 
             invoice.setInvoiceDue(invoiceModel.getInvoiceDue());
             invoice.setDate(invoiceModel.getDate());
-            invoice.setVehicleId(invoiceModel.getVehicleId());
+            invoice.setVehicleId(optionalId.get());
             invoice.setTotal(invoiceModel.getTotal());
-
+            invoice.setMaintainedById(userId);
             invoice.setMaintenanceRecord(foundRecord);
             invoicerepository.save(invoice);
-//            System.out.println(foundRecord.getId());
             return true;
         } else {
             return false;

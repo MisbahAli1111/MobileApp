@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,7 @@ public class InvoiceController {
     InvoiceService invoiceService;
     @GetMapping("/get-invoice")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
+    @Transactional
     public ResponseEntity<List<InvoiceModel>> getAllInvoice(){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
@@ -58,6 +61,7 @@ public class InvoiceController {
     }
     @GetMapping("/get-invoice/{invoice_id}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
+    @Transactional
     public ResponseEntity<List<InvoiceModel>> getOneInvoice(@PathVariable("invoice_id") Long invoiceId) {
         Optional<Invoice> invoiceOptional = invoiceService.getInvoice(invoiceId);
 
@@ -87,13 +91,15 @@ public class InvoiceController {
 
     @PostMapping("/create-invoice/{id}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    public ResponseEntity<ResponseModel> createInvoice(@RequestBody InvoiceModel invoiceModel, @PathVariable Long id ){
+    public ResponseEntity<ResponseModel> createInvoice(@RequestBody InvoiceModel invoiceModel, @PathVariable Long id, Authentication authentication ){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Invoice Created Successfully")
                 .data(new Object())
                 .build();
-        if(!invoiceService.addInvoice(invoiceModel,id))
+
+        Long userId = Long.parseLong(authentication.getName());
+        if(!invoiceService.addInvoice(invoiceModel,id,userId))
         {
             responseModel.setMessage("Failed To Create Invoice");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);

@@ -1,23 +1,25 @@
 package com.qavi.carmaintanence.business.utils;
 
-import com.qavi.carmaintanence.business.entities.Invoice;
-import com.qavi.carmaintanence.business.entities.Item;
-import com.qavi.carmaintanence.business.entities.Discount;
-import com.qavi.carmaintanence.business.entities.Tax;
+import com.qavi.carmaintanence.business.entities.*;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
+import com.qavi.carmaintanence.business.repositories.VehicleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InvoiceConverter {
+
+    @Autowired
+    VehicleRepository vehicleRepository;
+
     public static InvoiceModel convertInvoiceToInvoiceModel(Invoice invoice) {
+
         InvoiceModel invoiceModel= new InvoiceModel();
         invoiceModel.setId(invoice.getId());
         invoiceModel.setDate(invoice.getDate());
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
         invoiceModel.setMaintainedById(invoice.getMaintainedById());
+//        invoiceModel.setRegistrationNumber(registrationNumber);
         invoiceModel.setTotal(invoice.getTotal());
         List<Item> descriptions = invoice.getDescriptions();
         List<Map<String, Object>> descriptionDataList = new ArrayList<>();
