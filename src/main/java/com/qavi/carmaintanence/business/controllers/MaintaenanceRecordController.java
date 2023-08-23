@@ -121,9 +121,9 @@ public class MaintaenanceRecordController {
         return new ResponseEntity<List<MaintanenceRecordModel>>(convertedList, HttpStatus.OK);
     }
 
-    @GetMapping("/get-customer/{businessId}")
-    public ResponseEntity<List<Map<String,Object>>> findCustomer(@PathVariable Long businessId) {
-        var users = vehicleRepository.getRegistrationNumber(businessId);
+    @GetMapping("/get-registration-number/{businessId}")
+    public ResponseEntity<List<Map<String,Object>>> findRegNumber(@PathVariable Long businessId) {
+        var users = vehicleRepository.findRegistrationNumberInBusiness(businessId);
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }

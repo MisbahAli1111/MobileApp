@@ -21,6 +21,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
     @Query("SELECT u FROM Vehicle v JOIN v.carOwner u WHERE v.registrationNumber = :registrationNumber")
     Optional<User> getUserNameFromRegistrationNumber(@Param("registrationNumber") String registrationNumber);
 
-    @Query("select v.registration_number from vehicle v INNER JOIN vehicle_associated_to_business b  on v.id = b.vehicle_id where b.associated_to_business_id = ?1;")
-    List<Map<String,Object>> getRegistrationNumber(@Param("business_id") long businessId);
+    @Query(value = "select v.registration_number from Vehicle v INNER JOIN vehicle_associated_to_business b  on v.id = b.vehicle_id where b.associated_to_business_id = ?1",nativeQuery = true)
+    List<Map<String, Object>> findRegistrationNumberInBusiness(Long businessId);
 }
