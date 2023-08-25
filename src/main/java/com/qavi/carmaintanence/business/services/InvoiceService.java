@@ -39,6 +39,7 @@ VehicleRepository vehicleRepository;
             invoice.setTotal(invoiceModel.getTotal());
             invoice.setMaintainedById(userId);
             invoice.setMaintenanceRecord(foundRecord);
+            invoice.setStatus(invoiceModel.isStatus());
             invoicerepository.save(invoice);
             return true;
         } else {
