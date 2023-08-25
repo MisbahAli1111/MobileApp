@@ -80,47 +80,44 @@ public class InvoiceConverter {
 
     public static Invoice convertInvoiceModelToInvoice(InvoiceModel model) {
         Invoice invoice = new Invoice();
-        //Get Data from Frontend as List.
         List<Map<String, Object>> fetchedTaxes = model.getTaxes();
         List<Map<String, Object>> fetchedDiscounts = model.getDiscounts();
         List<Map<String, Object>> fetchedDescriptions = model.getDescriptions();
 
-        //Make a List to append those list in Backend
         List<Tax> taxes = new ArrayList<>();
         List<Discount> discounts = new ArrayList<>();
         List<Item> descriptions = new ArrayList<>();
 
-        //Loop through to save all details of InvoiceTax
-        for (Map<String,Object> Tax : fetchedTaxes) {
+        for (Map<String, Object> taxMap : fetchedTaxes) {
             com.qavi.carmaintanence.business.entities.Tax tax = new Tax();
-            tax.setTaxName((String) Tax.get("taxName"));
-            tax.setTaxRate((double) Tax.get("taxRate"));
+            tax.setTaxName((String) taxMap.get("taxName"));
+
+            tax.setTaxRate(((Number) taxMap.get("taxRate")).doubleValue());
             taxes.add(tax);
         }
         invoice.setTaxes(taxes);
 
-        //Loop through to save all details of InvoiceDiscounts
-        for (Map<String,Object> Discount : fetchedDiscounts) {
+        for (Map<String, Object> discountMap : fetchedDiscounts) {
             com.qavi.carmaintanence.business.entities.Discount discount = new Discount();
-            discount.setDiscountName((String) Discount.get("discountName"));
-            discount.setDiscountRate((double) Discount.get("discountRate"));
+            discount.setDiscountName((String) discountMap.get("discountName"));
+
+            discount.setDiscountRate(((Number) discountMap.get("discountRate")).doubleValue());
             discounts.add(discount);
         }
         invoice.setDiscounts(discounts);
 
-        //Loop through to save all details of InvoiceDescription
-        for(Map<String,Object> Description : fetchedDescriptions)
-        {
+        for (Map<String, Object> descriptionMap : fetchedDescriptions) {
             Item description = new Item();
-            description.setItem((String) (Description.get("item")));
-            description.setRate((double) (Description.get("rate")));
-            description.setQuantity((int) (Description.get("quantity")));
-            description.setAmount((double) (Description.get("amount")));
+            description.setItem((String) descriptionMap.get("item"));
+
+            description.setRate(((Number) descriptionMap.get("rate")).doubleValue());
+            description.setQuantity((int) descriptionMap.get("quantity"));
+            description.setAmount(((Number) descriptionMap.get("amount")).doubleValue());
             descriptions.add(description);
         }
         invoice.setDescriptions(descriptions);
 
-        //return an invoice from the model
         return invoice;
     }
+
 }

@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 public class TaxModel {
     private String taxName;
 
-    private Double taxRate;
+    private double taxRate;
 
 }

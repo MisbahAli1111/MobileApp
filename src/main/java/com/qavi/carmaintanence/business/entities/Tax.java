@@ -17,7 +17,7 @@ public class Tax {
 
     private String taxName;
 
-    private Double taxRate;
+    private double taxRate;
 
 
 }

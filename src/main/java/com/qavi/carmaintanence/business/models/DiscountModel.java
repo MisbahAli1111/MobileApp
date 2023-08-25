@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DiscountModel {
     private String discountName;
-    private Double discountRate;
+    private double discountRate;
 }

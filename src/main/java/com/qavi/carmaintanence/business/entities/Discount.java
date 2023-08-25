@@ -17,6 +17,6 @@ public class Discount {
 
     private String discountName;
 
-    private Double discountRate;
+    private double discountRate;
 
 }
