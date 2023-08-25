@@ -113,7 +113,7 @@ public class UserService implements UserDetailsService {
 
 
     //Create User
-    public boolean createUser(User user,String type) {
+    public Long createUser(User user,String type) {
         try{
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRegisteredAt(LocalDateTime.now());
@@ -130,18 +130,18 @@ public class UserService implements UserDetailsService {
                 user.setRole(Set.of(roleRepository.searchByName("ROLE_CUSTOMER")));
             }
             user.setEmailNotificationEnabled(true);
-            userRepository.save(user);
-            return true;
+            User savedUser = userRepository.save(user);
+            return savedUser.getId();
         }
         catch (Exception e)
         {
             System.out.println(e);
-            return false;
+            return null;
         }
     }
 
     // Create User Employee
-    public boolean createEmployee(User user, String type, String businessId) {
+    public Long createEmployee(User user, String type, String businessId) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRegisteredAt(LocalDateTime.now());
@@ -162,16 +162,16 @@ public class UserService implements UserDetailsService {
 
             userRepository.insertEmployeeIntoBusiness(businessIdLong, userId);
 
-            return true;
+            return userId;
 
         } catch (Exception e) {
             System.out.println(e);
-            return false;
+            return null;
         }
     }
 
 //    create user Customer
-    public boolean createCustomer(User user, String type, String businessId) {
+    public Long createCustomer(User user, String type, String businessId) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRegisteredAt(LocalDateTime.now());
@@ -192,11 +192,11 @@ public class UserService implements UserDetailsService {
 
             userRepository.insertCustomerIntoBusiness(businessIdLong, userId);
 
-            return true;
+            return userId;
 
         } catch (Exception e) {
             System.out.println(e);
-            return false;
+            return null;
         }
     }
 

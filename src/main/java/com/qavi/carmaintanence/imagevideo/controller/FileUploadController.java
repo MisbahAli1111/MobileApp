@@ -1,5 +1,8 @@
 package com.qavi.carmaintanence.imagevideo.controller;
 
+import com.qavi.carmaintanence.business.entities.Business;
+import com.qavi.carmaintanence.business.services.BusinessMediaService;
+import com.qavi.carmaintanence.business.services.BusinessService;
 import com.qavi.carmaintanence.business.services.MaintenanceRecordService;
 import com.qavi.carmaintanence.business.services.VehicleMediaService;
 import com.qavi.carmaintanence.globalexceptions.InvalidFileException;
@@ -45,12 +48,17 @@ public class FileUploadController {
     @Autowired
     MaintenanceRecordService maintenanceRecordService;
 
+    @Autowired
+    BusinessMediaService businessMediaService;
+
+    @Autowired
+    BusinessService businessService;
 
 
 
-    @PostMapping("/upload/{imageof}")
+    @PostMapping("/upload/{imageof}/{id}")
     @Transactional
-    public ResponseEntity<ResponseModel> uploadFiles (@RequestPart("files") MultipartFile [] files, @PathVariable String imageof, @AuthenticationPrincipal String userId) throws IOException {
+    public ResponseEntity<ResponseModel> uploadFiles (@RequestPart("files") MultipartFile [] files, @PathVariable String imageof,@PathVariable String id) throws IOException {
 
         FileUploadResponse fileUploadResponse;
 
@@ -80,9 +88,15 @@ public class FileUploadController {
                 }
                 if(imageof.equalsIgnoreCase("profile")){
                     Long savedImgId = profileImageService.saveFileKey(uploadedFileKey);
-                    userService.saveProfileImage(savedImgId,Long.valueOf(userId));
+                    userService.saveProfileImage(savedImgId,Long.valueOf(id));
                     uploadedFilesKeys.add(savedImgId);
 
+                }
+                if(imageof.equalsIgnoreCase(("business")))
+                {
+                    Long savedImgId = profileImageService.saveFileKey(uploadedFileKey);
+                    businessService.saveProfileImage(savedImgId,Long.valueOf(id));
+                    uploadedFilesKeys.add(savedImgId);
                 }
                 else{
                     throw new RuntimeException("request parameter not valid, must be 'service', 'job', or 'profile'");

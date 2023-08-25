@@ -5,7 +5,9 @@ import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import com.qavi.carmaintanence.business.repositories.BusinessRepository;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import com.qavi.carmaintanence.usermanagement.entities.role.Role;
+import com.qavi.carmaintanence.usermanagement.entities.user.ProfileImage;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
+import com.qavi.carmaintanence.usermanagement.repositories.ProfileImageRepository;
 import com.qavi.carmaintanence.usermanagement.repositories.RoleRepository;
 import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class BusinessService {
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    ProfileImageRepository profileImageRepository;
     public boolean addBusiness(String id, Business business)
     {
         try
@@ -132,5 +137,16 @@ public class BusinessService {
             System.out.println(e);
             return false;
         }
+    }
+
+    //get one business
+    public Business getBusiness(Long id) {
+        return businessRepository.findById(id).get();
+    }
+    public void saveProfileImage(Long profileImgId, Long appUserId) {
+        ProfileImage savedImg = profileImageRepository.findById(profileImgId).get();
+        Business business = getBusiness(appUserId);
+        business.setBusinessProfileImage(profileImgId);
+        businessRepository.save(business);
     }
 }

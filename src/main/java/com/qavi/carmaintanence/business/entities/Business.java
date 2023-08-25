@@ -25,6 +25,7 @@ public class Business {
     private String businessEmail;
     private String businessCountry;
     private String businessCity;
+    private Long businessProfileImage;
     //private LocalDateTime businessRegisteredAt;
     private boolean enabled;
     @JsonIgnore
