@@ -56,47 +56,44 @@ public class FileUploadController {
 
 
 
-    @PostMapping("/upload/{imageof}/{id}")
+    @PostMapping("/upload/{mediaof}/{id}")
     @Transactional
-    public ResponseEntity<ResponseModel> uploadFiles (@RequestPart("files") MultipartFile [] files, @PathVariable String imageof,@PathVariable String id) throws IOException {
+    public ResponseEntity<ResponseModel> uploadFiles (@RequestPart("files") MultipartFile [] files, @PathVariable String mediaof,@PathVariable String id) throws IOException {
 
         FileUploadResponse fileUploadResponse;
 
         String uploadedFileKey;
         Long uploadedFileId = null;
+        System.out.println("Received mediaof: " + mediaof);
+
 
         ArrayList<Long> uploadedFilesKeys = new ArrayList<>();
-        ArrayList<String> allowedExt = new ArrayList<>(Arrays.asList("png","jpeg","jpg"));
+        ArrayList<String> allowedExt = new ArrayList<>(Arrays.asList("png","jpeg","jpg","mp4","mkv"));
         int count =0;
         for(MultipartFile file : files){
             String filename = file.getOriginalFilename();
             String fileExtension = FilenameUtils.getExtension(filename);
-            if((file.getSize()*0.00000095367432)>maxFileSize){
-                throw new InvalidFileException("file size exceeded, max size allowed is "+ maxFileSize +"MB");
-            }
-            if(allowedExt.contains(fileExtension)){
-                if(count>=6)
-                {
-                   count=0;
-                   break;
 
-                }
+            if(allowedExt.contains(fileExtension)){
+
                 uploadedFileKey = fileUploadService.uploadFile(file);
-                if(imageof.equalsIgnoreCase("maintanence-record")){
+                if(mediaof.equalsIgnoreCase("maintanence-record")){ //add vehicle
                     uploadedFileId = vehicleMediaService.saveFileKey(uploadedFileKey);
                     uploadedFilesKeys.add(uploadedFileId);
                 }
-                if(imageof.equalsIgnoreCase("profile")){
+                else if(mediaof.equalsIgnoreCase("profile")){
                     Long savedImgId = profileImageService.saveFileKey(uploadedFileKey);
                     userService.saveProfileImage(savedImgId,Long.valueOf(id));
                     uploadedFilesKeys.add(savedImgId);
 
                 }
-                if(imageof.equalsIgnoreCase(("business")))
+                else if(mediaof.equalsIgnoreCase("business"))
                 {
-                    Long savedImgId = profileImageService.saveFileKey(uploadedFileKey);
-                    businessService.saveProfileImage(savedImgId,Long.valueOf(id));
-                    uploadedFilesKeys.add(savedImgId);
+                    uploadedFileId = businessMediaService.saveFileKey(uploadedFileKey);
+                    System.out.println(id);
+                    System.out.println(uploadedFileId);
+                    businessService.saveProfileImage(uploadedFileId,Long.valueOf(id));
+                    uploadedFilesKeys.add(uploadedFileId);
                 }
                 else{
                     throw new RuntimeException("request parameter not valid, must be 'service', 'job', or 'profile'");
@@ -105,13 +102,13 @@ public class FileUploadController {
             }
             else{
                 if(!files[0].getOriginalFilename().equalsIgnoreCase("")){
-                throw new InvalidFileException("invalid file format, only jpeg/jpg , png formats allowed");
+                    throw new InvalidFileException("invalid file format, only jpeg/jpg , png formats allowed");
                 }
             }
         }
         fileUploadResponse = FileUploadResponse.builder()
-                                                .successfullyUploadedFileKeys(uploadedFilesKeys)
-                                                .build();
+                .successfullyUploadedFileKeys(uploadedFilesKeys)
+                .build();
 
         ResponseModel response = ResponseModel.builder().status(HttpStatus.OK)
                 .message("file upload result")

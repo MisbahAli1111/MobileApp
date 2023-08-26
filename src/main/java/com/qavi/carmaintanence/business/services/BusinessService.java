@@ -2,6 +2,7 @@ package com.qavi.carmaintanence.business.services;
 
 import com.qavi.carmaintanence.business.entities.Business;
 import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
+import com.qavi.carmaintanence.business.repositories.BusinessMediaRepository;
 import com.qavi.carmaintanence.business.repositories.BusinessRepository;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import com.qavi.carmaintanence.usermanagement.entities.role.Role;
@@ -32,7 +33,11 @@ public class BusinessService {
 
     @Autowired
     ProfileImageRepository profileImageRepository;
-    public boolean addBusiness(String id, Business business)
+
+    @Autowired
+    BusinessMediaRepository businessMediaRepository;
+
+    public Long addBusiness(String id, Business business)
     {
         try
         {
@@ -48,9 +53,11 @@ public class BusinessService {
                     business.setOwner(owner.get());
                 }
                 business.setEnabled(true);
-               // business.setBusinessRegisteredAt(LocalDateTime.now());
-                businessRepository.save(business);
-                return true;
+                // business.setBusinessRegisteredAt(LocalDateTime.now());
+                Business business1 = businessRepository.save(business);
+                return business1.getId();
+
+
             } else {
                 throw new RecordNotFoundException("User doesn't exists");
             }
@@ -58,7 +65,7 @@ public class BusinessService {
         catch (Exception e)
         {
             System.out.println(e);
-            return false;
+            return null;
         }
     }
 
@@ -144,9 +151,12 @@ public class BusinessService {
         return businessRepository.findById(id).get();
     }
     public void saveProfileImage(Long profileImgId, Long appUserId) {
-        ProfileImage savedImg = profileImageRepository.findById(profileImgId).get();
+        Business savedImg = businessRepository.findById(profileImgId).get();
+        System.out.println(savedImg);
         Business business = getBusiness(appUserId);
+        System.out.println(business);
         business.setBusinessProfileImage(profileImgId);
+        System.out.println(true);
         businessRepository.save(business);
     }
 }

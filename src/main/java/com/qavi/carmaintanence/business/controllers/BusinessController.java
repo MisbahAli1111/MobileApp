@@ -32,10 +32,13 @@ public class BusinessController {
                 .message("Business Created Successfully")
                 .data(new Object())
                 .build();
-        if(!businessService.addBusiness(id,business))
-        {
-            responseModel.setMessage("Failed To Create Business");
+
+        Long business_id = businessService.addBusiness(id,business);
+        if (business_id == null) {
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+            responseModel.setMessage("Failed to create Business");
+        } else {
+            responseModel.setData(business_id); // Set the businessId in the response
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
