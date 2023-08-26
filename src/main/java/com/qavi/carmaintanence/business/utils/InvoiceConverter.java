@@ -24,6 +24,7 @@ public class InvoiceConverter {
         invoiceModel.setDate(invoice.getDate());
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
         invoiceModel.setMaintainedById(invoice.getMaintainedById());
+
         invoiceModel.setRegistrationNumber(registrationNumber);
         invoiceModel.setTotal(invoice.getTotal());
         List<Item> descriptions = invoice.getDescriptions();
@@ -89,7 +90,7 @@ public class InvoiceConverter {
         List<Item> descriptions = new ArrayList<>();
 
         for (Map<String, Object> taxMap : fetchedTaxes) {
-            com.qavi.carmaintanence.business.entities.Tax tax = new Tax();
+            Tax tax = new Tax();
             tax.setTaxName((String) taxMap.get("taxName"));
 
             tax.setTaxRate(((Number) taxMap.get("taxRate")).doubleValue());
@@ -98,7 +99,7 @@ public class InvoiceConverter {
         invoice.setTaxes(taxes);
 
         for (Map<String, Object> discountMap : fetchedDiscounts) {
-            com.qavi.carmaintanence.business.entities.Discount discount = new Discount();
+            Discount discount = new Discount();
             discount.setDiscountName((String) discountMap.get("discountName"));
 
             discount.setDiscountRate(((Number) discountMap.get("discountRate")).doubleValue());
