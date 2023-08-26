@@ -2,8 +2,10 @@ package com.qavi.carmaintanence.business.services;
 
 import com.qavi.carmaintanence.business.entities.Business;
 import com.qavi.carmaintanence.business.entities.Vehicle;
+import com.qavi.carmaintanence.business.entities.VehicleMedia;
 import com.qavi.carmaintanence.business.models.VehicleModel;
 import com.qavi.carmaintanence.business.repositories.BusinessRepository;
+import com.qavi.carmaintanence.business.repositories.VehicleMediaRepository;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
@@ -24,7 +26,10 @@ public class VehicleService {
     @Autowired
     UserRepository userRepository;
 
-    public boolean addVehicle(Long businessId, VehicleModel vehicleModel) {
+    @Autowired
+    VehicleMediaRepository vehicleMediaRepository;
+
+    public Long addVehicle(Long businessId, VehicleModel vehicleModel) {
         try {
             Vehicle vehicle = new Vehicle();
             Optional<Business> business = businessRepository.findById(businessId);
@@ -42,31 +47,32 @@ public class VehicleService {
                     vehicle.setDateCreated(vehicleModel.getDateCreated());
                     vehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
                     vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
-                    vehicleRepository.save(vehicle);
-                    return true;
+                    Vehicle vehicle1 = vehicleRepository.save(vehicle);
+                    return vehicle1.getId();
                 }
-                else {
-//                  userRepository.insertVehicleCustomers(vehicleModel.getOwnerId());
-//                    Optional<User> owner1 = userRepository.findById(vehicleModel.getOwnerId());
-//
-//                    vehicle.setCarOwner(owner1.get());
-//                    vehicle.setMake(vehicleModel.getMake());
-//                    vehicle.setColor(vehicleModel.getColor());
-//                    vehicle.setModel(vehicleModel.getModel());
-//                    vehicle.setYear(vehicleModel.getYear());
-//                    vehicle.setType(vehicleModel.getType());
-//                    vehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
-//                    vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
-//                    vehicleRepository.save(vehicle);
-                    return true;
-                }
+//                else {
+////                  userRepository.insertVehicleCustomers(vehicleModel.getOwnerId());
+////                    Optional<User> owner1 = userRepository.findById(vehicleModel.getOwnerId());
+////
+////                    vehicle.setCarOwner(owner1.get());
+////                    vehicle.setMake(vehicleModel.getMake());
+////                    vehicle.setColor(vehicleModel.getColor());
+////                    vehicle.setModel(vehicleModel.getModel());
+////                    vehicle.setYear(vehicleModel.getYear());
+////                    vehicle.setType(vehicleModel.getType());
+////                    vehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
+////                    vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
+////                    vehicleRepository.save(vehicle);
+//                    return ;
+//                }
             } else {
                 throw new RecordNotFoundException("Business not found");
             }
         } catch (Exception e) {
             System.out.println(e);
-            return false;
+            return null;
         }
+        return null;
     }
 
     public List<Vehicle> getAllVehiclesOfBusiness(Long businessId) {
@@ -139,5 +145,12 @@ public class VehicleService {
         }
     }
 
+
+    public void saveProfileImage(Long profileImgId, Long appUserId) {
+        VehicleMedia savedImg = vehicleMediaRepository.findById(profileImgId).get();
+        Vehicle vehicle = getVehicle(appUserId);
+        vehicle.setVehicleMediaId(profileImgId);
+        vehicleRepository.save(vehicle);
+    }
 
 }

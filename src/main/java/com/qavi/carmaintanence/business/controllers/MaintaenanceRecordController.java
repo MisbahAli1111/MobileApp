@@ -29,7 +29,7 @@ import java.util.Optional;
 @RequestMapping("api/maintenance-record")
 public class MaintaenanceRecordController {
     @Autowired
-    MaintenanceRecordService mrs;
+    MaintenanceRecordService maintenanceRecordService;
 
     @Autowired
     VehicleRepository vehicleRepository;
@@ -50,9 +50,12 @@ public class MaintaenanceRecordController {
         Optional<Vehicle> vehicle = vehicleRepository.findByRegistrationNumber(maintenanceRecordModel.getRegistrationNumber());
 
         if(vehicle.isPresent()) {
-            if (!mrs.addRecord(maintenanceRecordModel, userId)) {
-                responseModel.setMessage("Failed To Add Record");
+            Long record_id = maintenanceRecordService.addRecord(maintenanceRecordModel,userId);
+            if (record_id == null) {
                 responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+                responseModel.setMessage("Failed to create Record");
+            } else {
+                responseModel.setData(record_id); // Set the businessId in the response
             }
         }
         else{
@@ -72,7 +75,7 @@ public class MaintaenanceRecordController {
                 .message("All  Records Are Founded successfully")
                 .data(new Object())
                 .build();
-        List<MaintenanceRecord> records =mrs.getallrecords();
+        List<MaintenanceRecord> records =maintenanceRecordService.getallrecords();
         List convertedList= new ArrayList();
         if(records.isEmpty() || records==null)
         {
@@ -140,14 +143,14 @@ public class MaintaenanceRecordController {
                 .message("Record Founded successfully")
                 .data(new Object())
                 .build();
-        Optional<MaintenanceRecord> myRecords = mrs.getMaintenanceRecordById(Id);
-        List convertedList= new ArrayList();
+        MaintenanceRecord myRecords = maintenanceRecordService.getRecord(Id);
+        List<MaintanenceRecordModel> convertedList= new ArrayList();
 
-        if(myRecords.isPresent())
+        if(myRecords != null)
         {
-            MaintenanceRecord record=myRecords.get();
-                MaintanenceRecordModel maintanenceRecordModel =MaintenanceRecordConverter.covertMRtoMRmodel(record);
-                convertedList.add(maintanenceRecordModel);
+            MaintenanceRecord record = myRecords; // No need for myRecords.get() since myRecords is already the record
+            MaintanenceRecordModel maintanenceRecordModel = MaintenanceRecordConverter.covertMRtoMRmodel(record);
+            convertedList.add(maintanenceRecordModel);
 
         }
         else {
@@ -156,7 +159,7 @@ public class MaintaenanceRecordController {
             return new ResponseEntity<>(convertedList, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<List<MaintanenceRecordModel>>(convertedList, HttpStatus.OK);
+        return new ResponseEntity<>(convertedList, HttpStatus.OK);
 
     }
 
@@ -169,7 +172,7 @@ public class MaintaenanceRecordController {
                 .message("Record Updated Successfully")
                 .data(new Object())
                 .build();
-        if(!mrs.editMaintenanceRecord(maintenanceRecord,Id))
+        if(!maintenanceRecordService.editMaintenanceRecord(maintenanceRecord,Id))
         {
             responseModel.setMessage("Failed To Update Record");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
@@ -185,7 +188,7 @@ public class MaintaenanceRecordController {
                 .message("Record has been Deleted Successfully")
                 .data(new Object())
                 .build();
-        if(!mrs.deleteRecord(Id))
+        if(!maintenanceRecordService.deleteRecord(Id))
         {
             responseModel.setMessage("Failed To Delete Record");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);

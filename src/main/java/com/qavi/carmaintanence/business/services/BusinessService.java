@@ -152,11 +152,8 @@ public class BusinessService {
     }
     public void saveProfileImage(Long profileImgId, Long appUserId) {
         Business savedImg = businessRepository.findById(profileImgId).get();
-        System.out.println(savedImg);
         Business business = getBusiness(appUserId);
-        System.out.println(business);
         business.setBusinessProfileImage(profileImgId);
-        System.out.println(true);
         businessRepository.save(business);
     }
 }

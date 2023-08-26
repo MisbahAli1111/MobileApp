@@ -35,10 +35,12 @@ public class VehicleController {
                 .message("Vehicle Added Successfully")
                 .data(new Object())
                 .build();
-        if(!vehicleService.addVehicle(businessId,vehicle))
-        {
+        Long vehicle_id = vehicleService.addVehicle(businessId,vehicle);
+        if (vehicle_id == null) {
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
-            responseModel.setMessage("Failed to add vehicle");
+            responseModel.setMessage("Failed to create Vehicle");
+        } else {
+            responseModel.setData(vehicle_id); // Set the businessId in the response
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }

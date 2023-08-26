@@ -24,4 +24,5 @@ public class MaintenanceRecord {
     String maintanenceDetail;
     @ManyToOne
     Vehicle vehicle;
+    Long RecordMediaId;
 }

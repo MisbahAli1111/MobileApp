@@ -1,10 +1,8 @@
 package com.qavi.carmaintanence.imagevideo.controller;
 
 import com.qavi.carmaintanence.business.entities.Business;
-import com.qavi.carmaintanence.business.services.BusinessMediaService;
-import com.qavi.carmaintanence.business.services.BusinessService;
-import com.qavi.carmaintanence.business.services.MaintenanceRecordService;
-import com.qavi.carmaintanence.business.services.VehicleMediaService;
+import com.qavi.carmaintanence.business.entities.MaintenanceRecordMedia;
+import com.qavi.carmaintanence.business.services.*;
 import com.qavi.carmaintanence.globalexceptions.InvalidFileException;
 import com.qavi.carmaintanence.imagevideo.models.FileUploadResponse;
 import com.qavi.carmaintanence.imagevideo.service.FileUploadService;
@@ -54,6 +52,12 @@ public class FileUploadController {
     @Autowired
     BusinessService businessService;
 
+    @Autowired
+    VehicleService vehicleService;
+
+    @Autowired
+    MaintenanceRecordMediaService maintenanceRecordMediaService;
+
 
 
     @PostMapping("/upload/{mediaof}/{id}")
@@ -77,10 +81,21 @@ public class FileUploadController {
             if(allowedExt.contains(fileExtension)){
 
                 uploadedFileKey = fileUploadService.uploadFile(file);
-                if(mediaof.equalsIgnoreCase("maintanence-record")){ //add vehicle
+                if(mediaof.equalsIgnoreCase("vehicle")){ //add vehicle
                     uploadedFileId = vehicleMediaService.saveFileKey(uploadedFileKey);
+                    vehicleService.saveProfileImage(uploadedFileId,Long.valueOf(id));
                     uploadedFilesKeys.add(uploadedFileId);
                 }
+                else if (mediaof.equalsIgnoreCase("record")) {
+                     uploadedFileId = maintenanceRecordMediaService.saveFileKey(uploadedFileKey);
+                    System.out.println(uploadedFileId);
+
+                    // Assuming you want to associate the uploaded file with a maintenance record based on the provided ID
+                    maintenanceRecordService.saveProfileImage(uploadedFileId, Long.valueOf(id));
+
+                    uploadedFilesKeys.add(uploadedFileId);
+                }
+
                 else if(mediaof.equalsIgnoreCase("profile")){
                     Long savedImgId = profileImageService.saveFileKey(uploadedFileKey);
                     userService.saveProfileImage(savedImgId,Long.valueOf(id));
@@ -90,8 +105,6 @@ public class FileUploadController {
                 else if(mediaof.equalsIgnoreCase("business"))
                 {
                     uploadedFileId = businessMediaService.saveFileKey(uploadedFileKey);
-                    System.out.println(id);
-                    System.out.println(uploadedFileId);
                     businessService.saveProfileImage(uploadedFileId,Long.valueOf(id));
                     uploadedFilesKeys.add(uploadedFileId);
                 }

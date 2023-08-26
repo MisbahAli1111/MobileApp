@@ -3,6 +3,7 @@ package com.qavi.carmaintanence.business.services;
 import com.qavi.carmaintanence.business.entities.Invoice;
 import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import com.qavi.carmaintanence.business.entities.Vehicle;
+import com.qavi.carmaintanence.business.entities.VehicleMedia;
 import com.qavi.carmaintanence.business.models.MaintanenceRecordModel;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
@@ -31,7 +32,7 @@ public class MaintenanceRecordService {
     @Autowired
     UserRepository userRepository;
 
-    public boolean addRecord(MaintanenceRecordModel maintanenceRecordModel,Long userId)
+    public Long addRecord(MaintanenceRecordModel maintanenceRecordModel,Long userId)
     {
         Optional<Vehicle> vehicle = vehicleRepository.findByRegistrationNumber(maintanenceRecordModel.getRegistrationNumber());
         if (vehicle.isPresent()) {
@@ -43,8 +44,8 @@ public class MaintenanceRecordService {
             maintanenceRecord.setMaintanenceDateTime(maintanenceRecordModel.getMaintanenceDateTime());
             maintanenceRecord.setMaintainedBy(owner.get());
             maintanenceRecord.setVehicle(vehicle.get());
-            maintenanceRecordRepository.save(maintanenceRecord);
-            return true;
+            MaintenanceRecord maintenanceRecord = maintenanceRecordRepository.save(maintanenceRecord);
+            return maintenanceRecord.getId();
         }else {
             throw new RecordNotFoundException("Vehicle not found");
 
@@ -56,10 +57,8 @@ public class MaintenanceRecordService {
         return myRecords;
     }
 
-    public Optional<MaintenanceRecord> getMaintenanceRecordById(Long Id) {
-        Optional<MaintenanceRecord> myRecords =maintenanceRecordRepository.findById(Id);
-
-        return myRecords;
+    public MaintenanceRecord getRecord(Long id) {
+        return maintenanceRecordRepository.findById(id).get();
     }
 
     public boolean editMaintenanceRecord(MaintenanceRecord maintenanceRecord,Long Id) {
@@ -125,4 +124,28 @@ public class MaintenanceRecordService {
         var users = vehicleRepository.findRegistrationNumberInBusiness(businessId);
         return users;
     }
+
+//    public void saveProfileImage(Long profileImgId, Long appUserId) {
+//        MaintenanceRecord savedImg = maintenanceRecordRepository.findById(profileImgId).get();
+//        System.out.println(savedImg);
+//        MaintenanceRecord record = getRecord(appUserId);
+//        record.setRecordMediaId(profileImgId);
+//        maintenanceRecordRepository.save(record);
+//    }
+
+    public void saveProfileImage(Long profileImgId, Long appUserId) {
+        Optional<MaintenanceRecord> optionalSavedImg = maintenanceRecordRepository.findById(profileImgId);
+
+        if (optionalSavedImg.isPresent()) {
+            MaintenanceRecord savedImg = optionalSavedImg.get();
+            System.out.println(savedImg);
+            MaintenanceRecord record = getRecord(appUserId);
+            record.setRecordMediaId(profileImgId);
+            maintenanceRecordRepository.save(record);
+        } else {
+            // Handle the case where no matching record is found
+            System.out.println("No matching record found for profileImgId: " + profileImgId);
+        }
+    }
+
 }
