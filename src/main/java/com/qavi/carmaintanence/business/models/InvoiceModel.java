@@ -22,5 +22,6 @@ public class InvoiceModel {
     private List<Map<String,Object>> taxes;
     private List<Map<String,Object>> descriptions;
     private List<Map<String,Object>> discounts;
-    private  String name;
+    private String name;
+    private String vehicleName;
 }

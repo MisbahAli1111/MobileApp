@@ -4,6 +4,7 @@ import com.qavi.carmaintanence.usermanagement.entities.user.PasswordUpdate;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
 import com.qavi.carmaintanence.usermanagement.models.UserDataModel;
+import com.qavi.carmaintanence.usermanagement.services.user.ProfileImageService;
 import com.qavi.carmaintanence.usermanagement.services.user.UserService;
 import com.qavi.carmaintanence.usermanagement.utils.ConverterModels;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ProfileImageService profileImageService;
 
     //Get All Users
     @GetMapping
@@ -179,5 +182,10 @@ public class UserController {
     }
 
 
+    @GetMapping("/{userId}/profile-image")
+    public ResponseEntity<Map<String, Object>> getProfileImageData(@PathVariable Long userId) {
+        Map<String, Object> profileImageData = profileImageService.getProfileImgData(userId);
+        return ResponseEntity.ok(profileImageData);
+    }
 
 }

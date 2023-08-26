@@ -16,13 +16,13 @@ import java.util.*;
 
 @Service
 public class InvoiceService {
-@Autowired
+    @Autowired
     MaintenanceRecordRepository maintenancerecordrepository;
-@Autowired
-invoiceRepository invoicerepository ;
+    @Autowired
+    invoiceRepository invoicerepository ;
 
-@Autowired
-VehicleRepository vehicleRepository;
+    @Autowired
+    VehicleRepository vehicleRepository;
 
 
     public boolean addInvoice(InvoiceModel invoiceModel, Long id,Long userId) {
@@ -32,6 +32,7 @@ VehicleRepository vehicleRepository;
         if (foundRecord != null) {
             Invoice invoice = new Invoice();
             invoice= InvoiceConverter.convertInvoiceModelToInvoice(invoiceModel);
+
 
             invoice.setInvoiceDue(invoiceModel.getInvoiceDue());
             invoice.setDate(invoiceModel.getDate());
@@ -49,27 +50,27 @@ VehicleRepository vehicleRepository;
 
 
     public boolean editInvoice(Invoice invoice, Long invoiceId) {
-           // MaintenanceRecord maintenanceRecord = maintenancerecordrepository.findById(invoiceId).get();
-            Invoice invoice1=invoicerepository.findById(invoiceId).get();
-            //InvoiceDue
-            if(Objects.nonNull(invoice.getInvoiceDue()) &&
-                    !"".equals(invoice.getInvoiceDue()))
-            {
-                invoice1.setInvoiceDue(invoice.getInvoiceDue());
-            }
-            //VehicleId
-            if(Objects.nonNull(invoice.getVehicleId()) &&
-                    !"".equals(invoice.getVehicleId()))
-            {
-                invoice1.setVehicleId(invoice.getVehicleId());
-            }
-            //Date
-            if(Objects.nonNull(invoice.getDate()) &&
-                    !"".equals(invoice.getDate()))
-            {
-                invoice1.setDate(invoice.getDate());
-            }
-            //Description
+        // MaintenanceRecord maintenanceRecord = maintenancerecordrepository.findById(invoiceId).get();
+        Invoice invoice1=invoicerepository.findById(invoiceId).get();
+        //InvoiceDue
+        if(Objects.nonNull(invoice.getInvoiceDue()) &&
+                !"".equals(invoice.getInvoiceDue()))
+        {
+            invoice1.setInvoiceDue(invoice.getInvoiceDue());
+        }
+        //VehicleId
+        if(Objects.nonNull(invoice.getVehicleId()) &&
+                !"".equals(invoice.getVehicleId()))
+        {
+            invoice1.setVehicleId(invoice.getVehicleId());
+        }
+        //Date
+        if(Objects.nonNull(invoice.getDate()) &&
+                !"".equals(invoice.getDate()))
+        {
+            invoice1.setDate(invoice.getDate());
+        }
+        //Description
 //            if(Objects.nonNull(invoice.getDescription()) &&
 //                    !"".equals(invoice.getDescription()))
 //            {
@@ -112,22 +113,22 @@ VehicleRepository vehicleRepository;
 //                invoice1.setTaxRate(invoice.getTaxRate());
 //            }
 
-            //Unchangable entities not confirmed:  status, Maintained by id and user.
+        //Unchangable entities not confirmed:  status, Maintained by id and user.
 
-            if(invoice1 !=null )
-            {
-                invoicerepository.save(invoice1);
-                return true;
-            }
-            else {
-                return false;
-            }
-
+        if(invoice1 !=null )
+        {
+            invoicerepository.save(invoice1);
+            return true;
         }
+        else {
+            return false;
+        }
+
+    }
 
 
     public Optional<Invoice> getInvoice(Long invoiceId) {
-      Optional<Invoice> invoice =invoicerepository.findById(invoiceId);
+        Optional<Invoice> invoice =invoicerepository.findById(invoiceId);
 
         return invoice;
     }

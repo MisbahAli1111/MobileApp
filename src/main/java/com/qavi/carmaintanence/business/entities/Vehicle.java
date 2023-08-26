@@ -28,5 +28,6 @@ public class Vehicle {
     @ManyToMany(fetch = FetchType.EAGER)
     List<Business> associatedToBusiness;
     double kilometerDriven;
-    Long vehicleMediaId;
+    @OneToMany
+    List<VehicleMedia> vehicleMedia;
 }

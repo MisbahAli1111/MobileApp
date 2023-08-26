@@ -13,6 +13,7 @@ import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -146,10 +147,12 @@ public class VehicleService {
     }
 
 
-    public void saveProfileImage(Long profileImgId, Long appUserId) {
+    public void saveVehicleImage(Long profileImgId, Long vehicleId) {
         VehicleMedia savedImg = vehicleMediaRepository.findById(profileImgId).get();
-        Vehicle vehicle = getVehicle(appUserId);
-        vehicle.setVehicleMediaId(profileImgId);
+        Vehicle vehicle = getVehicle(vehicleId);
+        List<VehicleMedia> vehicleImages = vehicle.getVehicleMedia();
+        vehicleImages.add(savedImg);
+        vehicle.setVehicleMedia(vehicleImages);
         vehicleRepository.save(vehicle);
     }
 

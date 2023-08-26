@@ -4,7 +4,6 @@ import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class MaintenanceRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    LocalDateTime maintanenceDateTime;
+    String maintanenceDateTime;
     @ManyToOne
     User maintainedBy;
     double kilometerDriven;
@@ -24,5 +23,8 @@ public class MaintenanceRecord {
     String maintanenceDetail;
     @ManyToOne
     Vehicle vehicle;
-    Long RecordMediaId;
+
+    @OneToMany
+    List<MaintenanceRecordMedia> maintenanceRecordMedia;
+
 }

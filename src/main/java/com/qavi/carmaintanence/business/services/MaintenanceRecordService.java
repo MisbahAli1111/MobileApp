@@ -1,10 +1,8 @@
 package com.qavi.carmaintanence.business.services;
 
-import com.qavi.carmaintanence.business.entities.Invoice;
-import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
-import com.qavi.carmaintanence.business.entities.Vehicle;
-import com.qavi.carmaintanence.business.entities.VehicleMedia;
+import com.qavi.carmaintanence.business.entities.*;
 import com.qavi.carmaintanence.business.models.MaintanenceRecordModel;
+import com.qavi.carmaintanence.business.repositories.MaintenanceRecordMediaRepository;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
@@ -32,6 +30,9 @@ public class MaintenanceRecordService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    MaintenanceRecordMediaRepository maintenanceRecordMediaRepository;
+
     public Long addRecord(MaintanenceRecordModel maintanenceRecordModel,Long userId)
     {
         Optional<Vehicle> vehicle = vehicleRepository.findByRegistrationNumber(maintanenceRecordModel.getRegistrationNumber());
@@ -41,7 +42,7 @@ public class MaintenanceRecordService {
             maintanenceRecord.setService(maintanenceRecordModel.getService());
             maintanenceRecord.setMaintanenceDetail(maintanenceRecordModel.getMaintanenceDetail());
             maintanenceRecord.setKilometerDriven(maintanenceRecordModel.getKilometerDriven());
-            maintanenceRecord.setMaintanenceDateTime(maintanenceRecordModel.getMaintanenceDateTime());
+            maintanenceRecord.setMaintanenceDateTime(String.valueOf(maintanenceRecordModel.getMaintanenceDateTime()));
             maintanenceRecord.setMaintainedBy(owner.get());
             maintanenceRecord.setVehicle(vehicle.get());
             MaintenanceRecord maintenanceRecord = maintenanceRecordRepository.save(maintanenceRecord);
@@ -125,27 +126,15 @@ public class MaintenanceRecordService {
         return users;
     }
 
-//    public void saveProfileImage(Long profileImgId, Long appUserId) {
-//        MaintenanceRecord savedImg = maintenanceRecordRepository.findById(profileImgId).get();
-//        System.out.println(savedImg);
-//        MaintenanceRecord record = getRecord(appUserId);
-//        record.setRecordMediaId(profileImgId);
-//        maintenanceRecordRepository.save(record);
-//    }
-
-    public void saveProfileImage(Long profileImgId, Long appUserId) {
-        Optional<MaintenanceRecord> optionalSavedImg = maintenanceRecordRepository.findById(profileImgId);
-
-        if (optionalSavedImg.isPresent()) {
-            MaintenanceRecord savedImg = optionalSavedImg.get();
-            System.out.println(savedImg);
-            MaintenanceRecord record = getRecord(appUserId);
-            record.setRecordMediaId(profileImgId);
-            maintenanceRecordRepository.save(record);
-        } else {
-            // Handle the case where no matching record is found
-            System.out.println("No matching record found for profileImgId: " + profileImgId);
-        }
+    public void saveRecordImage(Long profileImgId, Long recordId) {
+        MaintenanceRecordMedia savedImg = maintenanceRecordMediaRepository.findById(profileImgId).get();
+        MaintenanceRecord maintenanceRecord = getRecord(recordId);
+        List<MaintenanceRecordMedia> recordImages = maintenanceRecord.getMaintenanceRecordMedia();
+        recordImages.add(savedImg);
+        maintenanceRecord.setMaintenanceRecordMedia(recordImages);
+        maintenanceRecordRepository.save(maintenanceRecord);
     }
+
+
 
 }

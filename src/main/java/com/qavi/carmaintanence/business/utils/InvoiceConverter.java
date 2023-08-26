@@ -3,6 +3,7 @@ package com.qavi.carmaintanence.business.utils;
 import com.qavi.carmaintanence.business.entities.*;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
+import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -12,14 +13,19 @@ public class InvoiceConverter {
     @Autowired
     VehicleRepository vehicleRepository;
 
+
     public static InvoiceModel convertInvoiceToInvoiceModel(Invoice invoice, VehicleRepository vehicleRepository) {
 
 
         String registrationNumber = vehicleRepository.getRegistrationNumberFromId(invoice.getVehicleId());
 
+        String name= vehicleRepository.getNameFromRegistrationNumber(registrationNumber);
+        String VehicleName = vehicleRepository.getVehicleNameFromNumber(registrationNumber);
 
 
         InvoiceModel invoiceModel= new InvoiceModel();
+        invoiceModel.setName(name);
+        invoiceModel.setVehicleName(VehicleName);
         invoiceModel.setId(invoice.getId());
         invoiceModel.setDate(invoice.getDate());
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
