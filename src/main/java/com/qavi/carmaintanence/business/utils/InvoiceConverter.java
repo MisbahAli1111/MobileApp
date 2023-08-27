@@ -30,7 +30,7 @@ public class InvoiceConverter {
         invoiceModel.setDate(invoice.getDate());
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
         invoiceModel.setMaintainedById(invoice.getMaintainedById());
-
+        invoiceModel.setStatus(invoice.isStatus());
         invoiceModel.setRegistrationNumber(registrationNumber);
         invoiceModel.setTotal(invoice.getTotal());
         List<Item> descriptions = invoice.getDescriptions();

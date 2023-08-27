@@ -13,7 +13,7 @@ public class MaintenanceRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String maintanenceDateTime;
+    LocalDateTime maintanenceDateTime;
     @ManyToOne
     User maintainedBy;
     double kilometerDriven;
