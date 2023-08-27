@@ -181,7 +181,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
-
     @GetMapping("/{userId}/profile-image")
     public ResponseEntity<Map<String, Object>> getProfileImageData(@PathVariable Long userId) {
         Map<String, Object> profileImageData = profileImageService.getProfileImgData(userId);
