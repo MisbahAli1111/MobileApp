@@ -48,83 +48,65 @@ public class InvoiceService {
         }
     }
 
+    public boolean editInvoice(InvoiceModel invoiceModel, Long invoiceId) {
+        Optional<Invoice> optionalInvoice = invoicerepository.findById(invoiceId);
 
-    public boolean editInvoice(Invoice invoice, Long invoiceId) {
-        // MaintenanceRecord maintenanceRecord = maintenancerecordrepository.findById(invoiceId).get();
-        Invoice invoice1=invoicerepository.findById(invoiceId).get();
-        //InvoiceDue
-        if(Objects.nonNull(invoice.getInvoiceDue()) &&
-                !"".equals(invoice.getInvoiceDue()))
-        {
-            invoice1.setInvoiceDue(invoice.getInvoiceDue());
-        }
-        //VehicleId
-        if(Objects.nonNull(invoice.getVehicleId()) &&
-                !"".equals(invoice.getVehicleId()))
-        {
-            invoice1.setVehicleId(invoice.getVehicleId());
-        }
-        //Date
-        if(Objects.nonNull(invoice.getDate()) &&
-                !"".equals(invoice.getDate()))
-        {
-            invoice1.setDate(invoice.getDate());
-        }
-        //Description
-//            if(Objects.nonNull(invoice.getDescription()) &&
-//                    !"".equals(invoice.getDescription()))
-//            {
-//                invoice1.setDescription(invoice.getDescription());
-//            }
-//            //Quantity
-//            if(Objects.nonNull(invoice.getQty()) &&
-//                    !"".equals(invoice.getQty()))
-//            {
-//                invoice1.setQty(invoice.getQty());
-//            }
-//            //Rate
-//            if(Objects.nonNull(invoice.getRate()) &&
-//                    !"".equals(invoice.getRate()))
-//            {
-//                invoice1.setRate(invoice.getRate());
-//            }
-//            //DiscountName
-//            if(Objects.nonNull(invoice.getDiscountName()) &&
-//                    !"".equals(invoice.getDiscountName()))
-//            {
-//                invoice1.setDiscountName(invoice.getDiscountName());
-//            }
-//            //DiscountRate
-//            if(Objects.nonNull(invoice.getDiscountRate()) &&
-//                    !"".equals(invoice.getDiscountRate()))
-//            {
-//                invoice1.setDiscountRate(invoice.getDiscountRate());
-//            }
-//            //TaxName
-//            if(Objects.nonNull(invoice.getTaxName()) &&
-//                    !"".equals(invoice.getTaxName()))
-//            {
-//                invoice1.setTaxName(invoice.getTaxName());
-//            }
-//            //TaxRate
-//            if(Objects.nonNull(invoice.getTaxRate()) &&
-//                    !"".equals(invoice.getTaxRate()))
-//            {
-//                invoice1.setTaxRate(invoice.getTaxRate());
-//            }
+        if (optionalInvoice.isPresent()) {
+            Invoice invoice = optionalInvoice.get();
+            invoice.setInvoiceDue(invoiceModel.getInvoiceDue());
+            invoice.setDate(invoiceModel.getDate());
+//            invoice.setVehicleId(optionalId.get());
+            invoice.setTotal(invoiceModel.getTotal());
+//            invoice.setMaintainedById(userId);
+//            invoice.setMaintenanceRecord(foundRecord);
+            invoice.setStatus(invoiceModel.isStatus());
+//            invoice = InvoiceConverter.convertInvoiceModelToInvoice(invoiceModel);
 
-        //Unchangable entities not confirmed:  status, Maintained by id and user.
+            // Update taxes
+            List<Tax> updatedTaxes = new ArrayList<>();
+            List<Map<String, Object>> fetchedTaxes = invoiceModel.getTaxes();
+            for (Map<String, Object> taxMap : fetchedTaxes) {
+                Tax tax = new Tax();
+                tax.setTaxName((String) taxMap.get("taxName"));
+                tax.setTaxRate(((Number) taxMap.get("taxRate")).doubleValue());
+                updatedTaxes.add(tax);
+            }
+            invoice.setTaxes(updatedTaxes);
 
-        if(invoice1 !=null )
-        {
-            invoicerepository.save(invoice1);
+            // Update discounts
+            List<Discount> updatedDiscounts = new ArrayList<>();
+            List<Map<String, Object>> fetchedDiscounts = invoiceModel.getDiscounts();
+            for (Map<String, Object> discountMap : fetchedDiscounts) {
+                Discount discount = new Discount();
+                discount.setDiscountName((String) discountMap.get("discountName"));
+                discount.setDiscountRate(((Number) discountMap.get("discountRate")).doubleValue());
+                updatedDiscounts.add(discount);
+            }
+            invoice.setDiscounts(updatedDiscounts);
+
+            // Update descriptions
+            List<Item> updatedDescriptions = new ArrayList<>();
+            List<Map<String, Object>> fetchedDescriptions = invoiceModel.getDescriptions();
+            for (Map<String, Object> descriptionMap : fetchedDescriptions) {
+                Item description = new Item();
+                description.setItem((String) descriptionMap.get("item"));
+                description.setRate(((Number) descriptionMap.get("rate")).doubleValue());
+                description.setQuantity((int) descriptionMap.get("quantity"));
+                description.setAmount(((Number) descriptionMap.get("amount")).doubleValue());
+                updatedDescriptions.add(description);
+            }
+            invoice.setDescriptions(updatedDescriptions);
+
+
+
+            invoicerepository.save(invoice);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
-
     }
+
+
 
 
     public Optional<Invoice> getInvoice(Long invoiceId) {

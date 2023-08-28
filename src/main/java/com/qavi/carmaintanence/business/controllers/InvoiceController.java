@@ -112,13 +112,13 @@ public class InvoiceController {
 
     @PutMapping("/edit-invoice/{id}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    public ResponseEntity<ResponseModel> editInvoice(@RequestBody Invoice invoice,@PathVariable Long id){
+    public ResponseEntity<ResponseModel> editInvoice(@RequestBody InvoiceModel invoiceModel,@PathVariable Long id){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Invoice updated Successfully")
                 .data(new Object())
                 .build();
-        if(!invoiceService.editInvoice(invoice,id))
+        if(!invoiceService.editInvoice(invoiceModel,id))
         {
             responseModel.setMessage("Failed To Edit Invoice");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);

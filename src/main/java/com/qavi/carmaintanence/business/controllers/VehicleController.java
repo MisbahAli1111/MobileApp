@@ -4,12 +4,8 @@ import com.qavi.carmaintanence.business.entities.Vehicle;
 import com.qavi.carmaintanence.business.models.VehicleModel;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.services.VehicleService;
-import com.qavi.carmaintanence.business.utils.BusinessConverter;
 import com.qavi.carmaintanence.business.utils.VehicleConverter;
-import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
-import com.qavi.carmaintanence.usermanagement.models.UserDataModel;
-import com.qavi.carmaintanence.usermanagement.utils.ConverterModels;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +63,9 @@ public class VehicleController {
 
         return ResponseEntity.status(responseModel.getStatus()).body(responseModel);
     }
+
+
+
 
     @GetMapping("/{vehicleId}")
     public ResponseEntity<VehicleModel> getOneVehicle(@PathVariable Long vehicleId)
