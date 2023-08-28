@@ -154,5 +154,5 @@ public class VehicleService {
         vehicle.setVehicleMedia(vehicleImages);
         vehicleRepository.save(vehicle);
     }
-    
+
 }

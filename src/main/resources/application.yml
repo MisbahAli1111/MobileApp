@@ -5,7 +5,7 @@ spring:
     lazy-initialization: false
   application:
     name: ServicesApplication
-    baseUrl: http://localhost:8082
+    baseUrl: http://localhost:8080
   datasource:
     tomcat:
       max-active: 10

@@ -94,6 +94,14 @@ public class MaintaenanceRecordController {
         }
 
     }
+    @GetMapping("/{id}/registration-number")
+    public String getRegistrationFromRecords(@PathVariable Long id)
+    {
+
+        String registration_Number =maintenanceRecordService.findRegistartionNumberFromRecords(id);
+        return registration_Number;
+
+    }
 
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
     @GetMapping("/get-customer/{registration_number}")

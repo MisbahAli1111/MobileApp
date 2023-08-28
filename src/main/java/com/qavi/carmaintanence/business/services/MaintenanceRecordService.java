@@ -52,6 +52,26 @@ public class MaintenanceRecordService {
 
         }
     }
+    public String findRegistartionNumberFromRecords (Long recordId)
+    {
+        Optional<MaintenanceRecord> record = maintenanceRecordRepository.findById(recordId);
+        if(record.isPresent())
+        {
+            MaintenanceRecord maintenanceRecord = record.get();
+            Vehicle vehicle = maintenanceRecord.getVehicle();
+
+            if (vehicle != null) {
+                String registrationNumber = vehicle.getRegistrationNumber();
+                return registrationNumber;
+            }else {
+                // Handle the case where the associated vehicle is missing
+                return "Vehicle not associated with this maintenance record";
+            }
+        } else {
+            // Handle the case where the record with the given ID is not found
+            return "Record not found";
+        }
+    }
 
     public List<MaintenanceRecord> getallrecords() {
         List<MaintenanceRecord> myRecords= maintenanceRecordRepository.findAll();

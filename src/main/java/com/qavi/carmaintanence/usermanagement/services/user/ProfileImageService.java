@@ -30,19 +30,20 @@ public class ProfileImageService {
     }
     public Map<String,Object> getProfileImgData(Long userId){
 
-            Map<String,Object> data = new HashMap<>();
+        Map<String,Object> data = new HashMap<>();
 
-            User user = userService.getUser(userId);
+        User user = userService.getUser(userId);
 
-            if(user.getProfileImage()==null){
-                data.put("id",null);
-                data.put("url",null);
-            }
-            else{
-                data.put("id",user.getProfileImage().getId());
-                data.put("url",baseUrl + "/api/file/" + user.getProfileImage().getKey());
-            }
+        if(user.getProfileImage()==null){
+            data.put("id",null);
+            data.put("url",null);
+        }
+        else{
+            data.put("id",user.getProfileImage().getId());
+            data.put("url" , "/api/file/" + user.getProfileImage().getKey());
+        }
 
-            return data;
+
+        return data;
     }
 }
