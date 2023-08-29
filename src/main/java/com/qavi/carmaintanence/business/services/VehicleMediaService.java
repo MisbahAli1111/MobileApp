@@ -9,8 +9,7 @@ import com.qavi.carmaintanence.usermanagement.entities.user.ProfileImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class VehicleMediaService {
@@ -26,19 +25,23 @@ public class VehicleMediaService {
         return savedImg.getId();
     }
 
-//    public Map<String,Object> getVehicleProfileImgData(Long vehicleId){
-//
-//        Map<String,Object> data = new HashMap<>();
-//        Vehicle vehicle = vehicleService.getVehicle(vehicleId);
-//
-//        if(vehicle==null){
-//            data.put("id",null);
-//            data.put("url",null);
-//        }
-//        else{
-//            data.put("id",business.getBusinessProfileImage().getId());
-//            data.put("url" , "/api/file/" + business.getBusinessProfileImage().getKey());
-//        }
-//        return data;
-//    }
+    public List<Map<String, Object>> getVehicleProfileImgData(Long businessId,Long vehicleId) {
+        List<Map<String, Object>> imagesData = new ArrayList<>();
+
+        Vehicle vehicle = vehicleService.getVehicle(vehicleId);
+
+        if (vehicle != null) {
+            List<VehicleMedia> vehicleMediaList = vehicle.getVehicleMedia();
+
+            for (VehicleMedia vehicleMedia : vehicleMediaList) {
+                Map<String, Object> imageData = new HashMap<>();
+                imageData.put("id", vehicleMedia.getId());
+                imageData.put("url", "/api/file/" + vehicleMedia.getKey());
+                imagesData.add(imageData);
+            }
+        }
+
+        return imagesData;
+    }
+
 }

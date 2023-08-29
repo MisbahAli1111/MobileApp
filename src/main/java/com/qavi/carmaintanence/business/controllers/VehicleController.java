@@ -5,6 +5,7 @@ import com.qavi.carmaintanence.business.entities.VehicleMedia;
 import com.qavi.carmaintanence.business.models.VehicleModel;
 import com.qavi.carmaintanence.business.repositories.VehicleMediaRepository;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
+import com.qavi.carmaintanence.business.services.VehicleMediaService;
 import com.qavi.carmaintanence.business.services.VehicleService;
 import com.qavi.carmaintanence.business.utils.VehicleConverter;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,11 +27,11 @@ public class VehicleController {
     @Autowired
     VehicleRepository vehiclerepository;
 
-//    @Autowired
-//    VehicleMedia vehicleMedia;
-//
-//    @Autowired
-//    VehicleMediaRepository vehicleMediaRepository;
+    @Autowired
+    VehicleMediaService vehicleMediaService;
+
+    @Autowired
+    VehicleMediaRepository vehicleMediaRepository;
 
     @PostMapping("/{businessId}/add-vehicle")
     public ResponseEntity<ResponseModel> addVehicle(@PathVariable Long businessId, @RequestBody VehicleModel vehicle)
@@ -150,5 +152,10 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
+    @GetMapping("/{businessId}/{vehicleId}/images")
+    public ResponseEntity <List<Map<String, Object>>> getVehicleImageData(@PathVariable Long businessId,@PathVariable Long vehicleId) {
+        List<Map<String, Object>> profileImageData =vehicleMediaService.getVehicleProfileImgData(businessId,vehicleId);
+        return ResponseEntity.ok(profileImageData);
+    }
 
 }
