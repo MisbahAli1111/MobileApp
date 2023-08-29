@@ -1,7 +1,6 @@
 package com.qavi.carmaintanence.business.entities;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +10,10 @@ import javax.persistence.Id;
 @Entity
 @Builder
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class MaintenanceRecordMedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

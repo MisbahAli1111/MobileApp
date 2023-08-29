@@ -4,6 +4,7 @@ import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import com.qavi.carmaintanence.business.entities.Vehicle;
 import com.qavi.carmaintanence.business.models.MaintanenceRecordModel;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
+import com.qavi.carmaintanence.business.services.MaintenanceRecordMediaService;
 import com.qavi.carmaintanence.business.services.MaintenanceRecordService;
 import com.qavi.carmaintanence.business.utils.MaintenanceRecordConverter;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
@@ -30,6 +31,9 @@ import java.util.Optional;
 public class MaintaenanceRecordController {
     @Autowired
     MaintenanceRecordService maintenanceRecordService;
+
+    @Autowired
+    MaintenanceRecordMediaService maintenanceRecordMediaService;
 
     @Autowired
     VehicleRepository vehicleRepository;
@@ -204,4 +208,10 @@ public class MaintaenanceRecordController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
+    @GetMapping("/{Id}/images")
+    public ResponseEntity <List<Map<String,Object>>> getVehicleImages(@PathVariable Long Id)
+    {
+        List<Map<String,Object>> imageData = maintenanceRecordMediaService.getVehicleImagesData(Id);
+        return ResponseEntity.ok(imageData);
+    }
 }

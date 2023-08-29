@@ -1,7 +1,16 @@
 package com.qavi.carmaintanence.business.utils;
 
+import com.qavi.carmaintanence.business.entities.Item;
+import com.qavi.carmaintanence.business.entities.Tax;
 import com.qavi.carmaintanence.business.entities.Vehicle;
+import com.qavi.carmaintanence.business.entities.VehicleMedia;
 import com.qavi.carmaintanence.business.models.VehicleModel;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class VehicleConverter {
 

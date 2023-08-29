@@ -23,7 +23,6 @@ public class MaintenanceRecord {
     String maintanenceDetail;
     @ManyToOne
     Vehicle vehicle;
-
     @OneToMany
     List<MaintenanceRecordMedia> maintenanceRecordMedia;
 

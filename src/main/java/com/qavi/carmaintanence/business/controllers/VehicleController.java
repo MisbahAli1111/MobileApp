@@ -152,10 +152,10 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
-    @GetMapping("/{businessId}/{vehicleId}/images")
-    public ResponseEntity <List<Map<String, Object>>> getVehicleImageData(@PathVariable Long businessId,@PathVariable Long vehicleId) {
-        List<Map<String, Object>> profileImageData =vehicleMediaService.getVehicleProfileImgData(businessId,vehicleId);
-        return ResponseEntity.ok(profileImageData);
+    @GetMapping("/{Id}/images")
+    public ResponseEntity <List<Map<String,Object>>> getVehicleImages(@PathVariable Long Id)
+    {
+        List<Map<String,Object>> imageData = vehicleMediaService.getVehicleImagesData(Id);
+        return ResponseEntity.ok(imageData);
     }
-
 }

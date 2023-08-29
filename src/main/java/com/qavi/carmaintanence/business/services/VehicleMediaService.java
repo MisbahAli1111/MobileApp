@@ -25,23 +25,29 @@ public class VehicleMediaService {
         return savedImg.getId();
     }
 
-    public List<Map<String, Object>> getVehicleProfileImgData(Long businessId,Long vehicleId) {
-        List<Map<String, Object>> imagesData = new ArrayList<>();
+    public List<Map<String, Object>> getVehicleImagesData(Long Id) {
+        List<Long> vehicleMediaIds = vehicleMediaRepository.getVehicleMediaIdsByVehicleId(Id);
+        System.out.println(vehicleMediaIds);
+        List<VehicleMedia> vehicleMediaData = vehicleMediaRepository.getVehicleMediaDataByIds(vehicleMediaIds);
+        System.out.println(vehicleMediaData);
+        List<Map<String, Object>> resultMapList = new ArrayList<>();
 
-        Vehicle vehicle = vehicleService.getVehicle(vehicleId);
+        if (vehicleMediaData == null) {
+            Map<String, Object> resultMap = new HashMap<>();
 
-        if (vehicle != null) {
-            List<VehicleMedia> vehicleMediaList = vehicle.getVehicleMedia();
-
-            for (VehicleMedia vehicleMedia : vehicleMediaList) {
-                Map<String, Object> imageData = new HashMap<>();
-                imageData.put("id", vehicleMedia.getId());
-                imageData.put("url", "/api/file/" + vehicleMedia.getKey());
-                imagesData.add(imageData);
+            resultMap.put("id", null);
+            resultMap.put("url", null);
+        } else {
+            for (VehicleMedia vehicleMedia : vehicleMediaData) {
+                Map<String, Object> resultMap = new HashMap<>();
+                resultMap.put("id", vehicleMedia.getId());
+                resultMap.put("url", "/api/file/" + vehicleMedia.getKey());
+                resultMapList.add(resultMap);
             }
         }
 
-        return imagesData;
+        return resultMapList;
     }
-
 }
+
+

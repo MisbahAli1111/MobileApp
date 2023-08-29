@@ -10,6 +10,10 @@ import javax.persistence.Id;
 @Entity
 @Builder
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class VehicleMedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
