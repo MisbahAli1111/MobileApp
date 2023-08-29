@@ -25,7 +25,8 @@ public class Business {
     private String businessEmail;
     private String businessCountry;
     private String businessCity;
-    private Long businessProfileImage;
+    @OneToOne(orphanRemoval = true)
+    private BusinessMedia businessProfileImage;
     //private LocalDateTime businessRegisteredAt;
     private boolean enabled;
     @JsonIgnore

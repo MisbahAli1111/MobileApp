@@ -1,7 +1,9 @@
 package com.qavi.carmaintanence.business.controllers;
 
 import com.qavi.carmaintanence.business.entities.Vehicle;
+import com.qavi.carmaintanence.business.entities.VehicleMedia;
 import com.qavi.carmaintanence.business.models.VehicleModel;
+import com.qavi.carmaintanence.business.repositories.VehicleMediaRepository;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.services.VehicleService;
 import com.qavi.carmaintanence.business.utils.VehicleConverter;
@@ -22,6 +24,12 @@ public class VehicleController {
     VehicleService vehicleService;
     @Autowired
     VehicleRepository vehiclerepository;
+
+    @Autowired
+    VehicleMedia vehicleMedia;
+
+    @Autowired
+    VehicleMediaRepository vehicleMediaRepository;
 
     @PostMapping("/{businessId}/add-vehicle")
     public ResponseEntity<ResponseModel> addVehicle(@PathVariable Long businessId, @RequestBody VehicleModel vehicle)

@@ -9,6 +9,10 @@ import javax.persistence.Id;
 @Entity
 @Builder
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BusinessMedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -42,8 +42,6 @@ public class ProfileImageService {
             data.put("id",user.getProfileImage().getId());
             data.put("url" , "/api/file/" + user.getProfileImage().getKey());
         }
-
-
         return data;
     }
 }

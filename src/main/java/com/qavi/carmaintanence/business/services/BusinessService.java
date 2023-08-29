@@ -1,6 +1,7 @@
 package com.qavi.carmaintanence.business.services;
 
 import com.qavi.carmaintanence.business.entities.Business;
+import com.qavi.carmaintanence.business.entities.BusinessMedia;
 import com.qavi.carmaintanence.business.entities.MaintenanceRecord;
 import com.qavi.carmaintanence.business.repositories.BusinessMediaRepository;
 import com.qavi.carmaintanence.business.repositories.BusinessRepository;
@@ -151,9 +152,9 @@ public class BusinessService {
         return businessRepository.findById(id).get();
     }
     public void saveProfileImage(Long profileImgId, Long appUserId) {
-        Business savedImg = businessRepository.findById(profileImgId).get();
+        BusinessMedia savedImg = businessMediaRepository.findById(profileImgId).get();
         Business business = getBusiness(appUserId);
-        business.setBusinessProfileImage(profileImgId);
+        business.setBusinessProfileImage(savedImg);
         businessRepository.save(business);
     }
 }

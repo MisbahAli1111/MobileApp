@@ -4,6 +4,7 @@ import com.qavi.carmaintanence.business.entities.Business;
 import com.qavi.carmaintanence.business.entities.Invoice;
 import com.qavi.carmaintanence.business.models.BusinessModel;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
+import com.qavi.carmaintanence.business.services.BusinessMediaService;
 import com.qavi.carmaintanence.business.services.BusinessService;
 import com.qavi.carmaintanence.business.utils.BusinessConverter;
 import com.qavi.carmaintanence.business.utils.InvoiceConverter;
@@ -17,12 +18,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/business")
 public class BusinessController {
     @Autowired
     BusinessService businessService;
+    @Autowired
+    BusinessMediaService businessMediaService;
+
     @PostMapping("/add-business")
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<ResponseModel> addBusiness(@AuthenticationPrincipal String id, @RequestBody Business business)
@@ -121,6 +126,13 @@ public class BusinessController {
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
+    //Get Business Profile
+    @GetMapping("/{Id}/profile-image")
+    public ResponseEntity<Map<String, Object>> getProfileImageData(@PathVariable Long Id) {
+        Map<String, Object> profileImageData = businessMediaService.getBusinessProfileImgData(Id);
+        return ResponseEntity.ok(profileImageData);
     }
 
 }
