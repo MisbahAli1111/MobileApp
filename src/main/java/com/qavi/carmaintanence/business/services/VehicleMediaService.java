@@ -26,19 +26,19 @@ public class VehicleMediaService {
         return savedImg.getId();
     }
 
-    public Map<String,Object> getVehicleProfileImgData(Long vehicleId){
-
-        Map<String,Object> data = new HashMap<>();
-        Vehicle vehicle = vehicleService.getVehicle(vehicleId);
-
-        if(vehicle==null){
-            data.put("id",null);
-            data.put("url",null);
-        }
-        else{
-            data.put("id",business.getBusinessProfileImage().getId());
-            data.put("url" , "/api/file/" + business.getBusinessProfileImage().getKey());
-        }
-        return data;
-    }
+//    public Map<String,Object> getVehicleProfileImgData(Long vehicleId){
+//
+//        Map<String,Object> data = new HashMap<>();
+//        Vehicle vehicle = vehicleService.getVehicle(vehicleId);
+//
+//        if(vehicle==null){
+//            data.put("id",null);
+//            data.put("url",null);
+//        }
+//        else{
+//            data.put("id",business.getBusinessProfileImage().getId());
+//            data.put("url" , "/api/file/" + business.getBusinessProfileImage().getKey());
+//        }
+//        return data;
+//    }
 }

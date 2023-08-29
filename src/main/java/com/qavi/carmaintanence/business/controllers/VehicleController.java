@@ -25,11 +25,11 @@ public class VehicleController {
     @Autowired
     VehicleRepository vehiclerepository;
 
-    @Autowired
-    VehicleMedia vehicleMedia;
-
-    @Autowired
-    VehicleMediaRepository vehicleMediaRepository;
+//    @Autowired
+//    VehicleMedia vehicleMedia;
+//
+//    @Autowired
+//    VehicleMediaRepository vehicleMediaRepository;
 
     @PostMapping("/{businessId}/add-vehicle")
     public ResponseEntity<ResponseModel> addVehicle(@PathVariable Long businessId, @RequestBody VehicleModel vehicle)
