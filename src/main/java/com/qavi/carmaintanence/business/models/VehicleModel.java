@@ -22,6 +22,8 @@ public class VehicleModel {
     Long ownerId;
     String name;
     String phoneNumber;
+    String customerType;
+    String parentCompany;
     List<Map<String,Object>> vehicleMediaList;
 
 

@@ -13,6 +13,7 @@ import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +45,9 @@ public class VehicleService {
                     vehicle.setModel(vehicleModel.getModel());
                     vehicle.setYear(vehicleModel.getYear());
                     vehicle.setType(vehicleModel.getType());
-                    vehicle.setDateCreated(vehicleModel.getDateCreated());
+                    vehicle.setCustomerType(vehicleModel.getCustomerType());
+                    vehicle.setParentCompany(vehicleModel.getParentCompany());
+                    vehicle.setDateCreated(LocalDateTime.now());
                     vehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
                     vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
                     Vehicle vehicle1 = vehicleRepository.save(vehicle);

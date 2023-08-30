@@ -19,6 +19,9 @@ public class Vehicle {
     String model;
     String make;
     String year;
+
+    String customerType;
+    String parentCompany;
     @Column(unique = true)
     String registrationNumber;
     String color;
