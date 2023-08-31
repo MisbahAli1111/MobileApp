@@ -25,7 +25,7 @@ public class VehicleConverter {
         vehicleModel.setRegistrationNumber(vehicle.getRegistrationNumber());
         vehicleModel.setId(vehicle.getId());
         vehicleModel.setCustomerType(vehicle.getCustomerType());
-        vehicleModel.setParentCompany(vehicleModel.getParentCompany());
+        vehicleModel.setParentCompany(vehicle.getParentCompany());
         vehicleModel.setPhoneNumber(vehicle.getCarOwner().getPhoneNumber());
         vehicleModel.setOwnerId(vehicle.getCarOwner().getId());
         vehicleModel.setDateCreated(vehicle.getDateCreated());
