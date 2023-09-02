@@ -33,10 +33,11 @@ public class User {
     @OneToOne(orphanRemoval = true)
     private ProfileImage profileImage;
     private String phoneNumber;
+    private boolean enabled;
     @JsonIgnore
 
     private String authType;
-    private boolean enabled;
+
     private String country;
 
     private String deviceId;

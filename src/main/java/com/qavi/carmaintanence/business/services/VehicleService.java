@@ -45,6 +45,7 @@ public class VehicleService {
                     vehicle.setModel(vehicleModel.getModel());
                     vehicle.setYear(vehicleModel.getYear());
                     vehicle.setType(vehicleModel.getType());
+                    vehicle.setEnabled(true);
                     vehicle.setCustomerType(vehicleModel.getCustomerType());
                     vehicle.setParentCompany(vehicleModel.getParentCompany());
                     vehicle.setDateCreated(LocalDateTime.now());
@@ -78,8 +79,8 @@ public class VehicleService {
         return null;
     }
 
-    public List<Vehicle> getAllVehiclesOfBusiness(Long businessId) {
-        return vehicleRepository.findAllByAssociatedToBusinessId(businessId);
+    public List<Vehicle> getAllEnabledVehiclesOfBusiness(Long businessId) {
+        return vehicleRepository.findByEnabledTrueAndCarOwner_BusinessId(businessId);
     }
 
     public Vehicle getVehicle(Long id) {
@@ -134,7 +135,7 @@ public class VehicleService {
             if (business.isPresent()) {
                 Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
                 if (vehicle.isPresent()) {
-                    vehicleRepository.deleteById(vehicleId);
+                    vehicleRepository.updateVehicleEnabled(vehicleId);
                     return true;
                 } else {
                     throw new RecordNotFoundException("Vehicle not found");

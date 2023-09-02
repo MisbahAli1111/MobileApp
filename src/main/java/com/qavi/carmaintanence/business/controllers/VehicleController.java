@@ -50,6 +50,10 @@ public class VehicleController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
+
+
+
+
     @GetMapping("/{businessId}/get-all-vehicles")
     public ResponseEntity<ResponseModel> getAllVehicles(@PathVariable Long businessId) {
         ResponseModel responseModel = ResponseModel.builder()
@@ -58,7 +62,7 @@ public class VehicleController {
                 .data(new Object())
                 .build();
 
-        List<Vehicle> vehicles = vehicleService.getAllVehiclesOfBusiness(businessId);
+        List<Vehicle> vehicles = vehicleService.getAllEnabledVehiclesOfBusiness(businessId);
         List<VehicleModel> convertedList = new ArrayList<>();
 
         if (!vehicles.isEmpty()) {
@@ -136,8 +140,8 @@ public class VehicleController {
 
     }
 
-    @DeleteMapping("/{businessId}/{vehicleId}/delete-vehicle")
-    public ResponseEntity<ResponseModel> deleteVehicle(@PathVariable Long businessId,Long vehicleId)
+    @PutMapping("/{businessId}/{vehicleId}/delete-vehicle")
+    public ResponseEntity<ResponseModel> deleteVehicle(@PathVariable Long businessId,@PathVariable  Long vehicleId)
     {
         ResponseModel responseModel=ResponseModel.builder()
                 .status(HttpStatus.OK)

@@ -31,6 +31,7 @@ public class Vehicle {
     @ManyToMany(fetch = FetchType.EAGER)
     List<Business> associatedToBusiness;
     double kilometerDriven;
+    private boolean enabled;
     @OneToMany
     List<VehicleMedia> vehicleMedia;
 }
