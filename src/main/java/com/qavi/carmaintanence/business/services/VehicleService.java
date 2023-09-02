@@ -79,9 +79,9 @@ public class VehicleService {
         return null;
     }
 
-//    public List<Vehicle> getAllEnabledVehiclesOfBusiness(Long businessId) {
-//        return vehicleRepository.findByEnabledTrueAndCarOwner_BusinessId(businessId);
-//    }
+        public List<Vehicle> getAllEnabledVehiclesOfBusiness(Long businessId) {
+        return  vehicleRepository.findAllByAssociatedToBusinessIdAndEnabledIsTrue(businessId);
+        }
 
     public Vehicle getVehicle(Long id) {
         return vehicleRepository.findById(id).get();

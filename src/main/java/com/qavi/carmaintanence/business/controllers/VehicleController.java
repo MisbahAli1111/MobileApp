@@ -54,29 +54,29 @@ public class VehicleController {
 
 
 
-//    @GetMapping("/{businessId}/get-all-vehicles")
-//    public ResponseEntity<ResponseModel> getAllVehicles(@PathVariable Long businessId) {
-//        ResponseModel responseModel = ResponseModel.builder()
-//                .status(HttpStatus.OK)
-//                .message("Vehicles Fetched Successfully")
-//                .data(new Object())
-//                .build();
-//
-//        List<Vehicle> vehicles = vehicleService.getAllEnabledVehiclesOfBusiness(businessId);
-//        List<VehicleModel> convertedList = new ArrayList<>();
-//
-//        if (!vehicles.isEmpty()) {
-//            for (Vehicle vehicle : vehicles) {
-//                convertedList.add(VehicleConverter.convertVehicleToVehicleModel(vehicle));
-//            }
-//            responseModel.setData(convertedList);
-//        } else {
-//            responseModel.setStatus(HttpStatus.NOT_FOUND);
-//            responseModel.setMessage("Vehicles not found");
-//        }
-//
-//        return ResponseEntity.status(responseModel.getStatus()).body(responseModel);
-//    }
+    @GetMapping("/{businessId}/get-all-vehicles")
+    public ResponseEntity<ResponseModel> getAllVehicles(@PathVariable Long businessId) {
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Vehicles Fetched Successfully")
+                .data(new Object())
+                .build();
+
+        List<Vehicle> vehicles = vehicleService.getAllEnabledVehiclesOfBusiness(businessId);
+        List<VehicleModel> convertedList = new ArrayList<>();
+
+        if (!vehicles.isEmpty()) {
+            for (Vehicle vehicle : vehicles) {
+                convertedList.add(VehicleConverter.convertVehicleToVehicleModel(vehicle));
+            }
+            responseModel.setData(convertedList);
+        } else {
+            responseModel.setStatus(HttpStatus.NOT_FOUND);
+            responseModel.setMessage("Vehicles not found");
+        }
+
+        return ResponseEntity.status(responseModel.getStatus()).body(responseModel);
+    }
 
 
 

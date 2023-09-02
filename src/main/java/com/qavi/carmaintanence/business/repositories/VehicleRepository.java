@@ -16,7 +16,11 @@ import java.util.Optional;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
 
-//    List<Vehicle> findByEnabledTrueAndCarOwner_BusinessId(Long businessId);
+    List<Vehicle> findAllByAssociatedToBusinessIdAndEnabledIsTrue(Long businessId);
+
+
+
+
     Optional<Vehicle> findByRegistrationNumber(String registrationNumber);
 
     @Query("SELECT u FROM Vehicle v JOIN v.carOwner u WHERE v.registrationNumber = :registrationNumber")
