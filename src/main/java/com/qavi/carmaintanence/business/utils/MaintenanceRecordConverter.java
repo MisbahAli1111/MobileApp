@@ -15,9 +15,11 @@ public  static  MaintanenceRecordModel covertMRtoMRmodel(MaintenanceRecord maint
     maintanenceRecordModel.setService(maintenanceRecord.getService());
     maintanenceRecordModel.setKilometerDriven(maintenanceRecord.getKilometerDriven());
     maintanenceRecordModel.setMaintainedById(maintenanceRecord.getMaintainedBy().getId());
-    maintanenceRecordModel.setVehicleId(maintanenceRecordModel.getVehicleId());
+    maintanenceRecordModel.setVehicleId(maintenanceRecord.getVehicle().getId());
     maintanenceRecordModel.setRegistrationNumber(maintenanceRecord.getVehicle().getRegistrationNumber());
     maintanenceRecordModel.setType(maintenanceRecord.getVehicle().getType());
+    maintanenceRecordModel.setParentCompany(maintenanceRecord.getVehicle().getParentCompany());
+
 
     String fullName = maintenanceRecord.getMaintainedBy().getFirstName() + " " + maintenanceRecord.getMaintainedBy().getLastName();
     maintanenceRecordModel.setName(fullName);
