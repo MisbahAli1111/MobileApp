@@ -24,4 +24,5 @@ public class MaintanenceRecordModel {
     String type;
     String name;
     String parentCompany;
+    String vehicleOwner;
 }
