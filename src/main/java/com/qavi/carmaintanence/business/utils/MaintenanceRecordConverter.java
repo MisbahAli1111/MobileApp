@@ -22,7 +22,7 @@ public  static  MaintanenceRecordModel covertMRtoMRmodel(MaintenanceRecord maint
     maintanenceRecordModel.setParentCompany(maintenanceRecord.getVehicle().getParentCompany());
 
 
-    String fullName = maintenanceRecord.getMaintainedBy().getFirstName() + "" + maintenanceRecord.getMaintainedBy().getLastName();
+    String fullName = maintenanceRecord.getMaintainedBy().getFirstName()+ "" +maintenanceRecord.getMaintainedBy().getLastName();
     maintanenceRecordModel.setName(fullName);
     return maintanenceRecordModel;
 }
