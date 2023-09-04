@@ -24,4 +24,5 @@ public class InvoiceModel {
     private List<Map<String,Object>> discounts;
     private String name;
     private String vehicleName;
+    private boolean enabled;
 }

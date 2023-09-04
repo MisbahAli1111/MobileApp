@@ -33,7 +33,7 @@ public class InvoiceService {
             Invoice invoice = new Invoice();
             invoice= InvoiceConverter.convertInvoiceModelToInvoice(invoiceModel);
 
-
+            invoice.setEnabled(true);
             invoice.setInvoiceDue(invoiceModel.getInvoiceDue());
             invoice.setDate(invoiceModel.getDate());
             invoice.setVehicleId(optionalId.get());
@@ -116,7 +116,7 @@ public class InvoiceService {
     }
 
     public List<Invoice> getAllInvoices() {
-        List<Invoice> invoices = invoicerepository.findAll();
+        List<Invoice> invoices = invoicerepository.findAllByEnabledIsTrue();
 
         return invoices;
     }
@@ -125,7 +125,8 @@ public class InvoiceService {
         try {
             Optional<Invoice> invoice = invoicerepository.findById(id);
             if (invoice.isPresent()) {
-                invoicerepository.deleteById(id);
+                long invoiceId=id;
+                invoicerepository.UpdateInvoiceEnabled(invoiceId);
                 return true;
             } else {
                 throw new RecordNotFoundException("Record not found");

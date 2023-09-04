@@ -126,7 +126,7 @@ public class InvoiceController {
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 
-    @DeleteMapping("/{Id}/delete-invoice")
+    @PutMapping("/{Id}/delete-invoice")
     public ResponseEntity<ResponseModel> deleteInvoices(@PathVariable Long Id)
     {
         ResponseModel responseModel=ResponseModel.builder()

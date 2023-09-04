@@ -26,7 +26,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
     @Query("SELECT u FROM Vehicle v JOIN v.carOwner u WHERE v.registrationNumber = :registrationNumber")
     Optional<User> getUserNameFromRegistrationNumber(@Param("registrationNumber") String registrationNumber);
 
-    @Query("SELECT CONCAT(u.firstName, ' ', u.lastName) FROM Vehicle v JOIN v.carOwner u WHERE v.registrationNumber = :registrationNumber")
+    @Query("SELECT CONCAT(u.firstName, '  ', u.lastName) FROM Vehicle v JOIN v.carOwner u WHERE v.registrationNumber = :registrationNumber")
     String getNameFromRegistrationNumber(@Param("registrationNumber") String registrationNumber);
 
     @Query("SELECT id FROM Vehicle WHERE registrationNumber = :registrationNumber")

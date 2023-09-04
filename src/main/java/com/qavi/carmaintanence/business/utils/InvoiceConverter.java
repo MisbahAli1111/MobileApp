@@ -27,6 +27,7 @@ public class InvoiceConverter {
         invoiceModel.setName(name);
         invoiceModel.setVehicleName(VehicleName);
         invoiceModel.setId(invoice.getId());
+        invoiceModel.setEnabled(invoice.isEnabled());
         invoiceModel.setDate(invoice.getDate());
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
         invoiceModel.setMaintainedById(invoice.getMaintainedById());

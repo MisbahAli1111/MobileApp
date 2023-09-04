@@ -37,7 +37,7 @@ public class Invoice {
     private LocalDate invoiceDue;
 
     private boolean status;
-
+    private boolean enabled;
     private Long vehicleId;
 
     private LocalDateTime date;
