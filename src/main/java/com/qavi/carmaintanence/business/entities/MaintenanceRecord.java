@@ -14,6 +14,7 @@ public class MaintenanceRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     LocalDateTime maintanenceDateTime;
+    LocalDateTime serviceDue;
     @ManyToOne
     User maintainedBy;
     double kilometerDriven;

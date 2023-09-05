@@ -32,6 +32,17 @@ spring:
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: carmaintanenceapplication@gmail.com
+    password: qlacrzfcnqowuujt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
 upload:
   path: D:/
   maxFileSize: 500
+

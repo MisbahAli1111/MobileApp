@@ -214,4 +214,10 @@ public class MaintaenanceRecordController {
         List<Map<String,Object>> imageData = maintenanceRecordMediaService.getVehicleImagesData(Id);
         return ResponseEntity.ok(imageData);
     }
+
+    @GetMapping("/{registrationNumber}/type")
+    public String FindTypeFromRegistrationNumber(@PathVariable String registrationNumber)
+    {
+        return maintenanceRecordService.findTypeOfVehicle(registrationNumber);
+    }
 }

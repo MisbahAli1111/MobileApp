@@ -43,6 +43,7 @@ public class MaintenanceRecordService {
             maintanenceRecord.setMaintanenceDetail(maintanenceRecordModel.getMaintanenceDetail());
             maintanenceRecord.setKilometerDriven(maintanenceRecordModel.getKilometerDriven());
             maintanenceRecord.setMaintanenceDateTime(maintanenceRecordModel.getMaintanenceDateTime());
+            maintanenceRecord.setServiceDue(maintanenceRecordModel.getServiceDue());
             maintanenceRecord.setMaintainedBy(owner.get());
             maintanenceRecord.setVehicle(vehicle.get());
             MaintenanceRecord maintenanceRecord = maintenanceRecordRepository.save(maintanenceRecord);
@@ -144,6 +145,11 @@ public class MaintenanceRecordService {
     {
         var users = vehicleRepository.findRegistrationNumberInBusiness(businessId);
         return users;
+    }
+
+    public String findTypeOfVehicle (String registrationNumber)
+    {
+        return vehicleRepository.getVehicleTypeFromRegNumber(registrationNumber);
     }
 
     public void saveRecordImage(Long profileImgId, Long recordId) {

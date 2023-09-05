@@ -1,7 +1,5 @@
 package com.qavi.carmaintanence.usermanagement.services.user;
 
-import com.qavi.carmaintanence.business.entities.Business;
-import com.qavi.carmaintanence.business.repositories.BusinessRepository;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import com.qavi.carmaintanence.usermanagement.constants.UserConstants;
 import com.qavi.carmaintanence.usermanagement.entities.permission.PermissionAssigned;
@@ -30,15 +28,14 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.hibernate.criterion.Projections.count;
-
 @Service("userDetailsService")
 @Transactional
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -130,6 +127,13 @@ public class UserService implements UserDetailsService {
                 user.setRole(Set.of(roleRepository.searchByName("ROLE_CUSTOMER")));
             }
             user.setEmailNotificationEnabled(true);
+            String Subject = "Oil Change Application | Account Creation Notification";
+
+            String Email = user.getEmail();
+
+            String Message = "Hi " + user.getFirstName() + ", \n Your Owner Account setup is completed. \n" + "WAIT FOR APPROVAL\n" + user.getEmail();
+
+            emailService.sendEmail(Email, Subject, Message);
             User savedUser = userRepository.save(user);
             return savedUser.getId();
         }
@@ -153,6 +157,14 @@ public class UserService implements UserDetailsService {
             }
 
             user.setEmailNotificationEnabled(true);
+
+            String Subject = "Oil Change Application | Account Creation Notification";
+
+            String Email = user.getEmail();
+
+            String Message = "Hi " + user.getFirstName() + ", \n Your Employee Account setup completed \n" + "WAIT FOR APPROVAL\n" + user.getEmail();
+
+            emailService.sendEmail(Email, Subject, Message);
 
             User savedUser = userRepository.save(user);
 
@@ -183,6 +195,14 @@ public class UserService implements UserDetailsService {
             }
 
             user.setEmailNotificationEnabled(true);
+
+            String Subject = "Oil Change Application | Account Creation Notification";
+
+            String Email = user.getEmail();
+
+            String Message = "Hi" + user.getFirstName() + ", \n Your Customer Account setup completed \n" + "WAIT FOR APPROVAL\n" + user.getEmail();
+
+            emailService.sendEmail(Email, Subject, Message);
 
             User savedUser = userRepository.save(user);
 

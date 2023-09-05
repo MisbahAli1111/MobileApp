@@ -15,6 +15,7 @@ import java.util.List;
 public class MaintanenceRecordModel {
     Long id;
     LocalDateTime maintanenceDateTime;
+    LocalDateTime serviceDue;
     double kilometerDriven;
     String service;
     Long vehicleId;
