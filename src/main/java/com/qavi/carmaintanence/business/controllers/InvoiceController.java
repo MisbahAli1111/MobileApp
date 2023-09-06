@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,16 +33,16 @@ public class InvoiceController {
     VehicleRepository vehicleRepository;
     @Autowired
     InvoiceService invoiceService;
-    @GetMapping("/get-invoice")
+    @GetMapping("/get-invoices/{businessId}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
     @Transactional
-    public ResponseEntity<List<InvoiceModel>> getAllInvoice(){
+    public ResponseEntity<List<InvoiceModel>> getAllInvoice(@PathVariable Long businessId){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Invoices Recived Successfully")
                 .data(new Object())
                 .build();
-        List<Invoice> invoices=invoiceService.getAllInvoices();
+        List<Invoice> invoices=invoiceService.getAllInvoices(businessId);
         List<InvoiceModel> convertedList = new ArrayList<>();
 
         if(invoices.size()>0)
@@ -92,17 +93,16 @@ public class InvoiceController {
         }
     }
 
-    @PostMapping("/create-invoice/{id}")
+    @PostMapping("/businessId/{businessId}/create-invoice/{id}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    public ResponseEntity<ResponseModel> createInvoice(@RequestBody InvoiceModel invoiceModel, @PathVariable Long id, Authentication authentication ){
+    public ResponseEntity<ResponseModel> createInvoice(@RequestBody InvoiceModel invoiceModel, @PathVariable Long businessId, @PathVariable Long id, @AuthenticationPrincipal String userId){
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
                 .message("Invoice Created Successfully")
                 .data(new Object())
                 .build();
 
-        Long userId = Long.parseLong(authentication.getName());
-        if(!invoiceService.addInvoice(invoiceModel,id,userId))
+        if(!invoiceService.addInvoice(invoiceModel,businessId,id,Long.valueOf(userId)))
         {
             responseModel.setMessage("Failed To Create Invoice");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);

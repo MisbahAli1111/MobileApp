@@ -13,7 +13,14 @@ import java.util.List;
 
 public interface invoiceRepository extends JpaRepository<Invoice,Long> {
 
-    List<Invoice> findAllByEnabledIsTrue();
+    @Modifying
+    @Query(value = "INSERT INTO invoice_business (business_id, invoice_id) VALUES (:businessId, :invoiceId)", nativeQuery = true)
+     void insertInvoiceBusiness(@Param("businessId") Long businessId, @Param("invoiceId") Long invoiceId);
+
+
+    List<Invoice> findAllByBusinessIdAndEnabledIsTrue(Long businessId);
+//
+//    List<Invoice> findAllInvoices();
 
     @Query(value = "select i.amount_with_dis, i.amount_with_out_dis  from invoice i where id =?1" , nativeQuery = true)
     Collection<?> findByMaintainedRecordId(Long id);

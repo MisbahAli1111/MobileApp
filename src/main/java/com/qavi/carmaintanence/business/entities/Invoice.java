@@ -25,23 +25,18 @@ public class Invoice {
 
     @OneToMany (cascade=CascadeType.ALL)
     private List<Item> descriptions;
-
     @OneToMany (cascade=CascadeType.ALL)
     private List<Tax> taxes;
-
     @OneToMany (cascade=CascadeType.ALL)
     private List<Discount> discounts;
-
     private Long maintainedById;
-
     private LocalDate invoiceDue;
-
     private boolean status;
     private boolean enabled;
     private Long vehicleId;
-
     private LocalDateTime date;
-
     private  Long total;
+    @ManyToOne
+    Business business;
 }
 

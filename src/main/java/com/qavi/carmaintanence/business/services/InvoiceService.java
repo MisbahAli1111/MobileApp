@@ -1,9 +1,8 @@
 package com.qavi.carmaintanence.business.services;
 
 import com.qavi.carmaintanence.business.entities.*;
-import com.qavi.carmaintanence.business.models.DescriptionModel;
+import com.qavi.carmaintanence.business.repositories.BusinessRepository;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
-import com.qavi.carmaintanence.business.models.DescriptionModel;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
 import com.qavi.carmaintanence.business.repositories.invoiceRepository;
@@ -24,25 +23,35 @@ public class InvoiceService {
     @Autowired
     VehicleRepository vehicleRepository;
 
+    @Autowired
+    BusinessRepository businessRepository;
 
-    public boolean addInvoice(InvoiceModel invoiceModel, Long id,Long userId) {
+    public boolean addInvoice(InvoiceModel invoiceModel, Long businessId,Long id,Long userId) {
         MaintenanceRecord foundRecord = maintenancerecordrepository.findById(id).orElse(null);
         Optional<Long> optionalId = vehicleRepository.getVehicleIdByRegistrationNumber(invoiceModel.getRegistrationNumber());
 
         if (foundRecord != null) {
             Invoice invoice = new Invoice();
-            invoice= InvoiceConverter.convertInvoiceModelToInvoice(invoiceModel);
 
-            invoice.setEnabled(true);
-            invoice.setInvoiceDue(invoiceModel.getInvoiceDue());
-            invoice.setDate(invoiceModel.getDate());
-            invoice.setVehicleId(optionalId.get());
-            invoice.setTotal(invoiceModel.getTotal());
-            invoice.setMaintainedById(userId);
-            invoice.setMaintenanceRecord(foundRecord);
-            invoice.setStatus(invoiceModel.isStatus());
-            invoicerepository.save(invoice);
-            return true;
+
+
+                invoice = InvoiceConverter.convertInvoiceModelToInvoice(invoiceModel);
+
+                invoice.setBusiness(businessRepository.findById(businessId).get());
+                invoice.setEnabled(true);
+                invoice.setInvoiceDue(invoiceModel.getInvoiceDue());
+                invoice.setDate(invoiceModel.getDate());
+                invoice.setVehicleId(optionalId.get());
+                invoice.setTotal(invoiceModel.getTotal());
+                invoice.setMaintainedById(userId);
+                invoice.setMaintenanceRecord(foundRecord);
+                invoice.setStatus(invoiceModel.isStatus());
+
+                invoicerepository.save(invoice);
+
+                return true;
+
+
         } else {
             return false;
         }
@@ -115,9 +124,8 @@ public class InvoiceService {
         return invoice;
     }
 
-    public List<Invoice> getAllInvoices() {
-        List<Invoice> invoices = invoicerepository.findAllByEnabledIsTrue();
-
+    public List<Invoice> getAllInvoices(Long businessId) {
+        List<Invoice> invoices = invoicerepository.findAllByBusinessIdAndEnabledIsTrue(businessId);
         return invoices;
     }
 
