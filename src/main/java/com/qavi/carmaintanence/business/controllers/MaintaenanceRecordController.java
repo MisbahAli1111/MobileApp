@@ -70,8 +70,8 @@ public class MaintaenanceRecordController {
     }
 
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    @GetMapping("/get-records")
-    public ResponseEntity<List<MaintanenceRecordModel>> getallrecords()
+    @GetMapping("/get-all-records/{businessId}")
+    public ResponseEntity<List<MaintanenceRecordModel>> getallrecords(@PathVariable Long businessId)
     {
 
         ResponseModel responseModel = ResponseModel.builder()
@@ -79,7 +79,7 @@ public class MaintaenanceRecordController {
                 .message("All  Records Are Founded successfully")
                 .data(new Object())
                 .build();
-        List<MaintenanceRecord> records =maintenanceRecordService.getallrecords();
+        List<MaintenanceRecord> records =maintenanceRecordService.getallrecords(businessId);
         List convertedList= new ArrayList();
         if(records.isEmpty() || records==null)
         {

@@ -16,4 +16,6 @@ public interface MaintenanceRecordRepository extends JpaRepository<MaintenanceRe
             @Param("startDateTime") LocalDateTime startDateTime,
             @Param("endDateTime") LocalDateTime endDateTime
     );
+
+    List<MaintenanceRecord> findAllByBusinessId(Long businessId);
 }

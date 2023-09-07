@@ -121,8 +121,8 @@ public class MaintenanceRecordService {
 
     }
 
-    public List<MaintenanceRecord> getallrecords() {
-        List<MaintenanceRecord> myRecords= maintenanceRecordRepository.findAll();
+    public List<MaintenanceRecord> getallrecords(Long businessId) {
+        List<MaintenanceRecord> myRecords= maintenanceRecordRepository.findAllByBusinessId(businessId);
         return myRecords;
     }
 
