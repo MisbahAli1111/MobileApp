@@ -24,4 +24,13 @@ public class EmailService {
         mailMessage.setFrom("shayanpirani786110@gmail.com");
         javaMailSender.send(mailMessage);
     }
+
+    public void serviceDueEmail(String toEmail , String subject ,String Message)
+    {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(toEmail);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(Message);
+        javaMailSender.send(mailMessage);
+    }
 }

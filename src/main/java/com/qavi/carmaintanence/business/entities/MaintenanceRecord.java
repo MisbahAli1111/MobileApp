@@ -26,5 +26,6 @@ public class MaintenanceRecord {
     Vehicle vehicle;
     @OneToMany
     List<MaintenanceRecordMedia> maintenanceRecordMedia;
-
+    @ManyToOne
+    Business business;
 }

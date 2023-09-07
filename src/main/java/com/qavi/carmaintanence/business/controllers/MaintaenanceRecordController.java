@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,11 +40,10 @@ public class MaintaenanceRecordController {
     VehicleRepository vehicleRepository;
 
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
-    @PostMapping("/add-record")
-    public ResponseEntity<ResponseModel> addRecord(@RequestBody MaintanenceRecordModel maintenanceRecordModel, Authentication authentication)
+    @PostMapping("/add-record/{businessId}")
+    public ResponseEntity<ResponseModel> addRecord(@RequestBody MaintanenceRecordModel maintenanceRecordModel,@PathVariable  Long businessId, @AuthenticationPrincipal String userId)
     {
 
-        Long userId = Long.parseLong(authentication.getName());
 
         ResponseModel responseModel = ResponseModel.builder()
                 .status(HttpStatus.OK)
@@ -54,7 +54,7 @@ public class MaintaenanceRecordController {
         Optional<Vehicle> vehicle = vehicleRepository.findByRegistrationNumber(maintenanceRecordModel.getRegistrationNumber());
 
         if(vehicle.isPresent()) {
-            Long record_id = maintenanceRecordService.addRecord(maintenanceRecordModel,userId);
+            Long record_id = maintenanceRecordService.addRecord(maintenanceRecordModel,businessId,Long.valueOf(userId));
             if (record_id == null) {
                 responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
                 responseModel.setMessage("Failed to create Record");
