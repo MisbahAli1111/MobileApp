@@ -34,7 +34,7 @@ public class EmailService {
         javaMailSender.send(mailMessage);
     }
 
-    public void invoiceDueEmail(String toEmail , String subject ,String Message)
+    public void invoiceDueEmail(String toEmail , String subject ,String Message, String business_profile)
     {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(toEmail);

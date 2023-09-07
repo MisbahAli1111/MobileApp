@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -153,14 +154,12 @@ public class InvoiceService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void findServiceDue() {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        LocalDateTime tomorrow = currentDateTime.plusDays(38);
-        LocalDateTime startOfTomorrow = tomorrow.withHour(0).withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime endOfTomorrow = tomorrow.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+    @Scheduled(cron = "0 0 * * * ?")
+    public void findInvoiceDue() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate tomorrow = currentDate.plusDays(1);
 
-        List<Invoice> invoiceDueRecords = invoicerepository.findByInvoiceDueBetween(startOfTomorrow, endOfTomorrow);
+        List<Invoice> invoiceDueRecords = invoicerepository.findByInvoiceDueBetween(tomorrow);
 
         if (invoiceDueRecords != null && !invoiceDueRecords.isEmpty()) {
             for (Invoice record : invoiceDueRecords) {
@@ -169,31 +168,18 @@ public class InvoiceService {
                 System.out.println(business_profile);
                 String subject = "Invoice Due Notification";
 
-                String[] parts = email.split("\\@" );
+                String[] parts = email.split("\\@");
                 String recipientFirstName = parts[0];
 
-                // Create an HTML message
-                String htmlMessage = "<html><body>";
-
-                // Include the business profile image
-                htmlMessage += "<img src='" + business_profile + "' alt='Business Profile' /><br />";
-
-                // Include the message
-                htmlMessage += "<p>Hi " + recipientFirstName + ",</p>";
-                htmlMessage += "<p>Kindly note that your invoice payment is due tomorrow.</p>";
-                htmlMessage += "<p>Your timely settlement is greatly appreciated.</p>";
-                htmlMessage += "<p>Thank you for your cooperation.</p>";
-
-                htmlMessage += "</body></html>";
+                String Message = "Hi " + recipientFirstName + ",\n" +"Your invoice is due tomorrow. Kindly pay it before deadline." ;
 
                 // Send the email
-                emailService.invoiceDueEmail(email, subject, htmlMessage);
+                emailService.invoiceDueEmail(email, subject, Message,business_profile);
 
             }
+        } else {
+            System.out.println("No service due records found for tomorrow (" + tomorrow + ")");
         }
-        else {
-            System.out.println("No service due records found for tomorrow (" + startOfTomorrow + " - " + endOfTomorrow + ")" );
-        }
-
     }
+
 }
