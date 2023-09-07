@@ -8,9 +8,12 @@ import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository
 import com.qavi.carmaintanence.business.repositories.invoiceRepository;
 import com.qavi.carmaintanence.business.utils.InvoiceConverter;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
+import com.qavi.carmaintanence.usermanagement.services.user.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -25,6 +28,9 @@ public class InvoiceService {
 
     @Autowired
     BusinessRepository businessRepository;
+
+    @Autowired
+    EmailService emailService;
 
     public boolean addInvoice(InvoiceModel invoiceModel, Long businessId,Long id,Long userId) {
         MaintenanceRecord foundRecord = maintenancerecordrepository.findById(id).orElse(null);
@@ -145,5 +151,49 @@ public class InvoiceService {
             System.out.println(e);
             return false;
         }
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void findServiceDue() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime tomorrow = currentDateTime.plusDays(38);
+        LocalDateTime startOfTomorrow = tomorrow.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime endOfTomorrow = tomorrow.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+
+        List<Invoice> invoiceDueRecords = invoicerepository.findByInvoiceDueBetween(startOfTomorrow, endOfTomorrow);
+
+        if (invoiceDueRecords != null && !invoiceDueRecords.isEmpty()) {
+            for (Invoice record : invoiceDueRecords) {
+                String email = record.getMaintenanceRecord().getVehicle().getCarOwner().getEmail();
+                String business_profile = record.getBusiness().getBusinessProfileImage().toString();
+                System.out.println(business_profile);
+                String subject = "Invoice Due Notification";
+
+                String[] parts = email.split("\\@" );
+                String recipientFirstName = parts[0];
+
+                // Create an HTML message
+                String htmlMessage = "<html><body>";
+
+                // Include the business profile image
+                htmlMessage += "<img src='" + business_profile + "' alt='Business Profile' /><br />";
+
+                // Include the message
+                htmlMessage += "<p>Hi " + recipientFirstName + ",</p>";
+                htmlMessage += "<p>Kindly note that your invoice payment is due tomorrow.</p>";
+                htmlMessage += "<p>Your timely settlement is greatly appreciated.</p>";
+                htmlMessage += "<p>Thank you for your cooperation.</p>";
+
+                htmlMessage += "</body></html>";
+
+                // Send the email
+                emailService.invoiceDueEmail(email, subject, htmlMessage);
+
+            }
+        }
+        else {
+            System.out.println("No service due records found for tomorrow (" + startOfTomorrow + " - " + endOfTomorrow + ")" );
+        }
+
     }
 }

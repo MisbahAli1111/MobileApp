@@ -33,4 +33,13 @@ public class EmailService {
         mailMessage.setText(Message);
         javaMailSender.send(mailMessage);
     }
+
+    public void invoiceDueEmail(String toEmail , String subject ,String Message)
+    {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(toEmail);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(Message);
+        javaMailSender.send(mailMessage);
+    }
 }
