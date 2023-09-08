@@ -17,7 +17,7 @@ public class InvoiceModel {
     private LocalDate invoiceDue;
     private boolean status;
     private String registrationNumber;
-    private LocalDateTime date;
+    private LocalDate date;
     private  Long total;
     private List<Map<String,Object>> taxes;
     private List<Map<String,Object>> descriptions;

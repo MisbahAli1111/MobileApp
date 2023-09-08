@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface invoiceRepository extends JpaRepository<Invoice,Long> {
 
@@ -37,4 +38,11 @@ public interface invoiceRepository extends JpaRepository<Invoice,Long> {
     List<Invoice> findByInvoiceDueBetween(
             @Param("tomorrow")LocalDate tomorrow
             );
+
+    @Query("SELECT i FROM Invoice i " +
+            "WHERE i.date >= :startDate AND i.date <= :endDate " +
+            "AND i.business.id = :businessId")
+    List<Invoice> findReportDetails(@Param("startDate") LocalDate startDate,
+                                        @Param("endDate") LocalDate endDate,
+                                        @Param("businessId") Long businessId);
 }

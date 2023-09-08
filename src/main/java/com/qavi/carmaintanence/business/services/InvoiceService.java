@@ -131,6 +131,17 @@ public class InvoiceService {
         return invoice;
     }
 
+
+    public List<Invoice> getInvoiceReport(InvoiceModel invoiceModel, Long businessId) {
+            List<Invoice> invoice = invoicerepository.findReportDetails(
+                    invoiceModel.getDate(),
+                    invoiceModel.getInvoiceDue(),
+                    businessId
+            );
+
+            return invoice;
+    }
+
     public List<Invoice> getAllInvoices(Long businessId) {
         List<Invoice> invoices = invoicerepository.findAllByBusinessIdAndEnabledIsTrue(businessId);
         return invoices;

@@ -1,28 +1,23 @@
 package com.qavi.carmaintanence.business.controllers;
 
 import com.qavi.carmaintanence.business.entities.Invoice;
+import com.qavi.carmaintanence.business.entities.SalesReport;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.services.InvoiceService;
 import com.qavi.carmaintanence.business.utils.InvoiceConverter;
-import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
-import com.qavi.carmaintanence.usermanagement.models.UserDataModel;
-import com.qavi.carmaintanence.usermanagement.utils.ConverterModels;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
 
 @RestController
 @RequestMapping("api/invoice")
@@ -92,6 +87,36 @@ public class InvoiceController {
             return new ResponseEntity<>(convertedList, HttpStatus.NOT_FOUND);
         }
     }
+
+
+    @GetMapping("/get-invoice-salesReport/{businessId}")
+    @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
+    @Transactional
+    public ResponseEntity<?> getSalesReport(@RequestBody InvoiceModel invoiceModel, @PathVariable Long businessId) {
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Invoices Received Successfully")
+                .data(new Object())
+                .build();
+
+        List<Invoice> invoices = invoiceService.getInvoiceReport(invoiceModel, businessId);
+
+        if (invoices.isEmpty()) {
+            responseModel.setStatus(HttpStatus.NOT_FOUND);
+            responseModel.setMessage("Invoices not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseModel);
+        }
+
+        List<InvoiceModel> convertedList = new ArrayList<>();
+        for (Invoice invoice : invoices) {
+            convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice, vehicleRepository));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(convertedList);
+    }
+
+
+
 
     @PostMapping("/businessId/{businessId}/create-invoice/{id}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")

@@ -34,7 +34,7 @@ public class Invoice {
     private boolean status;
     private boolean enabled;
     private Long vehicleId;
-    private LocalDateTime date;
+    private LocalDate date;
     private  Long total;
     @ManyToOne
     Business business;
