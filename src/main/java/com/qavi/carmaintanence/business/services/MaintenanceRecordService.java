@@ -82,7 +82,7 @@ public class MaintenanceRecordService {
     @Scheduled(cron = "0 0 0 * * ?")
     public void findServiceDue() {
         LocalDateTime currentDateTime = LocalDateTime.now();
-        LocalDateTime tomorrow = currentDateTime.plusDays(38);
+        LocalDateTime tomorrow = currentDateTime.plusDays(1);
         LocalDateTime startOfTomorrow = tomorrow.withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime endOfTomorrow = tomorrow.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
 

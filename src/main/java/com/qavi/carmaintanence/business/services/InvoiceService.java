@@ -123,6 +123,11 @@ public class InvoiceService {
     }
 
 
+    public Long getInvoiceDueCount(Long businessId)
+    {
+        Long invoiceCount = invoicerepository.countInvoiceDueOfBusiness(businessId);
+        return invoiceCount;
+    }
 
 
     public Optional<Invoice> getInvoice(Long invoiceId) {
@@ -165,7 +170,7 @@ public class InvoiceService {
         }
     }
 
-    @Scheduled(cron = "0 0 * * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void findInvoiceDue() {
         LocalDate currentDate = LocalDate.now();
         LocalDate tomorrow = currentDate.plusDays(1);
@@ -189,7 +194,7 @@ public class InvoiceService {
 
             }
         } else {
-            System.out.println("No service due records found for tomorrow (" + tomorrow + ")");
+            System.out.println("No Invoice due records found for tomorrow (" + tomorrow + ")");
         }
     }
 

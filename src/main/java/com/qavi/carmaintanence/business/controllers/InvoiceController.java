@@ -93,7 +93,7 @@ public class InvoiceController {
     }
 
 
-    @GetMapping("/get-invoice-salesReport/{businessId}")
+    @PostMapping("/get-invoice-salesReport/{businessId}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
     @Transactional
     public ResponseEntity<?> getSalesReport(@RequestBody InvoiceModel invoiceModel, @PathVariable Long businessId) {
@@ -168,6 +168,27 @@ public class InvoiceController {
             responseModel.setMessage("Failed To Delete Invoice");
             responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
         }
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
+
+    @GetMapping("/{businessId}/invoiceDue")
+    @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
+    public ResponseEntity<ResponseModel> getInvoiceDues(@PathVariable Long businessId)
+    {
+        ResponseModel responseModel=ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("Invoice Due Successfully Retrieved")
+                .data(new Object())
+                .build();
+        Long invoiceCount = invoiceService.getInvoiceDueCount(businessId);
+
+        if (invoiceCount == null) {
+            responseModel.setMessage("Failed To Get Invoice Dues");
+            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
+        } else {
+            responseModel.setData(invoiceCount);
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
     }
 

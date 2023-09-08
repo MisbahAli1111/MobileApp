@@ -42,7 +42,10 @@ public interface invoiceRepository extends JpaRepository<Invoice,Long> {
     @Query("SELECT i FROM Invoice i " +
             "WHERE i.date >= :startDate AND i.date <= :endDate " +
             "AND i.business.id = :businessId")
-    List<Invoice> findReportDetails(@Param("startDate") LocalDate startDate,
-                                        @Param("endDate") LocalDate endDate,
-                                        @Param("businessId") Long businessId);
+    List<Invoice> findReportDetails(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("businessId") Long businessId);
+
+    @Query("SELECT COUNT(i) FROM Invoice i WHERE i.status = 'false' AND i.business.id = :businessId")
+    Long countInvoiceDueOfBusiness(@Param("businessId") Long businessId);
+
+
 }
