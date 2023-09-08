@@ -7,6 +7,7 @@ import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.services.InvoiceService;
 import com.qavi.carmaintanence.business.utils.InvoiceConverter;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
+import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,9 @@ public class InvoiceController {
     VehicleRepository vehicleRepository;
     @Autowired
     InvoiceService invoiceService;
+
+    @Autowired
+    UserRepository userRepository;
     @GetMapping("/get-invoices/{businessId}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
     @Transactional
@@ -44,7 +48,7 @@ public class InvoiceController {
         {
             responseModel.setData(invoices);
             for (Invoice invoice : invoices) {
-                convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice,vehicleRepository));
+                convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice,vehicleRepository,userRepository));
             }
             return new ResponseEntity<List<InvoiceModel>>(convertedList, HttpStatus.OK);
 
@@ -67,7 +71,7 @@ public class InvoiceController {
         List<InvoiceModel> convertedList = null;
         if (invoiceOptional.isPresent()) {
             Invoice invoice = invoiceOptional.get();
-            InvoiceModel invoiceModel = InvoiceConverter.convertInvoiceToInvoiceModel(invoice,vehicleRepository);
+            InvoiceModel invoiceModel = InvoiceConverter.convertInvoiceToInvoiceModel(invoice,vehicleRepository,userRepository);
             convertedList = new ArrayList<>();
             convertedList.add(invoiceModel);
 
@@ -109,7 +113,7 @@ public class InvoiceController {
 
         List<InvoiceModel> convertedList = new ArrayList<>();
         for (Invoice invoice : invoices) {
-            convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice, vehicleRepository));
+            convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice, vehicleRepository,userRepository));
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(convertedList);

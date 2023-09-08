@@ -25,4 +25,6 @@ public class InvoiceModel {
     private String name;
     private String vehicleName;
     private boolean enabled;
+    private String maintainedByName;
+    private String parentCompany;
 }

@@ -3,6 +3,7 @@ package com.qavi.carmaintanence.business.utils;
 import com.qavi.carmaintanence.business.entities.*;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
+import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,21 +11,23 @@ import java.util.*;
 
 public class InvoiceConverter {
 
-    @Autowired
-    VehicleRepository vehicleRepository;
 
 
-    public static InvoiceModel convertInvoiceToInvoiceModel(Invoice invoice, VehicleRepository vehicleRepository) {
+
+    public static InvoiceModel convertInvoiceToInvoiceModel(Invoice invoice, VehicleRepository vehicleRepository,UserRepository userRepository) {
 
 
-        String registrationNumber = vehicleRepository.getRegistrationNumberFromId(invoice.getVehicleId());
-
-        String name= vehicleRepository.getNameFromRegistrationNumber(registrationNumber);
-        String VehicleName = vehicleRepository.getVehicleNameFromNumber(registrationNumber);
-
+        Vehicle vehicle = vehicleRepository.findById(invoice.getVehicleId()).orElse(null);
+        String VehicleName =vehicle.getMake()+" "+vehicle.getModel() +" "+vehicle.getYear();
+        String registrationNumber = vehicle.getRegistrationNumber();
+        String vehicleOwner= vehicleRepository.getNameFromRegistrationNumber(registrationNumber);
+        String parentCompany= vehicle.getParentCompany();
+        User user = userRepository.findById(invoice.getMaintainedById()).orElse(null);
 
         InvoiceModel invoiceModel= new InvoiceModel();
-        invoiceModel.setName(name);
+        invoiceModel.setParentCompany(parentCompany);
+        invoiceModel.setMaintainedByName(user.getFirstName()+ " "+ user.getLastName());
+        invoiceModel.setName(vehicleOwner);
         invoiceModel.setVehicleName(VehicleName);
         invoiceModel.setId(invoice.getId());
         invoiceModel.setEnabled(invoice.isEnabled());
@@ -32,6 +35,7 @@ public class InvoiceConverter {
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
         invoiceModel.setMaintainedById(invoice.getMaintainedById());
         invoiceModel.setStatus(invoice.isStatus());
+
         invoiceModel.setRegistrationNumber(registrationNumber);
         invoiceModel.setTotal(invoice.getTotal());
         List<Item> descriptions = invoice.getDescriptions();
