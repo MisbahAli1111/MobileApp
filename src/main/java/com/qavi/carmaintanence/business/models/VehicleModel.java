@@ -24,7 +24,7 @@ public class VehicleModel {
     String phoneNumber;
     String customerType;
     String parentCompany;
-    List<Map<String,Object>> vehicleMediaList;
+//    List<Map<String,Object>> vehicleMediaList;
 
-
+    List<String> vehicleMediaList;
 }

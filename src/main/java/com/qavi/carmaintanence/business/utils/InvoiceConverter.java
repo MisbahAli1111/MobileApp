@@ -34,6 +34,7 @@ public class InvoiceConverter {
         invoiceModel.setId(invoice.getId());
         invoiceModel.setEnabled(invoice.isEnabled());
         invoiceModel.setDate(invoice.getDate());
+        invoiceModel.setCurrency(invoice.getCurrency());
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
         invoiceModel.setMaintainedById(invoice.getMaintainedById());
         invoiceModel.setStatus(invoice.isStatus());

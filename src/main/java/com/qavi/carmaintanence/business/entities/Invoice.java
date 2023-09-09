@@ -38,5 +38,6 @@ public class Invoice {
     private  Long total;
     @ManyToOne
     Business business;
+    private String currency;
 }
 

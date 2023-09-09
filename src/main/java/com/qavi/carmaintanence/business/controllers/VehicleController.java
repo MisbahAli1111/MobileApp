@@ -67,7 +67,13 @@ public class VehicleController {
 
         if (!vehicles.isEmpty()) {
             for (Vehicle vehicle : vehicles) {
-                convertedList.add(VehicleConverter.convertVehicleToVehicleModel(vehicle));
+                VehicleModel vehicleModel = VehicleConverter.convertVehicleToVehicleModel(vehicle);
+
+                // Fetch media keys for the current vehicle and add them to the vehicleModel
+                List<String> mediaKeys = vehicleService.getVehicleMedia(vehicle.getId());
+                vehicleModel.setVehicleMediaList(mediaKeys);
+
+                convertedList.add(vehicleModel);
             }
             responseModel.setData(convertedList);
         } else {

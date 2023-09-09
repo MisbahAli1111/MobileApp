@@ -29,4 +29,5 @@ public class InvoiceModel {
     private String parentCompany;
     private String businessName;
     private String vehicleType;
+    private  String currency;
 }

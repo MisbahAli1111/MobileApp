@@ -92,6 +92,11 @@ public class VehicleService {
         Optional<Vehicle> foundVehicle = vehicleRepository.findById(id);
         return foundVehicle;
     }
+    public List<String> getVehicleMedia(Long id)
+    {
+        List<String> media = vehicleMediaRepository.getVehicleMediaKeysByVehicleId(id);
+        return media;
+    }
 
     public boolean updateVehicle(Long businessId, Long vehicleId, VehicleModel vehicleModel) {
 

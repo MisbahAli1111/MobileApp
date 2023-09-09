@@ -53,11 +53,10 @@ public class InvoiceService {
                 invoice.setMaintainedById(userId);
                 invoice.setMaintenanceRecord(foundRecord);
                 invoice.setStatus(invoiceModel.isStatus());
-
+                invoice.setCurrency(invoiceModel.getCurrency());
                 invoicerepository.save(invoice);
 
                 return true;
-
 
         } else {
             return false;

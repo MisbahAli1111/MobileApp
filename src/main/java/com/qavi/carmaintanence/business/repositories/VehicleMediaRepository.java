@@ -14,7 +14,8 @@ public interface VehicleMediaRepository extends JpaRepository<VehicleMedia,Long>
     @Query("SELECT vm.id FROM Vehicle v JOIN v.vehicleMedia vm WHERE v.id = :vehicleId")
     List<Long> getVehicleMediaIdsByVehicleId(@Param("vehicleId") Long vehicleId);
 
-
+    @Query("SELECT vm.key FROM Vehicle v JOIN v.vehicleMedia vm WHERE v.id = :vehicleId")
+    List<String> getVehicleMediaKeysByVehicleId(@Param("vehicleId") Long vehicleId);
     @Query("SELECT NEW com.qavi.carmaintanence.business.entities.VehicleMedia(vm.id, vm.key) FROM VehicleMedia vm WHERE vm.id IN :ids")
     List<VehicleMedia> getVehicleMediaDataByIds(@Param("ids") List<Long> ids);
 
