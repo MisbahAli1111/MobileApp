@@ -3,6 +3,7 @@ package com.qavi.carmaintanence.business.controllers;
 import com.qavi.carmaintanence.business.entities.Invoice;
 import com.qavi.carmaintanence.business.entities.SalesReport;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
+import com.qavi.carmaintanence.business.repositories.BusinessRepository;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.services.InvoiceService;
 import com.qavi.carmaintanence.business.utils.InvoiceConverter;
@@ -29,7 +30,8 @@ public class InvoiceController {
     VehicleRepository vehicleRepository;
     @Autowired
     InvoiceService invoiceService;
-
+    @Autowired
+    BusinessRepository  businessRepository;
     @Autowired
     UserRepository userRepository;
     @GetMapping("/get-invoices/{businessId}")

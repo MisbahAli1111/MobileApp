@@ -2,6 +2,7 @@ package com.qavi.carmaintanence.business.utils;
 
 import com.qavi.carmaintanence.business.entities.*;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
+import com.qavi.carmaintanence.business.repositories.BusinessRepository;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
@@ -14,7 +15,7 @@ public class InvoiceConverter {
 
 
 
-    public static InvoiceModel convertInvoiceToInvoiceModel(Invoice invoice, VehicleRepository vehicleRepository,UserRepository userRepository) {
+    public static InvoiceModel convertInvoiceToInvoiceModel(Invoice invoice, VehicleRepository vehicleRepository, UserRepository userRepository) {
 
 
         Vehicle vehicle = vehicleRepository.findById(invoice.getVehicleId()).orElse(null);
@@ -23,6 +24,7 @@ public class InvoiceConverter {
         String vehicleOwner= vehicleRepository.getNameFromRegistrationNumber(registrationNumber);
         String parentCompany= vehicle.getParentCompany();
         User user = userRepository.findById(invoice.getMaintainedById()).orElse(null);
+
 
         InvoiceModel invoiceModel= new InvoiceModel();
         invoiceModel.setParentCompany(parentCompany);
@@ -35,7 +37,8 @@ public class InvoiceConverter {
         invoiceModel.setInvoiceDue(invoice.getInvoiceDue());
         invoiceModel.setMaintainedById(invoice.getMaintainedById());
         invoiceModel.setStatus(invoice.isStatus());
-
+        invoiceModel.setVehicleType(vehicle.getType());
+        invoiceModel.setBusinessName(invoice.getBusiness().getBusinessName());
         invoiceModel.setRegistrationNumber(registrationNumber);
         invoiceModel.setTotal(invoice.getTotal());
         List<Item> descriptions = invoice.getDescriptions();

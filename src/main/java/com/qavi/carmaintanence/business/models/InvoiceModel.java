@@ -27,4 +27,6 @@ public class InvoiceModel {
     private boolean enabled;
     private String maintainedByName;
     private String parentCompany;
+    private String businessName;
+    private String vehicleType;
 }
