@@ -36,11 +36,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
     @Query("select type from Vehicle where registration_number = :registrationNumber")
     String getVehicleTypeFromRegNumber(@Param("registrationNumber") String registrationNumber);
 
-    @Query("SELECT CONCAT(make,' ', model,'',year) FROM Vehicle WHERE registrationNumber = :registrationNumber")
-    String getVehicleNameFromNumber(@Param("registrationNumber") String registrationNumber);
-
-    @Query("SELECT registrationNumber FROM Vehicle WHERE id = :id")
-    String getRegistrationNumberFromId(@Param("id") Long id);
 
 
     @Query(value = "select v.registration_number from Vehicle v INNER JOIN vehicle_associated_to_business b  on v.id = b.vehicle_id where b.associated_to_business_id = ?1",nativeQuery = true)

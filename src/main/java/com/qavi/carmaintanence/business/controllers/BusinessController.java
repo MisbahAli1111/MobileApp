@@ -59,7 +59,7 @@ public class BusinessController {
         List<Business> myBusinesses = businessService.getMyBusinesses(id);
         List<BusinessModel> convertedList = new ArrayList<>();
 
-        if (myBusinesses.size() > 0) {
+        if (!myBusinesses.isEmpty()) {
             for (Business business : myBusinesses) {
                 convertedList.add(BusinessConverter.convertBusinessToBusinessModel(business));
             }
@@ -81,7 +81,7 @@ public class BusinessController {
                 .data(new Object())
                 .build();
         List<Business> myBusinesses=businessService.getAllBusiness();
-        if(myBusinesses.size()>0)
+        if(!myBusinesses.isEmpty())
         {
             responseModel.setData(myBusinesses);
         }

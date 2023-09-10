@@ -15,14 +15,6 @@ public class BusinessConverter {
         businessModel.setBusinessEmail(business.getBusinessEmail());
         businessModel.setBusinessName(business.getBusinessName());
         businessModel.setBusinessPhoneNumber(business.getBusinessPhoneNumber());
-//        businessModel.s(business.getDiscountRate());
-//        businessModel.setTotal(business.getTotal());
-//        businessModel.setDescription(business.getDescription());
-//        businessModel.setDiscountName(business.getDiscountName());
-//        businessModel.setTaxName(business.getTaxName());
-//        businessModel.setTaxRate(business.getTaxRate());
-
-
         return businessModel;
     }
 }

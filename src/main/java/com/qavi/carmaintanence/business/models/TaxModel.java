@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TaxModel {
     private String taxName;
-
     private double taxRate;
 
 }

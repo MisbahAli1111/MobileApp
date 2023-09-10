@@ -5,7 +5,7 @@ import com.qavi.carmaintanence.business.repositories.BusinessRepository;
 import com.qavi.carmaintanence.business.repositories.VehicleRepository;
 import com.qavi.carmaintanence.business.models.InvoiceModel;
 import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository;
-import com.qavi.carmaintanence.business.repositories.invoiceRepository;
+import com.qavi.carmaintanence.business.repositories.InvoiceRepository;
 import com.qavi.carmaintanence.business.utils.InvoiceConverter;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
 import com.qavi.carmaintanence.usermanagement.services.user.EmailService;
@@ -22,7 +22,7 @@ public class InvoiceService {
     @Autowired
     MaintenanceRecordRepository maintenancerecordrepository;
     @Autowired
-    invoiceRepository invoicerepository ;
+    InvoiceRepository invoicerepository ;
 
     @Autowired
     VehicleRepository vehicleRepository;

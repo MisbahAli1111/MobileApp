@@ -9,12 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class invoiceRepositoryTest {
   @Autowired
-  invoiceRepository invoicerepository;
-    @Test
-    public  void search()
-  {
+  InvoiceRepository invoicerepository;
 
-    Invoice invoice= invoicerepository.findById(1L).get();
-    System.out.println(invoice.getAmountWithDis());
-  }
 }

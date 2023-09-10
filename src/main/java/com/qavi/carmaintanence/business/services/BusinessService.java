@@ -54,7 +54,6 @@ public class BusinessService {
                     business.setOwner(owner.get());
                 }
                 business.setEnabled(true);
-                // business.setBusinessRegisteredAt(LocalDateTime.now());
                 Business business1 = businessRepository.save(business);
                 return business1.getId();
 
@@ -84,48 +83,42 @@ public class BusinessService {
         Business foundBusinessRecord =businessRepository.findById(id).get();
         //Service
         if(Objects.nonNull(foundBusinessRecord.getBusinessCity()) &&
-                !"".equals(foundBusinessRecord.getBusinessCity()))
+                !foundBusinessRecord.getBusinessCity().isEmpty())
         {
             foundBusinessRecord.setBusinessCity(foundBusinessRecord.getBusinessCity());
         }
 
         if(Objects.nonNull(foundBusinessRecord.getBusinessAddress()) &&
-                !"".equals(foundBusinessRecord.getBusinessAddress()))
+                !foundBusinessRecord.getBusinessAddress().isEmpty())
         {
             foundBusinessRecord.setBusinessAddress(foundBusinessRecord.getBusinessAddress());
         }
 
         if(Objects.nonNull(foundBusinessRecord.getBusinessCountry()) &&
-                !"".equals(foundBusinessRecord.getBusinessCountry()))
+                !foundBusinessRecord.getBusinessCountry().isEmpty())
         {
             foundBusinessRecord.setBusinessCountry(foundBusinessRecord.getBusinessCountry());
         }
 
         if(Objects.nonNull(foundBusinessRecord.getBusinessEmail()) &&
-                !"".equals(foundBusinessRecord.getBusinessEmail()))
+                !foundBusinessRecord.getBusinessEmail().isEmpty())
         {
             foundBusinessRecord.setBusinessEmail(foundBusinessRecord.getBusinessEmail());
         }
 
         if(Objects.nonNull(foundBusinessRecord.getBusinessName()) &&
-                !"".equals(foundBusinessRecord.getBusinessName()))
+                !foundBusinessRecord.getBusinessName().isEmpty())
         {
             foundBusinessRecord.setBusinessName(foundBusinessRecord.getBusinessName());
         }
         if(Objects.nonNull(foundBusinessRecord.getBusinessPhoneNumber()) &&
-                !"".equals(foundBusinessRecord.getBusinessPhoneNumber()))
+                !foundBusinessRecord.getBusinessPhoneNumber().isEmpty())
         {
             foundBusinessRecord.setBusinessPhoneNumber(foundBusinessRecord.getBusinessPhoneNumber());
         }
 
-        if(foundBusinessRecord != null)
-        {
-            businessRepository.save(foundBusinessRecord);
-            return true;
-        }
-        else {
-            return false;
-        }
+        businessRepository.save(foundBusinessRecord);
+        return true;
 
 
     }

@@ -68,14 +68,11 @@ public class MaintenanceRecordService {
             Vehicle vehicle = maintenanceRecord.getVehicle();
 
             if (vehicle != null) {
-                String registrationNumber = vehicle.getRegistrationNumber();
-                return registrationNumber;
+                return vehicle.getRegistrationNumber();
             }else {
-                // Handle the case where the associated vehicle is missing
                 return "Vehicle not associated with this maintenance record";
             }
         } else {
-            // Handle the case where the record with the given ID is not found
             return "Record not found";
         }
     }
@@ -138,36 +135,25 @@ public class MaintenanceRecordService {
         {
             foundRecord.setService(maintenanceRecord.getService());
         }
-        if(Objects.nonNull(maintenanceRecord.getMaintanenceDateTime()) &&
-                !"".equals(maintenanceRecord.getMaintanenceDateTime()))
+        if(Objects.nonNull(maintenanceRecord.getMaintanenceDateTime()))
         {
             foundRecord.setMaintanenceDateTime(maintenanceRecord.getMaintanenceDateTime());
         }
 
 
         //Kilometers
-        if(Objects.nonNull(maintenanceRecord.getKilometerDriven()) &&
-                !"".equals(maintenanceRecord.getKilometerDriven()))
-        {
-            foundRecord.setKilometerDriven(maintenanceRecord.getKilometerDriven());
-        }
+        foundRecord.setKilometerDriven(maintenanceRecord.getKilometerDriven());
 
 
         //MaintenanceDetails
         if(Objects.nonNull(maintenanceRecord.getMaintanenceDetail()) &&
-                !"".equals(maintenanceRecord.getMaintanenceDetail()))
+                !maintenanceRecord.getMaintanenceDetail().isEmpty())
         {
             foundRecord.setMaintanenceDetail(maintenanceRecord.getMaintanenceDetail());
         }
 
-        if(foundRecord != null)
-        {
-            maintenanceRecordRepository.save(foundRecord);
-            return true;
-        }
-        else {
-            return false;
-        }
+        maintenanceRecordRepository.save(foundRecord);
+        return true;
 
     }
 

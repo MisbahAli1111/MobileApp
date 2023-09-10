@@ -54,21 +54,7 @@ public class VehicleService {
                     Vehicle vehicle1 = vehicleRepository.save(vehicle);
                     return vehicle1.getId();
                 }
-//                else {
-////                  userRepository.insertVehicleCustomers(vehicleModel.getOwnerId());
-////                    Optional<User> owner1 = userRepository.findById(vehicleModel.getOwnerId());
-////
-////                    vehicle.setCarOwner(owner1.get());
-////                    vehicle.setMake(vehicleModel.getMake());
-////                    vehicle.setColor(vehicleModel.getColor());
-////                    vehicle.setModel(vehicleModel.getModel());
-////                    vehicle.setYear(vehicleModel.getYear());
-////                    vehicle.setType(vehicleModel.getType());
-////                    vehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
-////                    vehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
-////                    vehicleRepository.save(vehicle);
-//                    return ;
-//                }
+
             } else {
                 throw new RecordNotFoundException("Business not found");
             }
@@ -107,19 +93,15 @@ public class VehicleService {
                 if (owner.isPresent()) {
 
                     Vehicle updatableVehicle = vehicleRepository.findById(vehicleId).get();
-                    if (updatableVehicle != null) {
-                        updatableVehicle.setColor(vehicleModel.getColor());
-                        updatableVehicle.setModel(vehicleModel.getModel());
-                        updatableVehicle.setYear(vehicleModel.getYear());
-                        updatableVehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
-                        updatableVehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
-                        updatableVehicle.setType(vehicleModel.getType());
-                        updatableVehicle.setMake(vehicleModel.getMake());
-                        vehicleRepository.save(updatableVehicle);
-                        return true;
-                    } else {
-                        throw new RecordNotFoundException("Vehicle not found");
-                    }
+                    updatableVehicle.setColor(vehicleModel.getColor());
+                    updatableVehicle.setModel(vehicleModel.getModel());
+                    updatableVehicle.setYear(vehicleModel.getYear());
+                    updatableVehicle.setKilometerDriven(vehicleModel.getKilometerDriven());
+                    updatableVehicle.setRegistrationNumber(vehicleModel.getRegistrationNumber());
+                    updatableVehicle.setType(vehicleModel.getType());
+                    updatableVehicle.setMake(vehicleModel.getMake());
+                    vehicleRepository.save(updatableVehicle);
+                    return true;
                 } else {
                     throw new RecordNotFoundException("User not found");
 

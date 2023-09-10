@@ -11,7 +11,5 @@ import java.util.List;
 public interface BusinessRepository extends JpaRepository<Business,Long> {
     List<Business> findAllByOwnerId(Long id);
 
-    @Transactional
-    @Query(value = "select * from business where id=?1",nativeQuery = true)
-    Business getById(Long id);
+
 }

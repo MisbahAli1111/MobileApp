@@ -19,7 +19,4 @@ public class BusinessModel {
     private String businessEmail;
     private String businessCountry;
     private String businessCity;
-
-
-
 }

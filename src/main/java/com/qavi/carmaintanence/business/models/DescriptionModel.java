@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DescriptionModel {
     private String item;
-
     private Double rate;
-
     private Double quantity;
-
     private Double amount;
 }

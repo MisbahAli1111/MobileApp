@@ -69,7 +69,6 @@ public class VehicleController {
             for (Vehicle vehicle : vehicles) {
                 VehicleModel vehicleModel = VehicleConverter.convertVehicleToVehicleModel(vehicle);
 
-                // Fetch media keys for the current vehicle and add them to the vehicleModel
                 List<String> mediaKeys = vehicleService.getVehicleMedia(vehicle.getId());
                 vehicleModel.setVehicleMediaList(mediaKeys);
 
@@ -102,25 +101,7 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.OK).body(vehicleModel);
     }
 
-    //    @GetMapping("/{vehicle_id}")
-//    public ResponseEntity<ResponseModel> edit_details(@PathVariable Long id )
-//    {
-//        ResponseModel responseModel= ResponseModel.builder()
-//                .status(HttpStatus.OK)
-//                .message("Edit Your vehicle")
-//                .data(new Object())
-//                .build();
-//        Optional<Vehicle> fetchedVehicle=vehicleService.edit_details(id);
-//        if(fetchedVehicle.isEmpty()){
-//
-//            responseModel.setStatus(HttpStatus.EXPECTATION_FAILED);
-//            responseModel.setMessage("Failed to fetch vehicle detail");
-//        }
-//        else{
-//            responseModel.setData(fetchedVehicle.get());
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
-//    }
+
     @PostMapping("/{businessId}/{vehicle_id}/update-vehicle")
     public  ResponseEntity<ResponseModel> updateVehicle(@PathVariable Long businessId, @PathVariable Long vehicle_id,@RequestBody VehicleModel vehicleModel)
     {
