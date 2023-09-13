@@ -18,4 +18,7 @@ public interface MaintenanceRecordRepository extends JpaRepository<MaintenanceRe
     );
 
     List<MaintenanceRecord> findAllByBusinessId(Long businessId);
+
+    @Query(value = "SELECT v.car_owner_id FROM vehicle v INNER JOIN maintenance_record m ON m.vehicle_id = v.id WHERE m.id = ?1", nativeQuery = true)
+    Long getOwnerId(Long maintenanceRecordId);
 }

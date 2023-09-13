@@ -185,6 +185,12 @@ public class MaintenanceRecordService {
         return vehicleRepository.getVehicleTypeFromRegNumber(registrationNumber);
     }
 
+    public Long getOwnerId(Long Id)
+    {
+        Long id = maintenanceRecordRepository.getOwnerId(Id);
+        return id;
+
+    }
     public void saveRecordImage(Long profileImgId, Long recordId) {
         MaintenanceRecordMedia savedImg = maintenanceRecordMediaRepository.findById(profileImgId).get();
         MaintenanceRecord maintenanceRecord = getRecord(recordId);

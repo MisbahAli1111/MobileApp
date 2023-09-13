@@ -220,4 +220,10 @@ public class MaintaenanceRecordController {
     {
         return maintenanceRecordService.findTypeOfVehicle(registrationNumber);
     }
+
+    @GetMapping("/{recordId}/get-owner-id")
+    public Long GetOwnerOfVehicle(@PathVariable Long recordId)
+    {
+        return maintenanceRecordService.getOwnerId(recordId);
+    }
 }
