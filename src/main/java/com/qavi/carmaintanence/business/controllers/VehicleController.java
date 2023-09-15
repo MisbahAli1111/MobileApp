@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/vehicle")
@@ -70,7 +71,11 @@ public class VehicleController {
                 VehicleModel vehicleModel = VehicleConverter.convertVehicleToVehicleModel(vehicle);
 
                 List<String> mediaKeys = vehicleService.getVehicleMedia(vehicle.getId());
-                vehicleModel.setVehicleMediaList(mediaKeys);
+                List<String> modifiedMediaKeys = mediaKeys.stream()
+                        .map(key -> "/api/file/" + key)
+                        .collect(Collectors.toList());
+
+                vehicleModel.setVehicleMediaList(modifiedMediaKeys);
 
                 convertedList.add(vehicleModel);
             }
