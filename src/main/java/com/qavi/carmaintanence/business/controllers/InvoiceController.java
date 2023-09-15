@@ -24,14 +24,9 @@ import java.util.Optional;
 @RequestMapping("api/invoice")
 public class InvoiceController {
 
-
-    @Autowired
-    VehicleRepository vehicleRepository;
     @Autowired
     InvoiceService invoiceService;
 
-    @Autowired
-    UserRepository userRepository;
     @GetMapping("/get-invoices/{businessId}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
     @Transactional
@@ -41,54 +36,40 @@ public class InvoiceController {
                 .message("Invoices Recived Successfully")
                 .data(new Object())
                 .build();
-        List<Invoice> invoices=invoiceService.getAllInvoices(businessId);
-        List<InvoiceModel> convertedList = new ArrayList<>();
+        List<InvoiceModel> invoices=invoiceService.getAllInvoices(businessId);
 
-        if(invoices.size()>0)
-        {
-            responseModel.setData(invoices);
-            for (Invoice invoice : invoices) {
-                convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice,vehicleRepository,userRepository));
+            if(invoices.isEmpty()){
+                responseModel.setStatus(HttpStatus.NOT_FOUND);
+                responseModel.setMessage("Invoices not found");
+                return new ResponseEntity<>(invoices, HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<List<InvoiceModel>>(convertedList, HttpStatus.OK);
+            else{
+                return new ResponseEntity<>(invoices, HttpStatus.OK);
+            }
 
-        }
-        else {
-            responseModel.setStatus(HttpStatus.NOT_FOUND);
-
-            responseModel.setMessage("Invoices not found");
-
-            return new ResponseEntity<>(convertedList, HttpStatus.NOT_FOUND);
-
-        }
     }
     @GetMapping("/get-invoice/{invoice_id}")
     @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
     @Transactional
-    public ResponseEntity<List<InvoiceModel>> getOneInvoice(@PathVariable("invoice_id") Long invoiceId) {
-        Optional<Invoice> invoiceOptional = invoiceService.getInvoice(invoiceId);
+    public ResponseEntity<InvoiceModel> getOneInvoice(@PathVariable("invoice_id") Long invoiceId) {
+        InvoiceModel invoiceModel = invoiceService.getInvoice(invoiceId);
 
-        List<InvoiceModel> convertedList = null;
-        if (invoiceOptional.isPresent()) {
-            Invoice invoice = invoiceOptional.get();
-            InvoiceModel invoiceModel = InvoiceConverter.convertInvoiceToInvoiceModel(invoice,vehicleRepository,userRepository);
-            convertedList = new ArrayList<>();
-            convertedList.add(invoiceModel);
+        if (invoiceModel != null) {
 
             ResponseModel responseModel = ResponseModel.builder()
                     .status(HttpStatus.OK)
                     .message("Invoice Details Found Successfully")
-                    .data(convertedList)
+                    .data(invoiceModel)
                     .build();
 
-            return new ResponseEntity<>(convertedList, HttpStatus.OK);
+            return new ResponseEntity<>(invoiceModel, HttpStatus.OK);
         } else {
             ResponseModel responseModel = ResponseModel.builder()
                     .status(HttpStatus.NOT_FOUND)
                     .message("Failed to Fetch Invoice Detail")
                     .build();
 
-            return new ResponseEntity<>(convertedList, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(invoiceModel, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -103,7 +84,7 @@ public class InvoiceController {
                 .data(new Object())
                 .build();
 
-        List<Invoice> invoices = invoiceService.getInvoiceReport(invoiceModel, businessId);
+        List<InvoiceModel> invoices = invoiceService.getInvoiceReport(invoiceModel, businessId);
 
         if (invoices.isEmpty()) {
             responseModel.setStatus(HttpStatus.NOT_FOUND);
@@ -111,12 +92,9 @@ public class InvoiceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseModel);
         }
 
-        List<InvoiceModel> convertedList = new ArrayList<>();
-        for (Invoice invoice : invoices) {
-            convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice, vehicleRepository,userRepository));
-        }
 
-        return ResponseEntity.status(HttpStatus.OK).body(convertedList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(invoices);
     }
 
 

@@ -8,13 +8,13 @@ import com.qavi.carmaintanence.business.repositories.MaintenanceRecordRepository
 import com.qavi.carmaintanence.business.repositories.InvoiceRepository;
 import com.qavi.carmaintanence.business.utils.InvoiceConverter;
 import com.qavi.carmaintanence.globalexceptions.RecordNotFoundException;
+import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
 import com.qavi.carmaintanence.usermanagement.services.user.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -24,6 +24,8 @@ public class InvoiceService {
     @Autowired
     InvoiceRepository invoicerepository ;
 
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     VehicleRepository vehicleRepository;
 
@@ -129,26 +131,40 @@ public class InvoiceService {
     }
 
 
-    public Optional<Invoice> getInvoice(Long invoiceId) {
+    public InvoiceModel getInvoice(Long invoiceId) {
         Optional<Invoice> invoice =invoicerepository.findById(invoiceId);
 
-        return invoice;
+        List<InvoiceModel> convertedList = null;
+
+        Invoice invoices = invoice.get();
+        InvoiceModel invoiceModel = InvoiceConverter.convertInvoiceToInvoiceModel(invoices,vehicleRepository,userRepository);
+
+        return invoiceModel;
     }
 
 
-    public List<Invoice> getInvoiceReport(InvoiceModel invoiceModel, Long businessId) {
-            List<Invoice> invoice = invoicerepository.findReportDetails(
+    public List<InvoiceModel> getInvoiceReport(InvoiceModel invoiceModel, Long businessId) {
+            List<Invoice> invoices = invoicerepository.findReportDetails(
                     invoiceModel.getDate(),
                     invoiceModel.getInvoiceDue(),
                     businessId
             );
-
-            return invoice;
+        List<InvoiceModel> convertedList = new ArrayList<>();
+        for (Invoice invoice : invoices) {
+            convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice, vehicleRepository,userRepository));
+        }
+            return convertedList;
     }
 
-    public List<Invoice> getAllInvoices(Long businessId) {
+    public List<InvoiceModel> getAllInvoices(Long businessId) {
         List<Invoice> invoices = invoicerepository.findAllByBusinessIdAndEnabledIsTrue(businessId);
-        return invoices;
+
+        List<InvoiceModel> convertedList = new ArrayList<>();
+
+        for (Invoice invoice : invoices) {
+            convertedList.add(InvoiceConverter.convertInvoiceToInvoiceModel(invoice,vehicleRepository,userRepository));
+        }
+        return convertedList;
     }
 
     public boolean deleteInvoice(Long id) {

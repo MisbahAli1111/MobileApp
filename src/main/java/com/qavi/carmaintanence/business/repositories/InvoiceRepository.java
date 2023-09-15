@@ -19,8 +19,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Long> {
 
 
     List<Invoice> findAllByBusinessIdAndEnabledIsTrue(Long businessId);
-//
-//    List<Invoice> findAllInvoices();
+
 
     @Query(value = "select i.amount_with_dis, i.amount_with_out_dis  from invoice i where id =?1" , nativeQuery = true)
     Collection<?> findByMaintainedRecordId(Long id);

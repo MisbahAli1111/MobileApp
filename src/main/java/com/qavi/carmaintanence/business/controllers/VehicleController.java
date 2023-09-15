@@ -124,7 +124,6 @@ public class VehicleController {
             responseModel.setData(fetchedVehicle);
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseModel);
-
     }
 
     @PutMapping("/{businessId}/{vehicleId}/delete-vehicle")
