@@ -5,6 +5,7 @@ import com.qavi.carmaintanence.globalexceptions.RecordAlreadyExists;
 import com.qavi.carmaintanence.usermanagement.constants.UserConstants;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.models.GoogleResponseModel;
+import com.qavi.carmaintanence.usermanagement.models.UserDataModel;
 import com.qavi.carmaintanence.usermanagement.repositories.UserRepository;
 import com.qavi.carmaintanence.usermanagement.utils.JWTGenerator;
 import okhttp3.OkHttpClient;
@@ -36,49 +37,42 @@ public class GoogleSignInService {
     }
 
 
-    public String googleSignIn(String googleIdToken) throws GeneralSecurityException, IOException {
-
-        RestTemplate restTemplate = new RestTemplate();
-        String uri = "https://oauth2.googleapis.com/tokeninfo?access_token=" + googleIdToken;
-        GoogleResponseModel googleResponse;
-        try{
-            googleResponse = restTemplate.getForObject(uri, GoogleResponseModel.class);
-        }
-        catch(HttpStatusCodeException e){
-            throw new InvalidTokenException("Google Token Invalid");
-        }
-
-        String email = googleResponse.getEmail();
-        String firstname = email.substring(0, email.indexOf('@'));
+    public String SignIn(UserDataModel userDataModel) {
 
 
-        Optional<User> appUserLocal = userService.findUserByEmail(email, UserConstants.LOCAL);
-        Optional<User> appUserApple = userService.findUserByEmail(email, UserConstants.APPLE);
-        Optional<User> appUserFacebook = userService.findUserByEmail(email, UserConstants.FACEBOOK);
+        Optional<User> user = userService.findUserByEmail(userDataModel.getEmail());
 
-        if(appUserLocal.isPresent() || appUserApple.isPresent() || appUserFacebook.isPresent()){
-            throw new RecordAlreadyExists("Account already exists");
-        }
 
-        Optional<User> appUser = userService.findUserByEmail(email, UserConstants.GOOGLE);
+
+
         String accessToken = "";
-        if(appUser.isPresent()) {
 
-            accessToken = jwtGenerator.generateJWTToken(appUser.get());
-            return accessToken;
+        if (user.isPresent()) {
+            var google =user.get().getAuthType().equals("GOOGLE");
+
+            if(google){
+                accessToken = jwtGenerator.generateJWTToken(user.get());
+            } else{
+                accessToken="The Provided email is not associated with Google sign up, Please provide password";
+            }
         } else {
-            //create and save  new technician in db
-            User user=new User();
-            user.setFirstName(firstname);
-            user.setLastName("");
-            user.setEnabled(true);
-            user.setEmail(email);
-            user.setAuthType(UserConstants.GOOGLE);
-            user.setEmailNotificationEnabled(false);
-            appUserRepository.save(user);
-            accessToken = jwtGenerator.generateJWTToken(user);
 
-            return accessToken;
+            // Create and save a new technician in the database
+            User newUser = new User();
+            newUser.setFirstName(userDataModel.getFirstName()); // Use values from userDataModel
+            newUser.setLastName(userDataModel.getLastName());   // Use values from userDataModel
+            newUser.setEnabled(true);
+            newUser.setEmail(userDataModel.getEmail());        // Use values from userDataModel
+            newUser.setAuthType(UserConstants.GOOGLE);
+            newUser.setEmailNotificationEnabled(false);
+
+            // Save the new user to the database
+            appUserRepository.save(newUser);
+
+            accessToken = jwtGenerator.generateJWTToken(newUser);
         }
+
+        return accessToken;
     }
+
 }

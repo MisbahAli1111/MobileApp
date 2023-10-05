@@ -247,8 +247,12 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public Optional<User> findUserByEmail(String email, String authType) {
+    public Optional<User> findUserByEmailAndType(String email, String authType) {
         return userRepository.findByEmail(email, authType);
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public Boolean assignRole(String email, RoleModel role) {

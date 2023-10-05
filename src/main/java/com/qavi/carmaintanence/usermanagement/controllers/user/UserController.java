@@ -4,6 +4,7 @@ import com.qavi.carmaintanence.usermanagement.entities.user.PasswordUpdate;
 import com.qavi.carmaintanence.usermanagement.entities.user.User;
 import com.qavi.carmaintanence.usermanagement.models.ResponseModel;
 import com.qavi.carmaintanence.usermanagement.models.UserDataModel;
+import com.qavi.carmaintanence.usermanagement.services.user.GoogleSignInService;
 import com.qavi.carmaintanence.usermanagement.services.user.ProfileImageService;
 import com.qavi.carmaintanence.usermanagement.services.user.UserService;
 import com.qavi.carmaintanence.usermanagement.utils.ConverterModels;
@@ -23,6 +24,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GoogleSignInService googleSignInService;
 
     @Autowired
     private ProfileImageService profileImageService;
@@ -73,7 +77,19 @@ public class UserController {
     }
 
 
+    @PostMapping("signIn/")
+    public  ResponseEntity<ResponseModel> googleSignIn(@RequestBody UserDataModel userDataModel){
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("User created successfully")
+                .data(new Object())
+                .build();
 
+        String accesstoken=googleSignInService.SignIn(userDataModel);
+        responseModel.setData(accesstoken);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseModel);
+    }
 
 
     //Create User
