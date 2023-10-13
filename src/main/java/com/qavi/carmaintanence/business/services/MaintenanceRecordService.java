@@ -117,6 +117,23 @@ public class MaintenanceRecordService {
         }
 
     }
+    public List<Object[]> getYearRecords(Long businessId) {
+        List<Object[]> myRecords= maintenanceRecordRepository.findRecordByYear(businessId);
+
+        return myRecords;
+    }
+
+    public List<Object[]> getMonthRecords(Long businessId) {
+        List<Object[]> myRecords= maintenanceRecordRepository.findRecordByMonth(businessId);
+
+        return myRecords;
+    }
+
+    public List<Object[]> getDayRecords(Long businessId) {
+        List<Object[]> myRecords= maintenanceRecordRepository.findRecordByDay(businessId);
+
+        return myRecords;
+    }
 
     public List<MaintenanceRecord> getallrecords(Long businessId) {
         List<MaintenanceRecord> myRecords= maintenanceRecordRepository.findAllByBusinessId(businessId);

@@ -19,6 +19,25 @@ public interface MaintenanceRecordRepository extends JpaRepository<MaintenanceRe
 
     List<MaintenanceRecord> findAllByBusinessId(Long businessId);
 
+    @Query(value = "SELECT EXTRACT(MONTH FROM maintanence_date_time) AS month_count, COUNT(*) AS count\n" +
+            "FROM maintenance_record\n" +
+            "GROUP BY EXTRACT(MONTH FROM maintanence_date_time)\n" +
+            "ORDER BY month_count;\n", nativeQuery = true)
+    List<Object[]> findRecordByYear(Long maintenanceRecordId);
+
+    @Query(value = "SELECT EXTRACT(Day FROM maintanence_date_time) AS day_count, COUNT(*) AS count\n" +
+            "FROM maintenance_record\n" +
+            "GROUP BY EXTRACT(day FROM maintanence_date_time)\n" +
+            "ORDER BY day_count;\n", nativeQuery = true)
+    List<Object[]> findRecordByMonth(Long maintenanceRecordId);
+
+    @Query(value = "SELECT EXTRACT(hour FROM maintanence_date_time) AS hour_count, COUNT(*) AS count\n" +
+            "FROM maintenance_record\n" +
+            "GROUP BY EXTRACT(hour FROM maintanence_date_time)\n" +
+            "ORDER BY hour_count;\n", nativeQuery = true)
+    List<Object[]> findRecordByDay(Long maintenanceRecordId);
+
+
     @Query(value = "SELECT v.car_owner_id FROM vehicle v INNER JOIN maintenance_record m ON m.vehicle_id = v.id WHERE m.id = ?1", nativeQuery = true)
     Long getOwnerId(Long maintenanceRecordId);
 }

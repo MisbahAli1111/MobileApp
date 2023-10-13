@@ -79,7 +79,7 @@ public class MaintaenanceRecordController {
                 .message("All  Records Are Founded successfully")
                 .data(new Object())
                 .build();
-        List<MaintenanceRecord> records =maintenanceRecordService.getallrecords(businessId);
+        List records =maintenanceRecordService.getallrecords(businessId);
         List convertedList= new ArrayList();
         if(records.isEmpty() || records==null)
         {
@@ -90,14 +90,87 @@ public class MaintaenanceRecordController {
         }
           else {
 
-            for (MaintenanceRecord record :records) {
-                MaintanenceRecordModel maintanenceRecordModel =MaintenanceRecordConverter.covertMRtoMRmodel(record);
+            for (Object record :records) {
+                MaintanenceRecordModel maintanenceRecordModel =MaintenanceRecordConverter.covertMRtoMRmodel((MaintenanceRecord) record);
                 convertedList.add(maintanenceRecordModel);
             }
             return new ResponseEntity<List<MaintanenceRecordModel>>(convertedList, HttpStatus.OK);
         }
-
     }
+
+    @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
+    @GetMapping("/get-year-record/{businessId}")
+    public ResponseEntity<List<MaintanenceRecordModel>> getYearRecord(@PathVariable Long businessId)
+    {
+
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("All  Records Are Founded successfully")
+                .data(new Object())
+                .build();
+        List records =maintenanceRecordService.getYearRecords(businessId);
+        List convertedList= new ArrayList();
+        if(records.isEmpty() || records==null)
+        {
+            responseModel.setStatus(HttpStatus.NOT_FOUND);
+
+            responseModel.setMessage("No record Found");
+            return new ResponseEntity<>(convertedList, HttpStatus.NOT_FOUND);
+        }else{
+
+            return new ResponseEntity<List<MaintanenceRecordModel>>(records, HttpStatus.OK);
+        }
+    }
+
+    @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
+    @GetMapping("/get-month-record/{businessId}")
+    public ResponseEntity<List<MaintanenceRecordModel>> getMonthRecord(@PathVariable Long businessId)
+    {
+
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("All  Records Are Founded successfully")
+                .data(new Object())
+                .build();
+        List records =maintenanceRecordService.getMonthRecords(businessId);
+        List convertedList= new ArrayList();
+        if(records.isEmpty() || records==null)
+        {
+            responseModel.setStatus(HttpStatus.NOT_FOUND);
+
+            responseModel.setMessage("No record Found");
+            return new ResponseEntity<>(convertedList, HttpStatus.NOT_FOUND);
+        }else{
+
+            return new ResponseEntity<List<MaintanenceRecordModel>>(records, HttpStatus.OK);
+        }
+    }
+
+    @PreAuthorize("hasAnyRole('EMPLOYEE','OWNER')")
+    @GetMapping("/get-day-record/{businessId}")
+    public ResponseEntity<List<MaintanenceRecordModel>> getDayRecord(@PathVariable Long businessId)
+    {
+
+        ResponseModel responseModel = ResponseModel.builder()
+                .status(HttpStatus.OK)
+                .message("All  Records Are Founded successfully")
+                .data(new Object())
+                .build();
+        List records =maintenanceRecordService.getDayRecords(businessId);
+        List convertedList= new ArrayList();
+        if(records.isEmpty() || records==null)
+        {
+            responseModel.setStatus(HttpStatus.NOT_FOUND);
+
+            responseModel.setMessage("No record Found");
+            return new ResponseEntity<>(convertedList, HttpStatus.NOT_FOUND);
+        }else{
+
+            return new ResponseEntity<List<MaintanenceRecordModel>>(records, HttpStatus.OK);
+        }
+    }
+
+
     @GetMapping("/{id}/registration-number")
     public String getRegistrationFromRecords(@PathVariable Long id)
     {
